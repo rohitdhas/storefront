@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { Button } from "primereact/button";
 
 const Home: NextPage = () => {
   return (
@@ -11,6 +12,14 @@ const Home: NextPage = () => {
       </Head>
       <main>
         <h1 className="text-xl text-center text-blue-700">Hello World!</h1>
+        <Button label="Click" icon="pi pi-check" />
+        <Button
+          label="Click"
+          icon="pi pi-check"
+          iconPos="right"
+          className="mx-4"
+        />
+        <Button icon="pi pi-check" iconPos="right" />
       </main>
     </div>
   );
