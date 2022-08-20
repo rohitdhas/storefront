@@ -24,12 +24,12 @@ export async function connectToDatabase() {
     };
   }
 
-  // const opts = {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  // };
+  const opts: any = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  };
 
-  let client: any = new MongoClient(MONGODB_URI);
+  let client: any = new MongoClient(MONGODB_URI, opts);
   await client.connect();
   let db = client.db(MONGODB_DB);
 
