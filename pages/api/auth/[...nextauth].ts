@@ -47,12 +47,26 @@ export default NextAuth({
   callbacks: <any>{
     async signIn({ account, profile }: any) {
       if (account.provider === 'google') {
-        //check if user is in your database
-        // if(user NOT in DB) {
+        const { email, name, picture } = profile;
 
-        // }
+        const { db }: any = await connectToDatabase();
+        const exists = await db
+          .collection('users')
+          .findOne({ email });
+
+        if (!exists) {
+          await db.collection('users').insertOne({
+            email,
+            name,
+            picture,
+          });
+        }
+
         return true
       }
     }
-  }
+  },
+  pages: {
+    signIn: "/login",
+  },
 });
