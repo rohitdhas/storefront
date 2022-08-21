@@ -1,13 +1,35 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
-import { useState } from "react";
+import { Toast } from "primereact/toast";
+import { useState, useRef } from "react";
+import { useRouter } from "next/router";
+import { getSession } from "next-auth/react";
+
+export async function getServerSideProps(context: any) {
+  const session = await getSession({ req: context.req });
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}
 
 export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const toast: any = useRef<Toast>();
+
+  const router = useRouter();
 
   async function signup() {
     if (!name || !email || !password) return;
@@ -23,11 +45,21 @@ export default function Signup() {
 
     const data = await response.json();
     setIsLoading(false);
-    console.log(data);
+
+    if (data.isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: data.message,
+      });
+    } else {
+      router.push("/");
+    }
   }
 
   return (
     <div className="h-screen flex justify-center align items-center">
+      <Toast ref={toast} />
       <form
         onSubmit={signup}
         className="bg-gray-100 rounded-md p-4 w-[400px] bg-opacity-80"
@@ -75,7 +107,7 @@ export default function Signup() {
         <p className="text-center text-slate-700 text-sm my-2">
           Already have an account?{" "}
           <a
-            href="/login"
+            href="/signin"
             className="underline text-blue-700 hover:no-underline hover:text-blue-800"
           >
             Login here!
