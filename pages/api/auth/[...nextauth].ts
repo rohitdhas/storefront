@@ -8,27 +8,29 @@ export default NextAuth({
   session: <any>{
     jwt: true,
   },
+  secret: process.env.AUTH_SECRET,
   providers: [
     Credentials({
       async authorize(credentials: any) {
         const { db }: any = await connectToDatabase();
-        const users = await db().collection('users');
+        const user = await db.collection('users').findOne({ email: credentials.email });
 
-        const result = await users.findOne({
-          email: credentials.email,
-        });
-
-        if (!result) {
-          throw new Error('No user found with the email');
+        if (!user) {
+          throw new Error('No user found with that email');
         }
 
-        const checkPassword = await compare(credentials.passowrd, result.passowrd);
+        // When logged in with google
+        if (user && !user.password) {
+          throw new Error('No user found with that email');
+        }
+
+        const checkPassword = await compare(credentials.password, user.password);
 
         if (!checkPassword) {
-          throw new Error("Password doesn't match");
+          throw new Error("Incorrect Password or Email");
         }
 
-        return { email: result.email, name: result.name };
+        return { email: user.email, name: user.name };
       },
       credentials: <any>undefined
     }),
@@ -61,9 +63,8 @@ export default NextAuth({
             picture,
           });
         }
-
-        return true
       }
+      return true;
     }
   },
   pages: {
