@@ -61,6 +61,7 @@ export default function Signup() {
             id="pass"
             value={password}
             required
+            toggleMask
             onChange={(e) => setPassword(e.target.value)}
           />
           <label htmlFor="pass">Password</label>
@@ -71,6 +72,15 @@ export default function Signup() {
           label="Sign Up"
           loading={isLoading}
         />
+        <p className="text-center text-slate-700 text-sm my-2">
+          Already have an account?{" "}
+          <a
+            href="/login"
+            className="underline text-blue-700 hover:no-underline hover:text-blue-800"
+          >
+            Login here!
+          </a>{" "}
+        </p>
       </form>
     </div>
   );
