@@ -17,7 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
       .findOne({ email: email });
 
     if (checkExisting) {
-      res.status(422).json({ isError: true, message: 'User already exists!' });
+      res.status(422).json({ isError: true, message: 'Email already used!' });
       return;
     }
 
