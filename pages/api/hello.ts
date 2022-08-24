@@ -9,5 +9,5 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  res.status(200).json({ message: "Hello World!" });
+  res.status(200).json({ message: "Welcome to topstore!" });
 }
