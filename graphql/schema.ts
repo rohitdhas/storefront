@@ -7,8 +7,8 @@ const typeDefs = gql`
     city: String
     state: String
     country: String
-    zipCode: Number
-    phone: Number
+    zipCode: Int
+    phone: Int
   }
 
   type User {
@@ -30,10 +30,10 @@ const typeDefs = gql`
     title: String
     description: String
     images: [String]
-    currentPrice: Number
-    originalPrice: Number
-    rating: Number
-    stock: Number
+    currentPrice: Int
+    originalPrice: Int
+    rating: Int
+    stock: Int
     category: [String]
     exclusive: Boolean
     tags: [String]
@@ -43,7 +43,7 @@ const typeDefs = gql`
 
   type CartItem {
     productId: String
-    quantity: Number
+    quantity: Int
   }
 
   type Order {
@@ -52,6 +52,12 @@ const typeDefs = gql`
     userId: String
     paid: Boolean
     checkoutToken: String
-    createdAt: Date
+    createdAt: String
   }
-`
+
+  type Query {
+    products: [CartItem]
+  }
+`;
+
+export { typeDefs };
