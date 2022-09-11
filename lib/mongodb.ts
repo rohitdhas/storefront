@@ -29,9 +29,9 @@ export async function connectToDatabase() {
     useUnifiedTopology: true,
   };
 
-  let client: any = new MongoClient(MONGODB_URI, opts);
+  let client: MongoClient = new MongoClient(MONGODB_URI, opts);
   await client.connect();
-  let db = client.db(MONGODB_DB);
+  let db: Db = client.db(MONGODB_DB);
 
   // set cache
   cachedClient = client;
