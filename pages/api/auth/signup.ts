@@ -2,7 +2,13 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '../../../lib/mongodb';
 import { hash } from 'bcryptjs';
 
-async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
+interface Response {
+  isError: boolean;
+  message: string;
+  [key: string]: any;
+}
+
+async function handler(req: NextApiRequest, res: NextApiResponse<Response>) {
   if (req.method === 'POST') {
     const { email, password, fullName } = req.body;
 
