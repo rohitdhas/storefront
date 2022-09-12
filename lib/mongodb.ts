@@ -42,3 +42,8 @@ export async function connectToDatabase() {
     db: cachedDb,
   };
 }
+
+export interface ConnectionType {
+  client: MongoClient;
+  db: Db;
+}
