@@ -21,8 +21,8 @@ const typeDefs = gql`
   }
 
   type Specification {
-    key: String
-    value: String
+    key(key: String): String
+    value(key: String): String
   }
 
   type Product {
@@ -34,7 +34,7 @@ const typeDefs = gql`
     originalPrice: Int
     rating: Int
     stock: Int
-    category: [String]
+    category: String
     exclusive: Boolean
     tags: [String]
     specifications: [Specification]
@@ -56,7 +56,9 @@ const typeDefs = gql`
   }
 
   type Query {
-    products: [CartItem]
+    products: [Product]!
+    user: User!
+    orders: [Order]!
   }
 `;
 
