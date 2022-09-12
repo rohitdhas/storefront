@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { connectToDatabase } from '../../../lib/mongodb';
+import { connectToDatabase, ConnectionType } from '../../../lib/mongodb';
 import { hash } from 'bcryptjs';
 
 interface Response {
@@ -17,7 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Response>) {
       return;
     }
 
-    const { db }: any = await connectToDatabase();
+    const { db }: ConnectionType = await connectToDatabase();
     const checkExisting = await db
       .collection('users')
       .findOne({ email: email });

@@ -1,7 +1,6 @@
 import Credentials from 'next-auth/providers/credentials';
 import GoogleProvider from "next-auth/providers/google";
-import { connectToDatabase } from '../../../lib/mongodb';
-import { Db, MongoClient } from 'mongodb';
+import { connectToDatabase, ConnectionType } from '../../../lib/mongodb';
 import { compare } from 'bcryptjs';
 import NextAuth from 'next-auth';
 
@@ -13,7 +12,7 @@ export default NextAuth({
   providers: [
     Credentials({
       async authorize(credentials: any) {
-        const { db }: { client: MongoClient, db: Db } = await connectToDatabase();
+        const { db }: ConnectionType = await connectToDatabase();
         const user = await db.collection('users').findOne({ email: credentials.email });
 
         if (!user) {
@@ -52,7 +51,7 @@ export default NextAuth({
       if (account.provider === 'google') {
         const { email, name, picture } = profile;
 
-        const { db }: { client: MongoClient, db: Db } = await connectToDatabase();
+        const { db }: ConnectionType = await connectToDatabase();
         const exists = await db
           .collection('users')
           .findOne({ email });
