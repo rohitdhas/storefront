@@ -1,5 +1,10 @@
+import { getProducts } from "../utils/db.utils"
+
 export const resolvers = {
   Query: {
-    products: () => [{ productId: "1", quantity: 2 }, { productId: "2", quantity: 5 }]
+    products: async () => await getProducts(),
+    user: () => {
+      return { id: 1, fullName: "rohit", email: "rohit@mail.com", type: "admin" }
+    }
   }
 }
