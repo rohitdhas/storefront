@@ -1,7 +1,5 @@
-import Credentials from 'next-auth/providers/credentials';
-import GoogleProvider from "next-auth/providers/google";
 import { connectToDatabase, ConnectionType } from '../../../lib/mongodb';
-import { compare } from 'bcryptjs';
+import GoogleProvider from "next-auth/providers/google";
 import NextAuth from 'next-auth';
 
 export default NextAuth({
@@ -10,30 +8,6 @@ export default NextAuth({
   },
   secret: process.env.AUTH_SECRET,
   providers: [
-    Credentials({
-      async authorize(credentials: any) {
-        const { db }: ConnectionType = await connectToDatabase();
-        const user = await db.collection('users').findOne({ email: credentials.email });
-
-        if (!user) {
-          throw new Error('No user found with that email');
-        }
-
-        // When logged in with google
-        if (user && !user.password) {
-          throw new Error('No user found with that email');
-        }
-
-        const checkPassword = await compare(credentials.password, user.password);
-
-        if (!checkPassword) {
-          throw new Error("Incorrect Password or Email");
-        }
-
-        return { email: user.email, name: user.name };
-      },
-      credentials: <any>undefined
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
