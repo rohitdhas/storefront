@@ -1,6 +1,6 @@
-import { useSession, signOut } from "next-auth/react";
-import type { NextPage } from "next";
+import { useSession, signOut, signIn } from "next-auth/react";
 import { Button } from "primereact/button";
+import type { NextPage } from "next";
 import Head from "next/head";
 
 const Home: NextPage = () => {
@@ -20,7 +20,7 @@ const Home: NextPage = () => {
             <Button label="Sign Out" onClick={() => signOut()} />
           </h1>
         ) : (
-          <h1 className="text-xl text-center text-blue-700">Sign In Please!</h1>
+          <Button label="Sign In" onClick={() => signIn("google")} />
         )}
       </main>
     </div>
