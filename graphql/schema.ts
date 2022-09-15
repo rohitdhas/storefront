@@ -12,7 +12,7 @@ const typeDefs = gql`
   }
 
   type User {
-    id: String
+    _id: String
     email: String
     profileImg: String
     fullName: String
@@ -21,12 +21,12 @@ const typeDefs = gql`
   }
 
   type Specification {
-    key(key: String): String
-    value(key: String): String
+    key: String
+    value: String
   }
 
   type Product {
-    id: String
+    _id: String
     title: String
     description: String
     images: [String]
@@ -57,7 +57,8 @@ const typeDefs = gql`
 
   type Query {
     products: [Product]!
-    user: User!
+    product(id: ID): Product
+    user(id: ID!): User!
     orders: [Order]!
   }
 `;
