@@ -55,11 +55,22 @@ const typeDefs = gql`
     createdAt: String
   }
 
+  input Filters {
+    _id: String
+    colors: [String]
+    rating: Int
+    brands: [String]
+    categories: [String]
+    inStock: Boolean
+    exclusive: Boolean
+  }
+
   type Query {
-    products: [Product]!
+    products(filters: Filters): [Product]
     product(id: ID): Product
     user(id: ID!): User!
-    orders: [Order]!
+    orders(userId: ID!): [Order]
+    autocomplete(input: String): [Product]
   }
 `;
 
