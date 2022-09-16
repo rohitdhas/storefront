@@ -12,6 +12,8 @@
     "apollo-server-micro": "^3.10.2",
     "bcryptjs": "^2.4.3",
     "graphql": "^16.6.0",
+    "graphql-tools": "^8.3.6",
+    "graphql-type-json": "^0.3.2",
     "micro": "^9.4.1",
     "micro-cors": "^0.1.1",
     "mongodb": "^4.8.1",
