@@ -1,4 +1,5 @@
 import { getProducts, getOneProduct, getOrders, searchAutocomplete } from "../utils/db.utils"
+import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
 
 export const resolvers = {
   Query: {
@@ -19,5 +20,18 @@ export const resolvers = {
       if (!input) return await getProducts({});
       return await searchAutocomplete(input);
     }
-  }
+  },
+  Mutation: {
+    createOrder: async (_parent: any, args: any, context: any) => {
+      const { order } = args;
+      console.log(context);
+      return {
+        message: 'Order created successfully',
+        isError: false,
+        data: order
+      }
+    }
+  },
+  JSON: GraphQLJSON,
+  JSONObject: GraphQLJSONObject,
 }
