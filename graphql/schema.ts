@@ -18,7 +18,7 @@ const typeDefs = gql`
   type User {
     _id: String
     email: String
-    profileImg: String
+    picture: String
     fullName: String
     type: String
     addresses: [Address]
