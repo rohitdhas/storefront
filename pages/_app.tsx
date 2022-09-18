@@ -6,7 +6,7 @@ import Layout from "../components/layout";
 import { AnimatePresence } from "framer-motion";
 import "primeicons/primeicons.css";
 import "../styles/globals.css";
-import "../styles/mics.css";
+import "../styles/misc.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
