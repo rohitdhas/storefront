@@ -1,0 +1,12 @@
+.p-card-content {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.p-autocomplete-input {
+  width: 100% !important;
+}
+
+.p-button-icon-only {
+  background-color: #6366f1;
+}
