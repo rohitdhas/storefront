@@ -32,7 +32,7 @@ const Navbar: React.FC<Props> = ({}) => {
   }, []);
 
   return (
-    <nav className="flex align items-center justify-between px-6 py-4 shadow-lg fixed top-0 left-0 right-0">
+    <nav className="flex align items-center justify-between px-6 py-4 shadow-md fixed top-0 left-0 right-0 bg-white z-[100]">
       <div className="flex align items-center justify-between flex-1">
         <h1 className="text-3xl font-bold">StoreFront 🌟</h1>
         <span className="w-[80%]">
@@ -112,7 +112,7 @@ const ProfileDropdown = ({ session }: { session: any }) => {
       animate={{ y: 0, opacity: 1, scale: 1 }}
       exit={{ y: -150, opacity: 0, scale: 0 }}
       onClick={(e) => e.stopPropagation()}
-      className="flex flex-col align items-center justify-center absolute top-24"
+      className="flex flex-col align items-center justify-center absolute top-24 z-[1000]"
     >
       <Card className="p-shadow-5 bg-slate-800">
         <div className="flex align items-center justify-center border-b border-b-slate-600 pb-4">
@@ -170,9 +170,20 @@ const DropdownBtn = ({
   callback: Function;
   hoverBg: string;
 }) => {
+  if (hoverBg === "bg-error") {
+    return (
+      <button
+        className={`transition-all text-white font-bold w-full bg-transparent rounded-[0.15rem] cursor-pointer hover:bg-error text-start p-2`}
+        onClick={() => callback()}
+      >
+        <i className={`${icon} mx-4 text-xl`} />
+        <span>{label}</span>
+      </button>
+    );
+  }
   return (
     <button
-      className={`transition-all text-white font-bold w-full bg-transparent rounded-[0.15rem] cursor-pointer hover:${hoverBg} text-start p-2`}
+      className={`transition-all text-white font-bold w-full bg-transparent rounded-[0.15rem] cursor-pointer hover:bg-primary text-start p-2`}
       onClick={() => callback()}
     >
       <i className={`${icon} mx-4 text-xl`} />
