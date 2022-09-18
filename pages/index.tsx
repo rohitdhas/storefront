@@ -3,7 +3,6 @@ import { Carousel } from "primereact/carousel";
 import products from "../constants/product.json";
 import type { NextPage } from "next";
 import { Chip } from "primereact/chip";
-import { Divider } from "primereact/divider";
 import { Card } from "primereact/card";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -39,7 +38,7 @@ const Home: NextPage = () => {
           <SectionTitle firstWord="Product" rest="Categories" />
           <div className="flex justify-center align items-center flex-wrap">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="bg-slate-50">
+              <Card className="!bg-slate-50">
                 <Image
                   className="product-img"
                   src={
@@ -57,7 +56,7 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="bg-slate-50">
+              <Card className="!bg-slate-50">
                 <Image
                   className="product-img"
                   src={
@@ -77,7 +76,7 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="bg-slate-50">
+              <Card className="!bg-slate-50">
                 <Image
                   className="product-img"
                   src={
@@ -95,7 +94,7 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="bg-slate-50">
+              <Card className="!bg-slate-50">
                 <Image
                   className="product-img"
                   src={
@@ -117,7 +116,7 @@ const Home: NextPage = () => {
       <section>
         <div className="mt-12 mb-6 mx-6">
           <SectionTitle firstWord="Deal" rest="of the day" />
-          <Card className="w-[70%] mx-auto bg-primaryLight">
+          <Card className="w-[70%] mx-auto !bg-primaryLight">
             <div className="flex justify-evenly p-4">
               <div>
                 <h3 className="text-2xl font-bold mb-5 text-slate-800">
@@ -125,7 +124,7 @@ const Home: NextPage = () => {
                   <Chip
                     label="Hot Deal"
                     icon="pi pi-star"
-                    className="!bg-warn text-white !text-[0.6rem] ml-2 font-bold"
+                    className="!bg-warn !text-white !text-[0.6rem] ml-2 !font-bold"
                   />
                 </h3>
                 <p className="text-info my-4 leading-[1.7]">
@@ -142,7 +141,7 @@ const Home: NextPage = () => {
                   finest listening experience&apos;s your chance. Presenting,
                   boAt Rockerz 650.
                 </p>
-                <div className="font-bold mb-4">
+                <div className="font-bold text-xl mb-4">
                   <span className="text-slate-900">₹1200/-</span>
                   <span className="line-through text-info mx-2 text-sm">
                     ₹1700/-
@@ -187,9 +186,9 @@ const Home: NextPage = () => {
           <SectionTitle firstWord="What" rest="We Offer" />
           <div className="grid grid-cols-2 gap-8 m-auto justify-end">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[60%] p-4 ml-auto shadow-none bg-[#e8e8ff8a] text-slate-900">
+              <Card className="w-[60%] p-4 ml-auto !shadow-none !bg-primaryLight text-slate-900">
                 <div>
-                  <i className="pi pi-box text-3xl font-bold text-primary" />
+                  <i className="pi pi-box !text-3xl !font-bold text-primary" />
                 </div>
                 <h5 className="font-bold text-xl my-5">Free Shipping</h5>
                 <p className="mt-2 text-[0.9] text-info leading-[1.7]">
@@ -200,9 +199,9 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[60%] p-4 mr-auto shadow-none bg-[#e8e8ff8a] text-slate-900">
+              <Card className="w-[60%] p-4 mr-auto !shadow-none !bg-primaryLight text-slate-900">
                 <div>
-                  <i className="pi pi-send text-3xl font-bold text-primary" />
+                  <i className="pi pi-send !text-3xl !font-bold text-primary" />
                 </div>
                 <h5 className="font-bold text-xl my-5">30 Days Return</h5>
                 <p className="mt-2 text-[0.9] text-info leading-[1.7]">
@@ -212,9 +211,9 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[60%] p-4 ml-auto shadow-none bg-[#e8e8ff8a] text-slate-900">
+              <Card className="w-[60%] p-4 ml-auto !shadow-none !bg-primaryLight text-slate-900">
                 <div>
-                  <i className="pi pi-wallet text-3xl font-bold text-primary" />
+                  <i className="pi pi-wallet !text-3xl !font-bold text-primary" />
                 </div>
                 <h5 className="font-bold text-xl my-5">100% Secure Payments</h5>
                 <p className="mt-2 text-[0.9] text-info leading-[1.7]">
@@ -224,9 +223,9 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[60%] p-4 mr-auto shadow-none bg-[#e8e8ff8a] text-slate-900">
+              <Card className="w-[60%] p-4 mr-auto !shadow-none !bg-primaryLight text-slate-900">
                 <div>
-                  <i className="pi pi-info-circle text-3xl font-bold text-primary" />
+                  <i className="pi pi-info-circle !text-3xl !font-bold text-primary" />
                 </div>
                 <h5 className="font-bold text-xl my-5">24/7 Help Center</h5>
                 <p className="mt-2 text-[0.9] text-info leading-[1.7]">
@@ -238,7 +237,6 @@ const Home: NextPage = () => {
           </div>
         </div>
       </section>
-      {/* <Divider /> */}
       <footer className="py-6 bg-slate-800">
         <div className="text-center text-2xl mt-6 font-bold text-primary">
           <Link href={"mailto:rohitdhas000@gmail.com"}>
@@ -246,7 +244,7 @@ const Home: NextPage = () => {
               <motion.i
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.8 }}
-                className="pi pi-at text-2xl font-bold cursor-pointer"
+                className="pi pi-at !text-2xl !font-bold cursor-pointer"
               />
             </a>
           </Link>
@@ -255,7 +253,7 @@ const Home: NextPage = () => {
               <motion.i
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.8 }}
-                className="pi pi-instagram mx-4 text-2xl font-bold cursor-pointer"
+                className="pi pi-instagram mx-4 !text-2xl !font-bold cursor-pointer"
               />
             </a>
           </Link>
@@ -264,7 +262,7 @@ const Home: NextPage = () => {
               <motion.i
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.8 }}
-                className="pi pi-linkedin text-2xl font-bold cursor-pointer"
+                className="pi pi-linkedin !text-2xl !font-bold cursor-pointer"
               />
             </a>
           </Link>
@@ -273,7 +271,7 @@ const Home: NextPage = () => {
               <motion.i
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.8 }}
-                className="pi pi-twitter mx-4 text-2xl font-bold cursor-pointer"
+                className="pi pi-twitter mx-4 !text-2xl !font-bold cursor-pointer"
               />
             </a>
           </Link>
@@ -282,7 +280,7 @@ const Home: NextPage = () => {
               <motion.i
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.8 }}
-                className="pi pi-github text-2xl font-bold cursor-pointer"
+                className="pi pi-github !text-2xl !font-bold cursor-pointer"
               />
             </a>
           </Link>
@@ -304,7 +302,7 @@ const itemTemplate = (product: any) => {
           <Chip
             label="Exclusive"
             icon="pi pi-check"
-            className="bg-success text-white text-[0.6rem] ml-2 font-bold"
+            className="!bg-success !text-white !text-[0.6rem] ml-2 !font-bold"
           />
         </h5>
         <div

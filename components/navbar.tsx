@@ -65,7 +65,7 @@ const Navbar: React.FC<Props> = ({}) => {
           data-pr-position="bottom"
           className="shopping-cart flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 ml-8 mr-4"
         >
-          <i className="pi pi-shopping-cart text-2xl text-info p-overlay-badge">
+          <i className="pi pi-shopping-cart !text-2xl text-info p-overlay-badge">
             <Badge value="2"></Badge>
           </i>
         </span>
@@ -74,7 +74,7 @@ const Navbar: React.FC<Props> = ({}) => {
           data-pr-position="bottom"
           className="heart-fill flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 mr-8 ml-4"
         >
-          <i className="pi pi-heart-fill text-2xl text-info" />
+          <i className="pi pi-heart-fill !text-2xl text-info" />
         </span>
         {status === "authenticated" ? (
           <>
@@ -176,7 +176,7 @@ const DropdownBtn = ({
         className={`transition-all text-white font-bold w-full bg-transparent rounded-[0.15rem] cursor-pointer hover:bg-error text-start p-2`}
         onClick={() => callback()}
       >
-        <i className={`${icon} mx-4 text-xl`} />
+        <i className={`${icon} mx-4 !text-xl`} />
         <span>{label}</span>
       </button>
     );
@@ -186,7 +186,7 @@ const DropdownBtn = ({
       className={`transition-all text-white font-bold w-full bg-transparent rounded-[0.15rem] cursor-pointer hover:bg-primary text-start p-2`}
       onClick={() => callback()}
     >
-      <i className={`${icon} mx-4 text-xl`} />
+      <i className={`${icon} mx-4 !text-xl`} />
       <span>{label}</span>
     </button>
   );
