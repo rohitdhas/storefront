@@ -117,7 +117,7 @@ const Home: NextPage = () => {
       <section>
         <div className="mt-12 mb-6 mx-6">
           <SectionTitle firstWord="Deal" rest="of the day" />
-          <Card className="w-[70%] mx-auto bg-[#e8e8ff8a]">
+          <Card className="w-[70%] mx-auto bg-primaryLight">
             <div className="flex justify-evenly p-4">
               <div>
                 <h3 className="text-2xl font-bold mb-5 text-slate-800">
@@ -125,7 +125,7 @@ const Home: NextPage = () => {
                   <Chip
                     label="Hot Deal"
                     icon="pi pi-star"
-                    className="bg-warn text-white text-[0.6rem] ml-2 font-bold"
+                    className="!bg-warn text-white !text-[0.6rem] ml-2 font-bold"
                   />
                 </h3>
                 <p className="text-info my-4 leading-[1.7]">
