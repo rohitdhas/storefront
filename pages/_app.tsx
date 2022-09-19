@@ -4,17 +4,21 @@ import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Layout from "../components/layout";
 import { AnimatePresence } from "framer-motion";
+import { Provider } from "react-redux";
+import store from "../redux/store";
 import "primeicons/primeicons.css";
 import "../styles/globals.css";
-import "../styles/misc.css";
+import "../styles/misc.scss";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
       <AnimatePresence exitBeforeEnter>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Provider store={store}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </Provider>
       </AnimatePresence>
     </SessionProvider>
   );
