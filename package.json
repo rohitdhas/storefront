@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.5",
     "apollo-server-micro": "^3.10.2",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^7.3.5",
@@ -24,6 +25,8 @@
     "primereact": "^8.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-redux": "^8.0.2",
+    "sass": "^1.54.9",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
