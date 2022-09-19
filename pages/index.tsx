@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Button } from "primereact/button";
 import { Carousel } from "primereact/carousel";
 import products from "../constants/product.json";
@@ -37,7 +38,11 @@ const Home: NextPage = () => {
         <div className="mt-12 mb-6 mx-6">
           <SectionTitle firstWord="Product" rest="Categories" />
           <div className="flex justify-center align items-center flex-wrap">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.div
+              className=" my-2"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Card className="!bg-slate-50">
                 <Image
                   className="product-img"
@@ -52,7 +57,7 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div
-              className="mx-6"
+              className="md:mx-6 my-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -60,7 +65,7 @@ const Home: NextPage = () => {
                 <Image
                   className="product-img"
                   src={
-                    "https://pngimg.com/uploads/iphone_13/iphone_13_PNG31.png"
+                    "https://cdn.shopify.com/s/files/1/0057/8938/4802/files/pi-1.png?v=1624786714"
                   }
                   alt={"category-image"}
                   height={250}
@@ -72,7 +77,7 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div
-              className="mr-6"
+              className="md:mr-6 my-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -80,7 +85,7 @@ const Home: NextPage = () => {
                 <Image
                   className="product-img"
                   src={
-                    "https://pngimg.com/uploads/iphone_13/iphone_13_PNG31.png"
+                    "https://content.jdmagicbox.com/quickquotes/images_main/noise-colorfit-pro-2-smart-watch-teal-green-178087473-47614.png"
                   }
                   alt={"category-image"}
                   height={250}
@@ -90,7 +95,7 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div
-              className="mr-6"
+              className="md:mr-6 my-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -98,7 +103,7 @@ const Home: NextPage = () => {
                 <Image
                   className="product-img"
                   src={
-                    "https://pngimg.com/uploads/iphone_13/iphone_13_PNG31.png"
+                    "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/rockerz-650-red_600x.png?v=1624968476"
                   }
                   alt={"category-image"}
                   height={250}
@@ -116,8 +121,8 @@ const Home: NextPage = () => {
       <section>
         <div className="mt-12 mb-6 mx-6">
           <SectionTitle firstWord="Deal" rest="of the day" />
-          <Card className="w-[70%] mx-auto !bg-primaryLight">
-            <div className="flex justify-evenly p-4">
+          <Card className="w-[95%] md:w-[70%] mx-auto shadow-none !bg-primaryLight">
+            <div className="flex flex-col-reverse justify-center align items-center lg:flex-row lg:justify-evenly p-4">
               <div>
                 <h3 className="text-2xl font-bold mb-5 text-slate-800">
                   Boat Rockerz 650 Sports
@@ -135,11 +140,11 @@ const Home: NextPage = () => {
                   with its unbelievable 60HRS of playback.The Smart Twist
                   enables
                   <br />
-                  you to play or pause your music hassle-free. Who doesn&apos;t
+                  you to play or pause your music hassle-free.
+                  {/* Who doesn&apos;t
                   want the
-                  <br />
                   finest listening experience&apos;s your chance. Presenting,
-                  boAt Rockerz 650.
+                  boAt Rockerz 650. */}
                 </p>
                 <div className="font-bold text-xl mb-4">
                   <span className="text-slate-900">₹1200/-</span>
@@ -184,9 +189,9 @@ const Home: NextPage = () => {
       <section>
         <div className="mt-12 mb-6 mx-6">
           <SectionTitle firstWord="What" rest="We Offer" />
-          <div className="grid grid-cols-2 gap-8 m-auto justify-end">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 m-auto justify-end">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[60%] p-4 ml-auto !shadow-none !bg-primaryLight text-slate-900">
+              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:ml-auto !shadow-none !bg-primaryLight text-slate-900">
                 <div>
                   <i className="pi pi-box !text-3xl !font-bold text-primary" />
                 </div>
@@ -199,7 +204,7 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[60%] p-4 mr-auto !shadow-none !bg-primaryLight text-slate-900">
+              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:mr-auto !shadow-none !bg-primaryLight text-slate-900">
                 <div>
                   <i className="pi pi-send !text-3xl !font-bold text-primary" />
                 </div>
@@ -211,7 +216,7 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[60%] p-4 ml-auto !shadow-none !bg-primaryLight text-slate-900">
+              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:ml-auto !shadow-none !bg-primaryLight text-slate-900">
                 <div>
                   <i className="pi pi-wallet !text-3xl !font-bold text-primary" />
                 </div>
@@ -223,7 +228,7 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[60%] p-4 mr-auto !shadow-none !bg-primaryLight text-slate-900">
+              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:mr-auto !shadow-none !bg-primaryLight text-slate-900">
                 <div>
                   <i className="pi pi-info-circle !text-3xl !font-bold text-primary" />
                 </div>
@@ -295,9 +300,9 @@ const Home: NextPage = () => {
 
 const itemTemplate = (product: any) => {
   return (
-    <div className="product-item flex justify-evenly align items-center px-6">
+    <div className="product-item flex flex-col-reverse lg:flex-row justify-center lg:justify-evenly align items-center md:px-6">
       <div className="product-detail">
-        <h5 className="text-2xl font-bold mt-4 text-slate-500">
+        <h5 className="text-base sm:text-xl md:text-2xl font-bold mt-4 text-slate-500">
           <span>{product.title}</span>
           <Chip
             label="Exclusive"
@@ -307,21 +312,23 @@ const itemTemplate = (product: any) => {
         </h5>
         <div
           dangerouslySetInnerHTML={{ __html: product.description }}
-          className="description text-[2.7rem] leading-[1.2] font-bold mt-2 text-slate-700"
+          className="description text-[1rem] md:text-[2.7rem] leading-[1.2] font-bold mt-2 text-slate-700"
         />
         <p className="text-xs text-info my-6">
           <span>10% instant discount* on SBI credit/debit cards</span>
           <br />
           <span className="font-bold">*T&amp;C apply</span>
         </p>
-        <Button icon={"pi pi-arrow-right"} label="Buy Now" />
+        <Button
+          className="px-4 py-2 w-full md:py-3 md:w-auto"
+          icon={"pi pi-arrow-right"}
+          label="Buy Now"
+        />
       </div>
-      <Image
-        className="product-img"
+      <img
+        className="product-img w-[200px] h-[220px] md:w-[400px] md:h-[420px]"
         src={product.image}
         alt={product.name}
-        height={450}
-        width={420}
       />
     </div>
   );
