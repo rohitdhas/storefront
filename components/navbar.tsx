@@ -6,6 +6,9 @@ import { Button } from "primereact/button";
 import { AnimatePresence } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import { AutoComplete } from "primereact/autocomplete";
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart } from "../redux/userSlice";
+import type { RootState } from "../redux/store";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -26,6 +29,8 @@ const Navbar: React.FC<Props> = ({}) => {
   const { data: session, status } = useSession();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [searchResults, setSearchResults] = useState(arr);
+  const cart = useSelector((state: RootState) => state.user.cart);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.addEventListener("click", () => setDropdownVisible(false));
@@ -34,8 +39,8 @@ const Navbar: React.FC<Props> = ({}) => {
   return (
     <nav className="flex align items-center justify-between px-6 py-4 shadow-md fixed top-0 left-0 right-0 bg-white z-[100]">
       <div className="flex align items-center justify-between flex-1">
-        <h1 className="text-3xl font-bold">StoreFront 🌟</h1>
-        <span className="w-[80%]">
+        <h1 className="text-xl xl:text-3xl font-bold">StoreFront 🌟</h1>
+        <span className="w-[80%] hidden md:block">
           <AutoComplete
             className="w-[90%]"
             onChange={({ target }) => setInput(target.value)}
@@ -61,12 +66,13 @@ const Navbar: React.FC<Props> = ({}) => {
         <Tooltip className="transition-all" target={".shopping-cart"} />
         <Tooltip className="transition-all" target={".heart-fill"} />
         <span
+          onClick={() => dispatch(addToCart({}))}
           data-pr-tooltip="Cart"
           data-pr-position="bottom"
           className="shopping-cart flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 ml-8 mr-4"
         >
           <i className="pi pi-shopping-cart !text-2xl text-info p-overlay-badge">
-            <Badge value="2"></Badge>
+            <Badge value={cart.length}></Badge>
           </i>
         </span>
         <span
