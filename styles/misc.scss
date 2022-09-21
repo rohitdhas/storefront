@@ -10,3 +10,27 @@
 .p-button-icon-only {
   background-color: #6366f1;
 }
+
+.p-selectbutton {
+  display: flex;
+  flex-wrap: wrap;
+
+  .p-button.p-component {
+    margin: 3px;
+    font-size: 0.8rem;
+    padding: 2px 7px;
+    border-radius: 10px !important;
+  }
+}
+
+.p-accordion-header-link {
+  padding: 12px 10px !important;
+}
+
+// .p-accordion-tab {
+//   margin-bottom: 0 !important;
+
+//   .p-accordion-header {
+//     border-radius: 0 !important;
+//   }
+// }
