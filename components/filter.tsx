@@ -1,11 +1,16 @@
 import { Accordion, AccordionTab } from "primereact/accordion";
+import { SelectButton } from "primereact/selectbutton";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 import { Rating } from "primereact/rating";
+import { Card } from "primereact/card";
+import { Button } from "primereact/button";
 import React, { useState } from "react";
 
 const Filter: React.FC = () => {
   const [brands, setBrands] = useState<string[]>([]);
+  const [colors, setColors] = useState<string[]>([]);
+  const [outOfStock, setOutofStock] = useState<boolean>(false);
   const [rating, setRating] = useState<number | null | undefined>(0);
 
   const onBrandChange = (e: any) => {
@@ -17,6 +22,23 @@ const Filter: React.FC = () => {
       selectedBrands.splice(selectedBrands.indexOf(e.value), 1);
     }
     setBrands(selectedBrands);
+  };
+
+  const colorOptions = [
+    { icon: "pi pi-circle-fill text-error mr-2", value: "Red" },
+    { icon: "pi pi-circle-fill text-secondary mr-2", value: "Blue" },
+    { icon: "pi pi-circle-fill text-slate-900 mr-2", value: "Black" },
+    { icon: "pi pi-circle-fill text-slate-200 mr-2", value: "White" },
+    { icon: "pi pi-circle-fill text-success mr-2", value: "Green" },
+  ];
+
+  const colorTemplate = (option: { icon: string; value: string }) => {
+    return (
+      <span>
+        <i className={option.icon} />
+        <span>{option.value}</span>
+      </span>
+    );
   };
 
   return (
@@ -205,25 +227,36 @@ const Filter: React.FC = () => {
           </div>
         </AccordionTab>
         <AccordionTab header="Rating">
-          <Rating
-            value={rating!}
-            // cancel={false}
-            onChange={(e) => setRating(e.value)}
-          />
+          <Rating value={rating!} onChange={(e) => setRating(e.value)} />
         </AccordionTab>
         <AccordionTab header="Colors">
-          <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui
-            blanditiis praesentium voluptatum deleniti atque corrupti
-          </p>
+          <SelectButton
+            value={colors}
+            options={colorOptions}
+            onChange={(e) => setColors(e.value)}
+            itemTemplate={colorTemplate}
+            optionLabel="value"
+            multiple
+          />
         </AccordionTab>
         <AccordionTab header="Stock">
-          <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui
-            blanditiis praesentium voluptatum deleniti atque corrupti
-          </p>
+          <div className="field-checkbox my-2">
+            <Checkbox
+              className="mr-2"
+              inputId="stock"
+              name="inStock"
+              value={outOfStock}
+              onChange={(e) => setOutofStock(e.checked)}
+              checked={outOfStock}
+            />
+            <label htmlFor="stock">Out of Stock</label>
+          </div>
         </AccordionTab>
       </Accordion>
+      <Card className="w-[300px] my-2 sticky bottom-0 shadow-lg">
+        <Button label="Apply Filters" className="p-button-sm mr-2" />
+        <Button label="Reset" className="p-button-outlined p-button-sm" />
+      </Card>
     </div>
   );
 };
