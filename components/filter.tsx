@@ -42,7 +42,7 @@ const Filter: React.FC = () => {
   };
 
   return (
-    <div className="my-4">
+    <div>
       <Accordion className="w-[300px]">
         <AccordionTab header="Product Range">
           <div className="flex justify-between">
