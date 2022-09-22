@@ -78,6 +78,7 @@ const typeDefs = gql`
     brands: [String]
     categories: [String]
     inStock: Boolean
+    priceRange: [Int]
     exclusive: Boolean
   }
 
