@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useSession, signOut, signIn } from "next-auth/react";
 import { Tooltip } from "primereact/tooltip";
 import { Badge } from "primereact/badge";
@@ -10,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../redux/userSlice";
 import type { RootState } from "../redux/store";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import Image from "next/image";
 
 type Props = {};
@@ -39,7 +41,24 @@ const Navbar: React.FC<Props> = ({}) => {
   return (
     <nav className="flex align items-center justify-between px-6 py-4 shadow-md fixed top-0 left-0 right-0 bg-white z-[100]">
       <div className="flex align items-center justify-between flex-1">
-        <h1 className="text-xl xl:text-3xl font-bold">StoreFront 🌟</h1>
+        <div className="flex align items-center">
+          <Link href={"/"}>
+            <a>
+              <motion.img
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.8 }}
+                src={"/logo.svg"}
+                alt="logo"
+                className="h-[60px] w-[60px]"
+              />
+            </a>
+          </Link>
+          <Link href={"/products"}>
+            <a className="text-slate-500 hover:text-secondary hover:underline ml-6">
+              Products
+            </a>
+          </Link>
+        </div>
         <span className="w-[80%] hidden md:block">
           <AutoComplete
             className="w-[90%]"
@@ -103,7 +122,11 @@ const Navbar: React.FC<Props> = ({}) => {
             </AnimatePresence>
           </>
         ) : (
-          <Button label="Sign In" onClick={() => signIn("google")} />
+          <Button
+            className="p-button-outlined"
+            label="Sign In"
+            onClick={() => signIn("google")}
+          />
         )}
       </motion.div>
     </nav>
