@@ -7,6 +7,7 @@ interface Filters {
   categories: string[];
   rating: number;
   inStock: boolean;
+  priceRange: number[];
   exclusive: boolean;
 }
 
@@ -33,6 +34,10 @@ export function buildFilterQuery(filters: Filters) {
 
   if (filters.rating) {
     query['rating'] = filters.rating;
+  }
+
+  if (filters.priceRange) {
+    query['currentPrice'] = { $gte: filters.priceRange[0], $lte: filters.priceRange[1] }
   }
 
   if ('inStock' in filters) {
