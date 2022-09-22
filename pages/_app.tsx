@@ -13,7 +13,7 @@ import "../styles/misc.scss";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
-      <AnimatePresence exitBeforeEnter>
+      <AnimatePresence mode="wait">
         <Provider store={store}>
           <Layout>
             <Component {...pageProps} />
