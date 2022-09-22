@@ -141,10 +141,6 @@ const Home: NextPage = () => {
                   enables
                   <br />
                   you to play or pause your music hassle-free.
-                  {/* Who doesn&apos;t
-                  want the
-                  finest listening experience&apos;s your chance. Presenting,
-                  boAt Rockerz 650. */}
                 </p>
                 <div className="font-bold text-xl mb-4">
                   <span className="text-slate-900">₹1200/-</span>
