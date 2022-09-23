@@ -54,3 +54,30 @@ export function buildFilterQuery(filters: Filters) {
 
   return query;
 }
+
+export function addToWishlist(product: any) {
+  const wishlist = localStorage.getItem("wishlist");
+  let updatedList = [];
+
+  if (wishlist) {
+    updatedList = JSON.parse(wishlist);
+    updatedList.push(product);
+  } else {
+    updatedList = [product]
+  }
+
+  localStorage.setItem("wishlist", JSON.stringify(updatedList));
+  return updatedList;
+}
+
+export function removeFromWishlist(productId: string) {
+  const wishlist = localStorage.getItem("wishlist");
+  let updatedList = [];
+
+  if (wishlist) {
+    updatedList = JSON.parse(wishlist).filter((item: any) => item._id !== productId);
+  }
+
+  localStorage.setItem("wishlist", JSON.stringify(updatedList));
+  return updatedList;
+}
