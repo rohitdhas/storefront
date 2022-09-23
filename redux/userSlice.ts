@@ -35,9 +35,13 @@ const userSlice = createSlice({
     },
     addToCart: (state, action: PayloadAction<Object>) => {
       state.cart.push(action.payload);
+    },
+    updateWishlist: (state, action: PayloadAction<{ updatedProductList: any }>) => {
+      const { updatedProductList } = action.payload;
+      state.wishlist = updatedProductList;
     }
   }
 })
 
-export const { updateDetails, addToCart } = userSlice.actions;
+export const { updateDetails, addToCart, updateWishlist } = userSlice.actions;
 export default userSlice.reducer;
