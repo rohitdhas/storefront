@@ -1,5 +1,3 @@
-import { ObjectId } from 'mongodb';
-
 interface Filters {
   _id: string;
   colors: string[];
@@ -16,7 +14,7 @@ export function buildFilterQuery(filters: Filters) {
   if (!Object.keys(filters).length) return {};
 
   if (filters._id) {
-    query['_id'] = new ObjectId(filters._id);
+    query['_id'] = filters._id;
     return query;
   }
 
@@ -81,3 +79,71 @@ export function removeFromWishlist(productId: string) {
   localStorage.setItem("wishlist", JSON.stringify(updatedList));
   return updatedList;
 }
+
+export function addToCart(product: any) {
+  const cart = localStorage.getItem("cart");
+  let updatedList = [];
+
+  if (cart) {
+    updatedList = JSON.parse(cart);
+    const alreadyExist = updatedList.find((item: any) => item._id === product._id);
+    if (!alreadyExist) {
+      updatedList.push(product);
+    }
+
+  } else {
+    updatedList = [product]
+  }
+
+  localStorage.setItem("cart", JSON.stringify(updatedList));
+  return updatedList;
+}
+
+export function removeFromCart(productId: string) {
+  const cart = localStorage.getItem("cart");
+  let updatedList = [];
+
+  if (cart) {
+    updatedList = JSON.parse(cart).filter((item: any) => item._id !== productId);
+  }
+
+  localStorage.setItem("cart", JSON.stringify(updatedList));
+  return updatedList;
+}
+
+export function getCart() {
+  const cart = localStorage.getItem("cart");
+  if (cart) {
+    return JSON.parse(cart);
+  }
+  return [];
+}
+
+export function getWishlist() {
+  const wishlist = localStorage.getItem("wishlist");
+  if (wishlist) {
+    return JSON.parse(wishlist);
+  }
+  return [];
+}
+
+export const notify = (data: {
+  title: string,
+  message: string,
+  type: string
+}
+  , toastRef: any) => {
+  const { title, message, type } = data;
+
+  toastRef.current.show({
+    severity: type,
+    summary: title,
+    detail: message,
+  });
+};
+
+export const numFormatter = (num: number) =>
+  num.toLocaleString("en-US", {
+    style: "currency",
+    currency: "INR",
+  });
