@@ -8,8 +8,9 @@ import { AnimatePresence } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import { AutoComplete } from "primereact/autocomplete";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart } from "../redux/userSlice";
 import type { RootState } from "../redux/store";
+import { getCart, getWishlist } from "../utils/main.utils";
+import { updateCart, updateWishlist } from "../redux/userSlice";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -31,11 +32,15 @@ const Navbar: React.FC<Props> = ({}) => {
   const { data: session, status } = useSession();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [searchResults, setSearchResults] = useState(arr);
-  const cart = useSelector((state: RootState) => state.user.cart);
+  const { cart } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // Updating Global State with session values
+    dispatch(updateCart({ updatedCart: getCart() }));
+    dispatch(updateWishlist({ updatedProductList: getWishlist() }));
     document.addEventListener("click", () => setDropdownVisible(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -85,7 +90,7 @@ const Navbar: React.FC<Props> = ({}) => {
         <Tooltip className="transition-all" target={".shopping-cart"} />
         <Tooltip className="transition-all" target={".heart-fill"} />
         <span
-          onClick={() => dispatch(addToCart({}))}
+          // onClick={() => dispatch(addToCart({}))}
           data-pr-tooltip="Cart"
           data-pr-position="bottom"
           className="shopping-cart flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 ml-8 mr-4"
