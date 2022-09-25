@@ -11,6 +11,9 @@ const nextConfig = {
       "rukminim1.flixcart.com",
     ],
   },
+  env: {
+    CLIENT_URL: process.env.CLIENT_URL,
+  }
 };
 
 module.exports = nextConfig;
