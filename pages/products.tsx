@@ -1,46 +1,8 @@
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import ProductCard from "../components/productCard";
+import { productsQuery } from "../utils/gpl.util";
 import Filter from "../components/filter";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import React from "react";
-
-export async function getStaticProps() {
-  const client = new ApolloClient({
-    uri: "http://localhost:3000/api/graphql/",
-    cache: new InMemoryCache(),
-  });
-
-  const { data } = await client.query({
-    query: gql`
-      query GetProducts {
-        products(filters: {}) {
-          _id
-          title
-          description
-          images
-          currentPrice
-          originalPrice
-          rating
-          stock
-          category
-          exclusive
-          tags
-          specifications {
-            key
-            value
-          }
-          color
-        }
-      }
-    `,
-  });
-
-  return {
-    props: {
-      data,
-    },
-  };
-}
 
 interface Product {
   _id: string;
@@ -58,8 +20,17 @@ interface Product {
   color: string;
 }
 
-const Products: React.FC<{ data: { products: Product[] } }> = ({ data }) => {
-  const { products } = data;
+const Products: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  async function getProducts() {
+    const { data } = await productsQuery();
+    setProducts(data.products);
+  }
 
   return (
     <div className="px-6 pt-4">
