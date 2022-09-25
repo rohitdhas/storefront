@@ -1,9 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
+import {
+  addToCart,
+  removeFromCart,
+  addToWishlist,
+  removeFromWishlist,
+  numFormatter,
+  notify,
+} from "../utils/main.utils";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
-import React, { useState, useRef } from "react";
-// import { updateWishlist } from "../redux/userSlice";
+import React, { useState, useRef, useEffect } from "react";
+import { updateWishlist, updateCart } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../redux/store";
 import { Toast } from "primereact/toast";
@@ -40,36 +48,57 @@ const ProductCard: React.FC<Props> = ({ product }) => {
   const dispatch = useDispatch();
   const toast = useRef<any>();
 
-  // const wishlistProduct = () => {
-  //   const updatedList = addToWishlist(product);
-  //   dispatch(updateWishlist({ updatedProductList: updatedList }));
-  //   setWishlisted(true);
-  //   notify();
-  // };
+  // Checking if product is already wishlisted on page load
+  useEffect(() => {
+    const productInCart = wishlist.find(
+      (item: any) => item._id === product._id
+    );
+    if (productInCart) setWishlisted(true);
+  }, [product._id, wishlist]);
 
-  // const unWishlistProduct = () => {
-  //   const updatedList = removeFromWishlist(product._id);
-  //   dispatch(updateWishlist({ updatedProductList: updatedList }));
-  //   setWishlisted(false);
-  // };
+  const wishlistProduct = () => {
+    const updatedList = addToWishlist(product);
+    dispatch(updateWishlist({ updatedProductList: updatedList }));
+    setWishlisted(true);
+    notify(
+      {
+        title: "Product Wishlisted",
+        message: `${product.title} - Added to your wishlist!`,
+        type: "info",
+      },
+      toast
+    );
+  };
 
-  const notify = () => {
-    toast.current.show({
-      severity: "info",
-      summary: "Product Wishlisted",
-      detail: `${product.title} - Added to your wishlist!`,
-    });
+  const unWishlistProduct = () => {
+    const updatedList = removeFromWishlist(product._id);
+    dispatch(updateWishlist({ updatedProductList: updatedList }));
+    setWishlisted(false);
+  };
+
+  const addProductToCart = () => {
+    const updatedCart = addToCart(product);
+    dispatch(updateCart({ updatedCart }));
+    notify(
+      {
+        title: "Added to Cart",
+        message: `${product.title} - Added to your cart!`,
+        type: "success",
+      },
+      toast
+    );
   };
 
   return (
     <>
       <Toast ref={toast} />
-      <Card>
+      <Card className="h-max">
         <div>
           <Tooltip target=".wishlist-icon" />
           <motion.i
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.8 }}
+            onClick={wishlisted ? unWishlistProduct : wishlistProduct}
             data-pr-tooltip="Wishlist Product"
             data-pr-position="right"
             className={`wishlist-icon pi pi-heart-fill ${
@@ -112,6 +141,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
               icon="pi pi-shopping-cart"
               data-pr-tooltip="Add to cart"
               data-pr-position="bottom"
+              onClick={addProductToCart}
               className="p-button-sm w-[20%] add-to-cart-btn"
             />
           </span>
@@ -120,11 +150,5 @@ const ProductCard: React.FC<Props> = ({ product }) => {
     </>
   );
 };
-
-const numFormatter = (num: number) =>
-  num.toLocaleString("en-US", {
-    style: "currency",
-    currency: "INR",
-  });
 
 export default ProductCard;
