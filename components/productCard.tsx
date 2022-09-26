@@ -1,20 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import {
-  addToCart,
-  removeFromCart,
-  addToWishlist,
-  removeFromWishlist,
-  numFormatter,
-  notify,
-} from "../utils/main.utils";
+import { numFormatter } from "../utils/main.utils";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
-import React, { useState, useRef, useEffect } from "react";
-import { updateWishlist, updateCart } from "../redux/userSlice";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
-import { Toast } from "primereact/toast";
 import { motion } from "framer-motion";
 
 interface Product {
@@ -35,9 +26,21 @@ interface Product {
 
 type Props = {
   product: Product;
+  quickViewToggle: () => void;
+  setSelectedProduct: (product: Product) => void;
+  unWishlistProduct: (product: Product) => void;
+  wishlistProduct: (product: Product) => void;
+  addProductToCart: (product: Product) => void;
 };
 
-const ProductCard: React.FC<Props> = ({ product }) => {
+const ProductCard: React.FC<Props> = ({
+  product,
+  quickViewToggle,
+  setSelectedProduct,
+  wishlistProduct,
+  unWishlistProduct,
+  addProductToCart,
+}) => {
   const savings = product.originalPrice - product.currentPrice;
   const savingsPercentage = ((savings / product.originalPrice) * 100).toFixed(
     2
@@ -45,8 +48,6 @@ const ProductCard: React.FC<Props> = ({ product }) => {
 
   const [wishlisted, setWishlisted] = useState<boolean>(false);
   const wishlist = useSelector((state: RootState) => state.user.wishlist);
-  const dispatch = useDispatch();
-  const toast = useRef<any>();
 
   // Checking if product is already wishlisted on page load
   useEffect(() => {
@@ -56,49 +57,25 @@ const ProductCard: React.FC<Props> = ({ product }) => {
     if (productInCart) setWishlisted(true);
   }, [product._id, wishlist]);
 
-  const wishlistProduct = () => {
-    const updatedList = addToWishlist(product);
-    dispatch(updateWishlist({ updatedProductList: updatedList }));
+  const wishlistItem = () => {
+    wishlistProduct(product);
     setWishlisted(true);
-    notify(
-      {
-        title: "Product Wishlisted",
-        message: `${product.title} - Added to your wishlist!`,
-        type: "info",
-      },
-      toast
-    );
   };
 
-  const unWishlistProduct = () => {
-    const updatedList = removeFromWishlist(product._id);
-    dispatch(updateWishlist({ updatedProductList: updatedList }));
+  const unwishlist = () => {
+    unWishlistProduct(product);
     setWishlisted(false);
-  };
-
-  const addProductToCart = () => {
-    const updatedCart = addToCart(product);
-    dispatch(updateCart({ updatedCart }));
-    notify(
-      {
-        title: "Added to Cart",
-        message: `${product.title} - Added to your cart!`,
-        type: "success",
-      },
-      toast
-    );
   };
 
   return (
     <>
-      <Toast ref={toast} />
       <Card className="h-max">
         <div>
           <Tooltip target=".wishlist-icon" />
           <motion.i
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.8 }}
-            onClick={wishlisted ? unWishlistProduct : wishlistProduct}
+            onClick={wishlisted ? unwishlist : wishlistItem}
             data-pr-tooltip="Wishlist Product"
             data-pr-position="right"
             className={`wishlist-icon pi pi-heart-fill ${
@@ -130,10 +107,14 @@ const ProductCard: React.FC<Props> = ({ product }) => {
             ({savingsPercentage}%)
           </p>
         </div>
-        <div className="mt-2">
+        <div className="mt-2 flex justify-between">
           <Button
             label="Quick View"
-            className="p-button-outlined p-button-sm mr-2 w-[70%]"
+            onClick={() => {
+              setSelectedProduct(product);
+              quickViewToggle();
+            }}
+            className="p-button-outlined p-button-sm w-[75%]"
           />
           <span>
             <Tooltip target=".add-to-cart-btn" />
@@ -141,7 +122,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
               icon="pi pi-shopping-cart"
               data-pr-tooltip="Add to cart"
               data-pr-position="bottom"
-              onClick={addProductToCart}
+              onClick={() => addProductToCart(product)}
               className="p-button-sm w-[20%] add-to-cart-btn"
             />
           </span>
