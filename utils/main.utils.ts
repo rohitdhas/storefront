@@ -44,6 +44,8 @@ export function buildFilterQuery(filters: Filters) {
     } else {
       query['stock'] = { $eq: 0 };
     }
+  } else {
+    query['stock'] = { $gt: 0 };
   }
 
   if (filters.exclusive) {
@@ -126,6 +128,16 @@ export function getWishlist() {
   }
   return [];
 }
+
+export const removeQueryParam = (param: string, router: any) => {
+  const { pathname, query } = router;
+  const params = new URLSearchParams(query);
+  params.delete(param);
+  router.replace(
+    { pathname, query: params.toString() },
+    undefined
+  );
+};
 
 export const notify = (data: {
   title: string,
