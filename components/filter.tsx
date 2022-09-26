@@ -1,17 +1,21 @@
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { SelectButton } from "primereact/selectbutton";
+import React, { useEffect, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 import { Rating } from "primereact/rating";
-import { Card } from "primereact/card";
 import { Button } from "primereact/button";
-import React, { useState } from "react";
+import { Card } from "primereact/card";
+import { useRouter } from "next/router";
 
 const Filter: React.FC = () => {
   const [brands, setBrands] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState<number[]>([0, 0]);
   const [outOfStock, setOutofStock] = useState<boolean>(false);
   const [rating, setRating] = useState<number | null | undefined>(0);
+  const router = useRouter();
 
   const onBrandChange = (e: any) => {
     let selectedBrands: any = [...brands];
@@ -22,6 +26,73 @@ const Filter: React.FC = () => {
       selectedBrands.splice(selectedBrands.indexOf(e.value), 1);
     }
     setBrands(selectedBrands);
+  };
+
+  const onCategoryChange = (e: any) => {
+    let selectedCategories: any = [...categories];
+
+    if (e.checked) {
+      selectedCategories.push(e.value);
+    } else {
+      selectedCategories.splice(selectedCategories.indexOf(e.value), 1);
+    }
+    setCategories(selectedCategories);
+  };
+
+  const applyFilters = () => {
+    const queryObj: any = { ...router.query };
+
+    if (brands.length) {
+      queryObj["brands"] = brands;
+    } else {
+      delete queryObj.brands;
+    }
+
+    if (categories.length) {
+      queryObj["categories"] = categories;
+    } else {
+      delete queryObj.categories;
+    }
+
+    if (colors.length) {
+      queryObj["colors"] = colors;
+    } else {
+      delete queryObj.colors;
+    }
+
+    if (outOfStock) {
+      queryObj["inStock"] = !outOfStock;
+    } else {
+      delete queryObj.inStock;
+    }
+
+    if (rating) {
+      queryObj["rating"] = rating;
+    } else {
+      delete queryObj.rating;
+    }
+
+    if (
+      priceRange[0] > 0 &&
+      priceRange[1] > 0 &&
+      priceRange[1] > priceRange[0]
+    ) {
+      queryObj["priceRange"] = priceRange;
+    } else {
+      delete queryObj.priceRange;
+    }
+
+    router.push({ query: { ...queryObj } });
+  };
+
+  const resetFilters = () => {
+    setBrands([]);
+    setCategories([]);
+    setColors([]);
+    setPriceRange([0, 0]);
+    setOutofStock(false);
+    setRating(0);
+    router.push({ query: {} });
   };
 
   const colorOptions = [
@@ -44,7 +115,7 @@ const Filter: React.FC = () => {
   return (
     <div>
       <Accordion className="w-[300px]">
-        <AccordionTab header="Product Range">
+        <AccordionTab header="Price Range">
           <div className="flex justify-between">
             <span className="mr-2">
               <label htmlFor="from-input" className="font-semibold text-sm">
@@ -52,7 +123,11 @@ const Filter: React.FC = () => {
               </label>
               <InputText
                 id="from-input"
-                type="text"
+                type="number"
+                value={priceRange[0] ? priceRange[0] : ""}
+                onChange={({ target }) =>
+                  setPriceRange([Number(target.value), priceRange[1]])
+                }
                 className="p-inputtext-sm block w-[100%]"
               />
             </span>
@@ -62,7 +137,11 @@ const Filter: React.FC = () => {
               </label>
               <InputText
                 id="to-input"
-                type="text"
+                type="number"
+                value={priceRange[1] ? priceRange[1] : ""}
+                onChange={({ target }) =>
+                  setPriceRange([priceRange[0], Number(target.value)])
+                }
                 className="p-inputtext-sm block w-[100%]"
               />
             </span>
@@ -187,8 +266,8 @@ const Filter: React.FC = () => {
               inputId="mobile_tablets"
               name="category"
               value="Mobiles & Tablets"
-              onChange={onBrandChange}
-              checked={brands.indexOf("Mobiles & Tablets") !== -1}
+              onChange={onCategoryChange}
+              checked={categories.indexOf("Mobiles & Tablets") !== -1}
             />
             <label htmlFor="mobile_tablets">Mobiles & Tablets</label>
           </div>
@@ -198,8 +277,8 @@ const Filter: React.FC = () => {
               inputId="computers_laptops"
               name="category"
               value="Computers & Laptops"
-              onChange={onBrandChange}
-              checked={brands.indexOf("Computers & Laptops") !== -1}
+              onChange={onCategoryChange}
+              checked={categories.indexOf("Computers & Laptops") !== -1}
             />
             <label htmlFor="computers_laptops">Computers &amp; Laptops</label>
           </div>
@@ -209,8 +288,8 @@ const Filter: React.FC = () => {
               inputId="accessories"
               name="category"
               value="Accessories"
-              onChange={onBrandChange}
-              checked={brands.indexOf("Accessories") !== -1}
+              onChange={onCategoryChange}
+              checked={categories.indexOf("Accessories") !== -1}
             />
             <label htmlFor="accessories">Accessories</label>
           </div>
@@ -220,8 +299,8 @@ const Filter: React.FC = () => {
               inputId="tv_monitors"
               name="category"
               value="TV's & Monitors"
-              onChange={onBrandChange}
-              checked={brands.indexOf("TV's & Monitors") !== -1}
+              onChange={onCategoryChange}
+              checked={categories.indexOf("TV's & Monitors") !== -1}
             />
             <label htmlFor="tv_monitors">TV&apos;s &amp; Monitors</label>
           </div>
@@ -254,8 +333,16 @@ const Filter: React.FC = () => {
         </AccordionTab>
       </Accordion>
       <Card className="w-[300px] my-2 sticky bottom-0 shadow-lg">
-        <Button label="Apply Filters" className="p-button-sm mr-2" />
-        <Button label="Reset" className="p-button-outlined p-button-sm" />
+        <Button
+          onClick={applyFilters}
+          label="Apply Filters"
+          className="p-button-sm mr-2"
+        />
+        <Button
+          onClick={resetFilters}
+          label="Reset"
+          className="p-button-outlined p-button-sm"
+        />
       </Card>
     </div>
   );
