@@ -7,11 +7,12 @@ import {
 } from "../utils/main.utils";
 import React, { useEffect, useState, useRef } from "react";
 import ProductCard from "../components/productCard";
-import { productsQuery } from "../utils/gpl.util";
+import { productsQuery, useFetch } from "../utils/gpl.util";
 import { updateWishlist, updateCart } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
 import { Toast } from "primereact/toast";
 import Filter from "../components/filter";
+import { useRouter } from "next/router";
 import Head from "next/head";
 
 interface Product {
@@ -34,17 +35,23 @@ const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product>();
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
+  const { data, isLoading, fetchData } = useFetch(productsQuery, {});
+  const router = useRouter();
   const dispatch = useDispatch();
   const toast = useRef<any>();
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    if (data && data.products) {
+      setProducts(data.products);
+    }
+  }, [data]);
 
-  async function getProducts() {
-    const { data } = await productsQuery();
-    setProducts(data.products);
-  }
+  // useEffect(() => {
+  //   const queryParmas = Object.keys(router.query).length;
+  //   if (queryParmas) {
+  //     fetchData(router.query);
+  //   }
+  // }, [router.query]);
 
   const wishlistProduct = (product: Product) => {
     const updatedList = addToWishlist(product);
@@ -105,7 +112,7 @@ const Products: React.FC = () => {
         <div className="flex my-6">
           <Filter />
           <div className="grid grid-cols-4 gap-4 flex-1 ml-6">
-            {products.map((product) => {
+            {products.map((product: Product) => {
               return (
                 <ProductCard
                   quickViewToggle={() => setSidebarVisible(true)}
