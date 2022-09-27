@@ -10,47 +10,48 @@ interface Filters {
 }
 
 export function buildFilterQuery(filters: Filters) {
+  console.log(filters);
   const query: any = {};
-  if (!Object.keys(filters).length) return {};
+  // if (!Object.keys(filters).length) return {};
 
-  if (filters._id) {
-    query['_id'] = filters._id;
-    return query;
-  }
+  // if (filters._id) {
+  //   query['_id'] = filters._id;
+  //   return query;
+  // }
 
-  if (filters.colors) {
-    query['color'] = { $in: filters.colors };
-  }
+  // if (filters.colors) {
+  //   query['color'] = { $in: filters.colors };
+  // }
 
-  if (filters.brands) {
-    query['brand'] = { $in: filters.brands };
-  }
+  // if (filters.brands) {
+  //   query['brand'] = { $in: filters.brands };
+  // }
 
-  if (filters.categories) {
-    query['category'] = { $in: filters.categories };
-  }
+  // if (filters.categories) {
+  //   query['category'] = { $in: filters.categories };
+  // }
 
-  if (filters.rating) {
-    query['rating'] = filters.rating;
-  }
+  // if (filters.rating) {
+  //   query['rating'] = filters.rating;
+  // }
 
-  if (filters.priceRange) {
-    query['currentPrice'] = { $gte: filters.priceRange[0], $lte: filters.priceRange[1] }
-  }
+  // if (filters.priceRange) {
+  //   query['currentPrice'] = { $gte: filters.priceRange[0], $lte: filters.priceRange[1] }
+  // }
 
-  if ('inStock' in filters) {
-    if (filters.inStock) {
-      query['stock'] = { $gt: 0 };
-    } else {
-      query['stock'] = { $eq: 0 };
-    }
-  } else {
-    query['stock'] = { $gt: 0 };
-  }
+  // if ('inStock' in filters) {
+  //   if (filters.inStock) {
+  //     query['stock'] = { $gt: 0 };
+  //   } else {
+  //     query['stock'] = { $eq: 0 };
+  //   }
+  // } else {
+  //   query['stock'] = { $gt: 0 };
+  // }
 
-  if (filters.exclusive) {
-    query['exclusive'] = true;
-  }
+  // if (filters.exclusive) {
+  //   query['exclusive'] = true;
+  // }
 
   return query;
 }
