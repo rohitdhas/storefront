@@ -69,19 +69,19 @@ const ProductDetailsView: React.FC<{
         <Divider />
         <div className="flex justify-evenly align items-center">
           <div className="text-center">
-            <i className="pi pi-calendar text-xl font-bold text-error" />
+            <i className="pi pi-calendar text-xl font-bold text-purple-300" />
             <p className="text-xs">12m Warranty</p>
           </div>
           <div className="text-center">
-            <i className="pi pi-shopping-cart text-xl font-bold text-error" />
+            <i className="pi pi-shopping-cart text-xl font-bold text-purple-300" />
             <p className="text-xs">Easy Returns</p>
           </div>
           <div className="text-center">
-            <i className="pi pi-box text-xl font-bold text-error" />
+            <i className="pi pi-box text-xl font-bold text-purple-300" />
             <p className="text-xs">Safe Delivery</p>
           </div>
           <div className="text-center">
-            <i className="pi pi-wallet text-xl font-bold text-error" />
+            <i className="pi pi-wallet text-xl font-bold text-purple-300" />
             <p className="text-xs">Secure Payments</p>
           </div>
         </div>
