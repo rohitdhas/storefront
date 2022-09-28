@@ -14,6 +14,7 @@ export const useFetch = (fetcher: any, params: any) => {
 
   useEffect(() => {
     fetchData(params);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function fetchData(params: any) {
@@ -28,11 +29,10 @@ export const useFetch = (fetcher: any, params: any) => {
 }
 
 export const productsQuery = async (filters: any = {}) => {
-
   const { data } = await apolloClient.query({
     query: gql`
-      query GetProducts {
-        products(filters: {}) {
+      query GetProducts($filters: Filters) {
+        products(filters: $filters) {
           _id
           title
           description
@@ -51,7 +51,7 @@ export const productsQuery = async (filters: any = {}) => {
           color
         }
       }
-    `,
+    `, variables: { filters }
   });
   return { data }
 }
