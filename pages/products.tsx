@@ -46,12 +46,15 @@ const Products: React.FC = () => {
     }
   }, [data]);
 
-  // useEffect(() => {
-  //   const queryParmas = Object.keys(router.query).length;
-  //   if (queryParmas) {
-  //     fetchData(router.query);
-  //   }
-  // }, [router.query]);
+  useEffect(() => {
+    const queryParmas = Object.keys(router.query).length;
+    if (queryParmas) {
+      fetchData(router.query);
+    } else {
+      fetchData({});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query]);
 
   const wishlistProduct = (product: Product) => {
     const updatedList = addToWishlist(product);
