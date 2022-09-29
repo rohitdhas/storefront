@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import ProductDetailsView from "../components/productDetailsView";
 import {
   addToWishlist,
@@ -53,7 +54,6 @@ const Products: React.FC = () => {
     } else {
       fetchData({});
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
 
   const wishlistProduct = (product: Product) => {
