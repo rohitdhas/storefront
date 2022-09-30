@@ -55,3 +55,18 @@ export const productsQuery = async (filters: any = {}) => {
   });
   return { data }
 }
+
+export const autocompleteQuery = async (input: string) => {
+  if (!input) return { autocomplete: [] };
+  const { data } = await apolloClient.query({
+    query: gql`
+      query GetProducts($input: String!) {
+        autocomplete(input: $input) {
+          _id
+          title
+        }
+      }
+    `, variables: { input }
+  });
+  return { data }
+}
