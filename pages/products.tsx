@@ -14,6 +14,8 @@ import { useDispatch } from "react-redux";
 import { Toast } from "primereact/toast";
 import Filter from "../components/filter";
 import { useRouter } from "next/router";
+import Loader from "../components/loader";
+import Image from "next/image";
 import Head from "next/head";
 
 interface Product {
@@ -97,6 +99,7 @@ const Products: React.FC = () => {
         />
       </Head>
       <Toast ref={toast} />
+      <Loader loading={isLoading} />
       <main>
         <ProductDetailsView
           product={selectedProduct}
@@ -114,23 +117,40 @@ const Products: React.FC = () => {
         </div>
         <div className="flex my-6">
           <Filter />
-          <div className="grid grid-cols-4 gap-4 flex-1 ml-6">
-            {products.map((product: Product) => {
-              return (
-                <ProductCard
-                  quickViewToggle={() => setSidebarVisible(true)}
-                  wishlistProduct={wishlistProduct}
-                  unWishlistProduct={unWishlistProduct}
-                  addProductToCart={addProductToCart}
-                  setSelectedProduct={(product: Product) =>
-                    setSelectedProduct(product)
-                  }
-                  key={product._id}
-                  product={product}
-                />
-              );
-            })}
-          </div>
+          {products.length ? (
+            <div className="grid grid-cols-4 gap-4 flex-1 ml-6">
+              {products.map((product: Product) => {
+                return (
+                  <ProductCard
+                    quickViewToggle={() => setSidebarVisible(true)}
+                    wishlistProduct={wishlistProduct}
+                    unWishlistProduct={unWishlistProduct}
+                    addProductToCart={addProductToCart}
+                    setSelectedProduct={(product: Product) =>
+                      setSelectedProduct(product)
+                    }
+                    key={product._id}
+                    product={product}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <div className="mx-auto text-center">
+              <Image
+                height={300}
+                width={300}
+                src="/no_results.svg"
+                alt="No Results Found"
+              />
+              <h5 className="font-bold text-slate-700">
+                Oops...no Products found.
+              </h5>
+              <p className="text-sm text-slate-500">
+                Try changing the filters or search for a different item.
+              </p>
+            </div>
+          )}
         </div>
       </main>
     </div>
