@@ -3,10 +3,10 @@ interface Filters {
   colors: string[];
   brands: string[];
   categories: string[];
-  rating: number;
-  inStock: boolean;
-  priceRange: number[];
-  exclusive: boolean;
+  rating: string;
+  inStock: string;
+  priceRange: string[];
+  exclusive: string;
 }
 
 export function buildFilterQuery(filters: Filters) {
@@ -31,24 +31,23 @@ export function buildFilterQuery(filters: Filters) {
   }
 
   if (filters.rating) {
-    query['rating'] = filters.rating;
+    query['rating'] = Number(filters.rating);
   }
 
   if (filters.priceRange) {
-    query['currentPrice'] = { $gte: filters.priceRange[0], $lte: filters.priceRange[1] }
+    query['currentPrice'] = {
+      $gte: Number(filters.priceRange[0]),
+      $lte: Number(filters.priceRange[1])
+    }
   }
 
-  if ('inStock' in filters) {
-    if (filters.inStock) {
-      query['stock'] = { $gt: 0 };
-    } else {
-      query['stock'] = { $eq: 0 };
-    }
+  if ('inStock' in filters && filters.inStock === 'false') {
+    query['stock'] = { $eq: 0 };
   } else {
     query['stock'] = { $gt: 0 };
   }
 
-  if (filters.exclusive) {
+  if (filters.exclusive && filters.exclusive === 'true') {
     query['exclusive'] = true;
   }
 
