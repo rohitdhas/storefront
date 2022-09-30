@@ -113,7 +113,7 @@ const Filter: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="hidden xl:block">
       <Accordion className="w-[300px]">
         <AccordionTab header="Price Range">
           <div className="flex justify-between">
