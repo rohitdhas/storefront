@@ -2,6 +2,7 @@
 import { Sidebar } from "primereact/sidebar";
 import { Divider } from "primereact/divider";
 import { Button } from "primereact/button";
+import { Carousel } from "primereact/carousel";
 import { numFormatter } from "../utils/main.utils";
 import React from "react";
 
@@ -37,16 +38,17 @@ const ProductDetailsView: React.FC<{
   return (
     <div className="w-[100vw]">
       <Sidebar
-        className="!w-[38%] relative"
+        className="!w-full lg:!w-[40%] relative"
         visible={isVisible}
         position="right"
         onHide={toggle}
       >
-        <img
-          className="mx-auto h-[250px] w-auto mb-10"
-          src={product?.images[0]}
-          alt="Product Image"
-        />
+        <Carousel
+          className=" !-z-10"
+          value={product.images}
+          circular={true}
+          itemTemplate={ImageTemplate}
+        ></Carousel>
         <h3 className="text-xl font-bold text-slate-900">{product?.title}</h3>
         <p className="text-sm text-info my-2">{product?.description}</p>
         <div className="my-4">
@@ -69,25 +71,25 @@ const ProductDetailsView: React.FC<{
         <Divider />
         <div className="flex justify-evenly align items-center">
           <div className="text-center">
-            <i className="pi pi-calendar text-xl font-bold text-purple-400" />
+            <span className="text-2xl">📅</span>
             <p className="text-xs text-slate-700">12m Warranty</p>
           </div>
           <div className="text-center">
-            <i className="pi pi-shopping-cart text-xl font-bold text-purple-400" />
+            <span className="text-2xl">🛒</span>
             <p className="text-xs text-slate-700">Easy Returns</p>
           </div>
           <div className="text-center">
-            <i className="pi pi-box text-xl font-bold text-purple-400" />
+            <span className="text-2xl">📦</span>
             <p className="text-xs text-slate-700">Safe Delivery</p>
           </div>
           <div className="text-center">
-            <i className="pi pi-wallet text-xl font-bold text-purple-400" />
+            <span className="text-2xl">💳</span>
             <p className="text-xs text-slate-700">Secure Payments</p>
           </div>
         </div>
         <Divider />
         <div className="mb-8">
-          <h4 className="font-bold text-info my-2">Specifications</h4>
+          <h4 className="font-bold text-info my-2">📃 Specifications</h4>
           {product.specifications.map((item: any, idx: number) => {
             return (
               <div
@@ -102,7 +104,7 @@ const ProductDetailsView: React.FC<{
         </div>
         <Divider />
         <div className="mb-10">
-          <h4 className="font-bold text-info my-2">Ratings</h4>
+          <h4 className="font-bold text-info my-2">✅ Rating</h4>
           <p>{"⭐".repeat(Number(product.rating))}</p>
         </div>
         <div className="w-[100%] flex justify-between">
@@ -120,6 +122,18 @@ const ProductDetailsView: React.FC<{
           />
         </div>
       </Sidebar>
+    </div>
+  );
+};
+
+const ImageTemplate = (imgUrl: string) => {
+  return (
+    <div className="mx-auto">
+      <img
+        className="mx-auto h-[250px] w-auto mb-10"
+        src={imgUrl}
+        alt="Product Image"
+      />
     </div>
   );
 };
