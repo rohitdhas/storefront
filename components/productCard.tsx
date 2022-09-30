@@ -69,7 +69,7 @@ const ProductCard: React.FC<Props> = ({
 
   return (
     <>
-      <Card className="h-max">
+      <Card className="h-max border border-slate-100">
         <div>
           <Tooltip target=".wishlist-icon" />
           <motion.i
