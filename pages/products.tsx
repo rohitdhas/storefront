@@ -118,7 +118,7 @@ const Products: React.FC = () => {
         <div className="flex my-6">
           <Filter />
           {products.length ? (
-            <div className="grid grid-cols-4 gap-4 flex-1 ml-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto md:flex-1 md:ml-6">
               {products.map((product: Product) => {
                 return (
                   <ProductCard
@@ -138,8 +138,8 @@ const Products: React.FC = () => {
           ) : (
             <div className="mx-auto text-center">
               <Image
-                height={300}
-                width={300}
+                height={400}
+                width={400}
                 src="/no_results.svg"
                 alt="No Results Found"
               />

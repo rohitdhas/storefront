@@ -23,7 +23,7 @@ const Home: NextPage = () => {
       </Head>
       <main>
         {/* Carousel Section */}
-        <div className="mx-6 bg-gray-100 rounded-md">
+        <div className="mx-6 bg-gray-50 rounded-md">
           <Carousel
             autoplayInterval={4000}
             className=" !-z-10"
@@ -43,7 +43,7 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="!bg-slate-50">
+              <Card className="!bg-purple-50 !shadow-lg">
                 <Image
                   className="product-img"
                   src={
@@ -51,7 +51,7 @@ const Home: NextPage = () => {
                   }
                   alt={"category-image"}
                   height={250}
-                  width={220}
+                  width={240}
                 />
                 <h5 className="text-center font-bold">Mobiles &amp; Tablets</h5>
               </Card>
@@ -61,7 +61,7 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="!bg-slate-50">
+              <Card className="!bg-pink-50 !shadow-lg">
                 <Image
                   className="product-img"
                   src={
@@ -69,7 +69,7 @@ const Home: NextPage = () => {
                   }
                   alt={"category-image"}
                   height={250}
-                  width={220}
+                  width={240}
                 />
                 <h5 className="text-center font-bold">
                   Computers &amp; Laptops
@@ -81,7 +81,7 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="!bg-slate-50">
+              <Card className="!bg-yellow-50 !shadow-lg">
                 <Image
                   className="product-img"
                   src={
@@ -89,7 +89,7 @@ const Home: NextPage = () => {
                   }
                   alt={"category-image"}
                   height={250}
-                  width={220}
+                  width={240}
                 />
                 <h5 className="text-center font-bold">Accessories</h5>
               </Card>
@@ -99,7 +99,7 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="!bg-slate-50">
+              <Card className="!bg-green-50 !shadow-lg">
                 <Image
                   className="product-img"
                   src={
@@ -107,7 +107,7 @@ const Home: NextPage = () => {
                   }
                   alt={"category-image"}
                   height={250}
-                  width={220}
+                  width={240}
                 />
                 <h5 className="text-center font-bold">
                   TV&apos;s &amp; Monitors
@@ -121,7 +121,7 @@ const Home: NextPage = () => {
       <section>
         <div className="mt-12 mb-6 mx-6">
           <SectionTitle firstWord="Deal" rest="of the day" />
-          <Card className="w-[95%] md:w-[70%] mx-auto shadow-none !bg-primaryLight">
+          <Card className="w-[95%] md:w-[70%] mx-auto !shadow-none !bg-slate-50">
             <div className="flex flex-col-reverse justify-center align items-center lg:flex-row lg:justify-evenly p-4">
               <div>
                 <h3 className="text-2xl font-bold mb-5 text-slate-800">
@@ -149,7 +149,7 @@ const Home: NextPage = () => {
                   </span>
                   <br />
                   <span className="text-xs">
-                    Savings <span className="text-success">₹500/-</span> (7%)
+                    Savings <span className="text-success">₹500/-</span> (7.00%)
                   </span>
                 </div>
                 <Button
@@ -159,14 +159,14 @@ const Home: NextPage = () => {
                 />
               </div>
               <motion.div
-                initial={{ y: -20 }}
-                animate={{ y: 0 }}
-                transition={{
-                  yoyo: Infinity,
-                  duration: 0.8,
-                  ease: "easeInOut",
-                }}
-                whileHover={{ scale: 1.05 }}
+              // initial={{ y: -20 }}
+              // animate={{ y: 0 }}
+              // transition={{
+              //   yoyo: Infinity,
+              //   duration: 0.8,
+              //   ease: "easeInOut",
+              // }}
+              // whileHover={{ scale: 1.05 }}
               >
                 <Image
                   src={
