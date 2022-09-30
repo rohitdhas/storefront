@@ -74,12 +74,12 @@ const typeDefs = gql`
   input Filters {
     _id: String
     colors: [String]
-    rating: Int
+    rating: String
     brands: [String]
     categories: [String]
-    inStock: Boolean
-    priceRange: [Int]
-    exclusive: Boolean
+    inStock: String
+    priceRange: [String]
+    exclusive: String
   }
 
   input CartItemInput {
