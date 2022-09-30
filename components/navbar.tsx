@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../redux/store";
 import { getCart, getWishlist } from "../utils/main.utils";
 import { updateCart, updateWishlist } from "../redux/userSlice";
+import { autocompleteQuery, useFetch } from "../utils/gpl.util";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -31,8 +32,9 @@ const Navbar: React.FC<Props> = ({}) => {
   const [input, setInput] = useState("");
   const { data: session, status } = useSession();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [searchResults, setSearchResults] = useState(arr);
+  const [searchResults, setSearchResults] = useState([]);
   const { cart } = useSelector((state: RootState) => state.user);
+  const { data, fetchData } = useFetch(autocompleteQuery, "");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,6 +44,20 @@ const Navbar: React.FC<Props> = ({}) => {
     document.addEventListener("click", () => setDropdownVisible(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!data || !data.autocomplete) return;
+    const filtered = data.autocomplete.map((item: any) => item.title);
+    setSearchResults(filtered);
+  }, [data]);
+
+  useEffect(() => {
+    if (!input) return;
+    const timeout = setTimeout(() => {
+      fetchData(input);
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [input]);
 
   return (
     <nav className="flex align items-center justify-between px-6 py-4 shadow-md fixed top-0 left-0 right-0 bg-white z-[100]">
@@ -68,17 +84,12 @@ const Navbar: React.FC<Props> = ({}) => {
           <AutoComplete
             className="w-[90%]"
             onChange={({ target }) => setInput(target.value)}
-            value={input}
-            suggestions={searchResults}
-            completeMethod={(e) => {
-              const filtered = arr.filter((result) =>
-                result.toLowerCase().includes(e.query.toLowerCase())
-              );
-              setSearchResults(filtered);
-            }}
+            completeMethod={() => null}
             dropdownIcon="pi pi-search font-bold"
-            dropdown
             placeholder="Search Something..."
+            suggestions={searchResults}
+            value={input}
+            dropdown
           />
         </span>
       </div>
@@ -90,7 +101,6 @@ const Navbar: React.FC<Props> = ({}) => {
         <Tooltip className="transition-all" target={".shopping-cart"} />
         <Tooltip className="transition-all" target={".heart-fill"} />
         <span
-          // onClick={() => dispatch(addToCart({}))}
           data-pr-tooltip="Cart"
           data-pr-position="bottom"
           className="shopping-cart flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 ml-8 mr-4"
