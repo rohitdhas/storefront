@@ -69,24 +69,24 @@ const ProductDetailsView: React.FC<{
         <Divider />
         <div className="flex justify-evenly align items-center">
           <div className="text-center">
-            <i className="pi pi-calendar text-xl font-bold text-purple-300" />
-            <p className="text-xs">12m Warranty</p>
+            <i className="pi pi-calendar text-xl font-bold text-purple-400" />
+            <p className="text-xs text-slate-700">12m Warranty</p>
           </div>
           <div className="text-center">
-            <i className="pi pi-shopping-cart text-xl font-bold text-purple-300" />
-            <p className="text-xs">Easy Returns</p>
+            <i className="pi pi-shopping-cart text-xl font-bold text-purple-400" />
+            <p className="text-xs text-slate-700">Easy Returns</p>
           </div>
           <div className="text-center">
-            <i className="pi pi-box text-xl font-bold text-purple-300" />
-            <p className="text-xs">Safe Delivery</p>
+            <i className="pi pi-box text-xl font-bold text-purple-400" />
+            <p className="text-xs text-slate-700">Safe Delivery</p>
           </div>
           <div className="text-center">
-            <i className="pi pi-wallet text-xl font-bold text-purple-300" />
-            <p className="text-xs">Secure Payments</p>
+            <i className="pi pi-wallet text-xl font-bold text-purple-400" />
+            <p className="text-xs text-slate-700">Secure Payments</p>
           </div>
         </div>
         <Divider />
-        <div className="mb-10">
+        <div className="mb-8">
           <h4 className="font-bold text-info my-2">Specifications</h4>
           {product.specifications.map((item: any, idx: number) => {
             return (
@@ -100,6 +100,11 @@ const ProductDetailsView: React.FC<{
             );
           })}
         </div>
+        <Divider />
+        <div className="mb-10">
+          <h4 className="font-bold text-info my-2">Ratings</h4>
+          <p>{"⭐".repeat(Number(product.rating))}</p>
+        </div>
         <div className="w-[100%] flex justify-between">
           <Button
             onClick={() => addProductToCart(product)}
@@ -111,7 +116,7 @@ const ProductDetailsView: React.FC<{
             label="Wishlist"
             icon="pi pi-heart-fill"
             onClick={() => wishlistProduct(product)}
-            className="p-button-sm w-[50%] p-button-outlined"
+            className="p-button-sm w-[50%] p-button-outlined p-button-danger"
           />
         </div>
       </Sidebar>
