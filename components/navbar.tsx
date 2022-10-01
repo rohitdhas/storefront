@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 import { useSession, signOut, signIn } from "next-auth/react";
 import { Tooltip } from "primereact/tooltip";
@@ -13,28 +14,19 @@ import { getCart, getWishlist } from "../utils/main.utils";
 import { updateCart, updateWishlist } from "../redux/userSlice";
 import { autocompleteQuery, useFetch } from "../utils/gpl.util";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
+import EventEmitter from "events";
 import Link from "next/link";
 import Image from "next/image";
 
-type Props = {};
-
-const arr = [
-  "Apple",
-  "Banana",
-  "Orange",
-  "Mango",
-  "Pineapple",
-  "Papaya",
-  "Strawberry",
-];
-
-const Navbar: React.FC<Props> = ({}) => {
+const Navbar: React.FC = () => {
   const [input, setInput] = useState("");
   const { data: session, status } = useSession();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const { cart } = useSelector((state: RootState) => state.user);
   const { data, fetchData } = useFetch(autocompleteQuery, "");
+  const router = useRouter();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,13 +34,12 @@ const Navbar: React.FC<Props> = ({}) => {
     dispatch(updateCart({ updatedCart: getCart() }));
     dispatch(updateWishlist({ updatedProductList: getWishlist() }));
     document.addEventListener("click", () => setDropdownVisible(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    EventEmitter.defaultMaxListeners = 0;
   }, []);
 
   useEffect(() => {
     if (!data || !data.autocomplete) return;
-    const filtered = data.autocomplete.map((item: any) => item.title);
-    setSearchResults(filtered);
+    setSearchResults(data.autocomplete);
   }, [data]);
 
   useEffect(() => {
@@ -85,9 +76,20 @@ const Navbar: React.FC<Props> = ({}) => {
             className="w-[90%]"
             onChange={({ target }) => setInput(target.value)}
             completeMethod={() => null}
+            onSelect={({ value }) => {
+              const product: any = searchResults.find(
+                (item: { _id: string; title: string }) => item.title === value
+              );
+              router.push({
+                pathname: "/products",
+                query: { id: product._id },
+              });
+            }}
             dropdownIcon="pi pi-search font-bold"
             placeholder="Search Something..."
-            suggestions={searchResults}
+            suggestions={searchResults.map(
+              (item: { _id: string; title: string }) => item.title
+            )}
             value={input}
             dropdown
           />
@@ -101,6 +103,7 @@ const Navbar: React.FC<Props> = ({}) => {
         <Tooltip className="transition-all" target={".shopping-cart"} />
         <Tooltip className="transition-all" target={".heart-fill"} />
         <span
+          onClick={() => router.push({ pathname: "/cart" })}
           data-pr-tooltip="Cart"
           data-pr-position="bottom"
           className="shopping-cart flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 ml-8 mr-4"
