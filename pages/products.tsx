@@ -92,11 +92,12 @@ const Products: React.FC = () => {
   return (
     <div className="px-6 pt-4">
       <Head>
-        <title>StoreFront</title>
+        <title>Products</title>
         <meta
           name="description"
           content="Explore the greatest product deals on the internet"
         />
+        <link rel="shortcut icon" href="logo.svg" type="image/x-icon" />
       </Head>
       <Toast ref={toast} />
       <Loader loading={isLoading} />
@@ -111,8 +112,13 @@ const Products: React.FC = () => {
         <div>
           <h3 className="text-2xl font-bold">Products</h3>
           <p className="text-sm text-info">
-            Showing all available products. Use the filters to narrow down the
-            results!
+            {router.query.id && products.length ? (
+              <>Showing - {products[0].title}</>
+            ) : router.query.id && !products.length ? (
+              "Something went wrong!"
+            ) : (
+              "Showing all available products. Use the filters to narrow down the results!"
+            )}
           </p>
         </div>
         <div className="flex my-6">
