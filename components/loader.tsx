@@ -10,7 +10,7 @@ const Loader: React.FC<{ loading: boolean }> = ({ loading }) => {
       animate={{ y: 0 }}
       exit={{ y: 200 }}
       className="flex justify-evenly align items-center
-     bg-slate-300 p-6 rounded-md fixed right-6 bottom-6 shadow-sm"
+     bg-blue-100 p-6 rounded-md fixed right-6 bottom-6 shadow-sm"
     >
       <ProgressSpinner
         style={{ width: "40px", height: "40px" }}
