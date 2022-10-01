@@ -5,6 +5,14 @@ import { ObjectId } from 'mongodb';
 // Query - GET
 export const getProducts = async (filters: any) => {
   const query = buildFilterQuery(filters);
+  if (query._id) {
+    if (ObjectId.isValid(query._id)) {
+      query._id = new ObjectId(query._id);
+    } else {
+      return [];
+    }
+  }
+
   const { db }: ConnectionType = await connectToDatabase();
 
   const products = await db.collection('products').find(query).toArray();
