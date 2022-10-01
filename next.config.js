@@ -9,6 +9,7 @@ const nextConfig = {
       "content.jdmagicbox.com",
       "pngimg.com",
       "rukminim1.flixcart.com",
+      "m.media-amazon.com"
     ],
   },
   env: {
