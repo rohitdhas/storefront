@@ -1,5 +1,5 @@
 interface Filters {
-  _id: string;
+  id: string;
   colors: string[];
   brands: string[];
   categories: string[];
@@ -13,8 +13,8 @@ export function buildFilterQuery(filters: Filters) {
   const query: any = {};
   if (!Object.keys(filters).length) return {};
 
-  if (filters._id) {
-    query['_id'] = filters._id;
+  if (filters.id) {
+    query['_id'] = filters.id;
     return query;
   }
 
