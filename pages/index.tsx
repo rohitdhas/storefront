@@ -6,11 +6,13 @@ import type { NextPage } from "next";
 import { Chip } from "primereact/chip";
 import { Card } from "primereact/card";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   return (
     <div>
       <Head>
@@ -19,7 +21,7 @@ const Home: NextPage = () => {
           name="description"
           content="Explore the greatest product deals on the internet"
         />
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="logo.svg" type="image/x-icon" />
       </Head>
       <main>
         {/* Carousel Section */}
@@ -39,6 +41,12 @@ const Home: NextPage = () => {
           <SectionTitle firstWord="Product" rest="Categories" />
           <div className="flex justify-center align items-center flex-wrap">
             <motion.div
+              onClick={() =>
+                router.push({
+                  pathname: "/products",
+                  query: { categories: "Mobiles & Tablets" },
+                })
+              }
               className=" my-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -57,6 +65,12 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div
+              onClick={() =>
+                router.push({
+                  pathname: "/products",
+                  query: { categories: "Computers & Laptops" },
+                })
+              }
               className="md:mx-6 my-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -77,6 +91,12 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div
+              onClick={() =>
+                router.push({
+                  pathname: "/products",
+                  query: { categories: "Accessories" },
+                })
+              }
               className="md:mr-6 my-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -95,6 +115,12 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div
+              onClick={() =>
+                router.push({
+                  pathname: "/products",
+                  query: { categories: "TV's & Monitors" },
+                })
+              }
               className="md:mr-6 my-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -158,16 +184,7 @@ const Home: NextPage = () => {
                   icon="pi pi-shopping-cart"
                 />
               </div>
-              <motion.div
-              // initial={{ y: -20 }}
-              // animate={{ y: 0 }}
-              // transition={{
-              //   yoyo: Infinity,
-              //   duration: 0.8,
-              //   ease: "easeInOut",
-              // }}
-              // whileHover={{ scale: 1.05 }}
-              >
+              <motion.div>
                 <Image
                   src={
                     "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/rockerz-650-red_600x.png?v=1624968476"
