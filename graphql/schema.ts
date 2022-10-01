@@ -72,7 +72,7 @@ const typeDefs = gql`
   }
 
   input Filters {
-    _id: String
+    id: String
     colors: [String]
     rating: String
     brands: [String]
