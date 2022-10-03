@@ -39,9 +39,17 @@ export default NextAuth({
         }
       }
       return true;
+    },
+    async session({ session }: { session: { user: any, expires: string } }) {
+      const user = session.user;
+      const { db }: ConnectionType = await connectToDatabase();
+      const userData: any = await db
+        .collection('users')
+        .findOne({ email: user.email });
+
+      const res = { ...session };
+      res.user.address = userData.addresses;
+      return res;
     }
-  },
-  pages: {
-    signIn: "/login",
-  },
+  }
 });
