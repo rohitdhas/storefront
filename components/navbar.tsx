@@ -51,102 +51,104 @@ const Navbar: React.FC = () => {
   }, [input]);
 
   return (
-    <nav className="flex align items-center justify-between px-6 py-4 shadow-md fixed top-0 left-0 right-0 bg-white z-[100]">
-      <div className="flex align items-center justify-between flex-1">
-        <div className="flex align items-center">
-          <Link href={"/"}>
-            <a>
-              <motion.img
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.8 }}
-                src={"/logo.svg"}
-                alt="logo"
-                className="h-[60px] w-[60px]"
-              />
-            </a>
-          </Link>
-          <Link href={"/products"}>
-            <a className="text-slate-500 hover:text-secondary hover:underline ml-6">
-              Products
-            </a>
-          </Link>
-        </div>
-        <span className="w-[80%] hidden md:block">
-          <AutoComplete
-            className="w-[90%]"
-            onChange={({ target }) => setInput(target.value)}
-            completeMethod={() => null}
-            onSelect={({ value }) => {
-              const product: any = searchResults.find(
-                (item: { _id: string; title: string }) => item.title === value
-              );
-              router.push({
-                pathname: "/products",
-                query: { id: product._id },
-              });
-            }}
-            dropdownIcon="pi pi-search font-bold"
-            placeholder="Search Something..."
-            suggestions={searchResults.map(
-              (item: { _id: string; title: string }) => item.title
-            )}
-            value={input}
-            dropdown
-          />
-        </span>
-      </div>
-      <motion.div
-        initial="initial"
-        animate="animate"
-        className="flex justify-end align items-center"
-      >
-        <Tooltip className="transition-all" target={".shopping-cart"} />
-        <Tooltip className="transition-all" target={".heart-fill"} />
-        <span
-          onClick={() => router.push({ pathname: "/cart" })}
-          data-pr-tooltip="Cart"
-          data-pr-position="bottom"
-          className="shopping-cart flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 ml-8 mr-4"
-        >
-          <i className="pi pi-shopping-cart !text-2xl text-info p-overlay-badge">
-            <Badge value={cart.length}></Badge>
-          </i>
-        </span>
-        <span
-          data-pr-tooltip="Wishlist"
-          data-pr-position="bottom"
-          className="heart-fill flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 mr-8 ml-4"
-        >
-          <i className="pi pi-heart-fill !text-2xl text-info" />
-        </span>
-        {status === "authenticated" ? (
-          <>
-            <Tooltip className="transition-all" target={".profile-pic"} />
-            <Image
-              src={session.user?.image!}
-              alt="profile_pic"
-              data-pr-tooltip="You"
-              data-pr-position="bottom"
-              className="profile-pic rounded-full cursor-pointer hover:opacity-80"
-              height={45}
-              width={45}
-              onClick={(e) => {
-                e.stopPropagation();
-                setDropdownVisible(true);
+    <nav className="px-6 py-4 shadow-md fixed top-0 left-0 right-0 bg-white z-[100]">
+      <div className="flex align items-center justify-between max-w-[1600px] mx-auto">
+        <div className="flex align items-center justify-between flex-1">
+          <div className="flex align items-center">
+            <Link href={"/"}>
+              <a>
+                <motion.img
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                  src={"/logo.svg"}
+                  alt="logo"
+                  className="h-[60px] w-[60px]"
+                />
+              </a>
+            </Link>
+            <Link href={"/products"}>
+              <a className="text-slate-500 hover:text-secondary hover:underline ml-6">
+                Products
+              </a>
+            </Link>
+          </div>
+          <span className="w-[80%] hidden md:block">
+            <AutoComplete
+              className="w-[90%]"
+              onChange={({ target }) => setInput(target.value)}
+              completeMethod={() => null}
+              onSelect={({ value }) => {
+                const product: any = searchResults.find(
+                  (item: { _id: string; title: string }) => item.title === value
+                );
+                router.push({
+                  pathname: "/products",
+                  query: { id: product._id },
+                });
               }}
+              dropdownIcon="pi pi-search font-bold"
+              placeholder="Search Something..."
+              suggestions={searchResults.map(
+                (item: { _id: string; title: string }) => item.title
+              )}
+              value={input}
+              dropdown
             />
-            <AnimatePresence exitBeforeEnter>
-              {dropdownVisible && <ProfileDropdown session={session} />}
-            </AnimatePresence>
-          </>
-        ) : (
-          <Button
-            className="p-button-outlined"
-            label="Sign In"
-            onClick={() => signIn("google")}
-          />
-        )}
-      </motion.div>
+          </span>
+        </div>
+        <motion.div
+          initial="initial"
+          animate="animate"
+          className="flex justify-end align items-center"
+        >
+          <Tooltip className="transition-all" target={".shopping-cart"} />
+          <Tooltip className="transition-all" target={".heart-fill"} />
+          <span
+            onClick={() => router.push({ pathname: "/cart" })}
+            data-pr-tooltip="Cart"
+            data-pr-position="bottom"
+            className="shopping-cart flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 ml-8 mr-4"
+          >
+            <i className="pi pi-shopping-cart !text-2xl text-info p-overlay-badge">
+              <Badge value={cart.length}></Badge>
+            </i>
+          </span>
+          <span
+            data-pr-tooltip="Wishlist"
+            data-pr-position="bottom"
+            className="heart-fill flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 mr-8 ml-4"
+          >
+            <i className="pi pi-heart-fill !text-2xl text-info" />
+          </span>
+          {status === "authenticated" ? (
+            <>
+              <Tooltip className="transition-all" target={".profile-pic"} />
+              <Image
+                src={session.user?.image!}
+                alt="profile_pic"
+                data-pr-tooltip="You"
+                data-pr-position="bottom"
+                className="profile-pic rounded-full cursor-pointer hover:opacity-80"
+                height={45}
+                width={45}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDropdownVisible(true);
+                }}
+              />
+              <AnimatePresence exitBeforeEnter>
+                {dropdownVisible && <ProfileDropdown session={session} />}
+              </AnimatePresence>
+            </>
+          ) : (
+            <Button
+              className="p-button-outlined"
+              label="Sign In"
+              onClick={() => signIn("google")}
+            />
+          )}
+        </motion.div>
+      </div>
     </nav>
   );
 };
