@@ -11,8 +11,9 @@ const typeDefs = gql`
     city: String
     state: String
     country: String
-    zipCode: Int
-    phone: Int
+    zipCode: String
+    phone: String
+
   }
 
   type User {
@@ -92,16 +93,20 @@ const typeDefs = gql`
     userId: String
   }
 
-  input AddressUpdate {
+  input AddressInput {
     id: ID!
-    appartment: String
+    apartment: String
     street: String
     city: String
     state: String
     country: String
-    zipCode: Int
-    phone: Int
-    updateType: UpdateType
+    zipCode: String
+    phone: String
+  }
+
+  input AddressUpdate {
+    updateType: String
+    address: AddressInput
   }
 
   type Query {
@@ -115,7 +120,7 @@ const typeDefs = gql`
   type Mutation {
     createOrder(userId: ID!, order: OrderInput!): ResponseMessage
     updateUsername(userId: ID!, update: String!): ResponseMessage
-    updateAddress(userId: ID!, update: AddressUpdate): ResponseMessage
+    updateAddress(update: AddressUpdate): ResponseMessage
   }
 `;
 
