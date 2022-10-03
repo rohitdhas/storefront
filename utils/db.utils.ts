@@ -57,29 +57,29 @@ export const searchAutocomplete = async (input: string) => {
 
 // Mutations - POST, PUT, DELETE
 
-export const createOrder = async (order: any) => {
+export const createOrderCall = async (order: any) => {
   const { db }: ConnectionType = await connectToDatabase();
   const { insertedId } = await db.collection('orders').insertOne(order);
   return { message: "Order created successfully", isError: false, data: insertedId };
 }
 
-export const updateUsername = async (userId: string, update: string) => {
+export const updateUsernameCall = async (email: string, update: string) => {
   const { db }: ConnectionType = await connectToDatabase();
-  const res = await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { username: update } });
+  const res = await db.collection('users').updateOne({ email }, { $set: { username: update } });
   return { message: "Username updated successfully", isError: false, data: res };
 }
 
-export const updateAddress = async (userId: string, update: any) => {
+export const updateAddressCall = async (email: string, update: any) => {
   const { db }: ConnectionType = await connectToDatabase();
   const { updateType, address } = update;
   let res;
 
   if (updateType === "ADD") {
-    res = await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $push: { addresses: address } });
+    res = await db.collection('users').updateOne({ email }, { $push: { addresses: address } });
   } else if (updateType === "UPDATE") {
-    res = await db.collection('users').updateOne({ _id: new ObjectId(userId), "addresses.$.id": address.id }, { $set: { "addresses.$": address } });
+    res = await db.collection('users').updateOne({ email, "addresses.$.id": address.id }, { $set: { "addresses.$": address } });
   } else {
-    res = await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $pull: { addresses: { id: address.id } } });
+    res = await db.collection('users').updateOne({ email }, { $pull: { addresses: { id: address.id } } });
   }
   return {
     message: `Address ${updateType === 'ADD'
