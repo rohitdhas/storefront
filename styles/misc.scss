@@ -27,10 +27,11 @@
   padding: 12px 10px !important;
 }
 
-// .p-accordion-tab {
-//   margin-bottom: 0 !important;
+#addressList.p-selectbutton {
+  display: flex;
+  flex-direction: column;
 
-//   .p-accordion-header {
-//     border-radius: 0 !important;
-//   }
-// }
+  .p-button {
+    margin: 8px 0;
+  }
+}

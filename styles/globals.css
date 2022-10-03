@@ -8,3 +8,8 @@
   font-family: "Montserrat", sans-serif;
   box-sizing: border-box;
 }
+
+::selection {
+  background-color: #6366f1;
+  color: white;
+}
