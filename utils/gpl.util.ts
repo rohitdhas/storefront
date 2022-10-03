@@ -8,12 +8,14 @@ export const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export const useFetch = (fetcher: any, params: any) => {
+export const useFetch = (fetcher: any, params: any, initialFetch: boolean = true) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<any>();
 
   useEffect(() => {
-    fetchData(params);
+    if (initialFetch) {
+      fetchData(params);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -23,6 +25,7 @@ export const useFetch = (fetcher: any, params: any) => {
     const { data } = await res;
     setData(data);
     setIsLoading(false);
+    return data;
   }
 
   return { isLoading, data, fetchData };
@@ -67,6 +70,22 @@ export const autocompleteQuery = async (input: string) => {
         }
       }
     `, variables: { input }
+  });
+  return { data }
+}
+
+export const updateAddressQuery = async (inputData: { updateType: string, address: any }) => {
+  const { updateType, address } = inputData;
+  const { data } = await apolloClient.mutate({
+    mutation: gql`
+       mutation Mutation($update: AddressUpdate) {
+        updateAddress(update: $update) {
+          data
+          isError
+          message
+        }
+      }
+    `, variables: { update: { updateType, address } }
   });
   return { data }
 }
