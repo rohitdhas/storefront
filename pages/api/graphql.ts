@@ -8,7 +8,7 @@ const apolloServer = new ApolloServer({
   typeDefs, resolvers,
   context: async ({ req }) => {
     const session = await getSession({ req });
-    return { session };
+    return { email: session?.user?.email };
   }
 });
 
