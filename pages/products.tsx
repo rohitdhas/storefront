@@ -77,7 +77,7 @@ const Products: React.FC = () => {
   };
 
   const addProductToCart = (product: Product) => {
-    const updatedCart = addToCart(product);
+    const updatedCart = addToCart({ ...product, quantity: 1 });
     dispatch(updateCart({ updatedCart }));
     notify(
       {
@@ -90,7 +90,7 @@ const Products: React.FC = () => {
   };
 
   return (
-    <div className="px-6 pt-4">
+    <div className="mx-2 md:mx-6 mt-4">
       <Head>
         <title>Products</title>
         <meta
