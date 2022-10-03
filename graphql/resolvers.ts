@@ -2,9 +2,9 @@ import {
   getProducts, getOneProduct,
   getOrders,
   searchAutocomplete,
-  createOrder,
-  updateUsername,
-  updateAddress
+  createOrderCall,
+  updateUsernameCall,
+  updateAddressCall
 } from "../utils/db.utils"
 import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
 
@@ -31,16 +31,16 @@ export const resolvers = {
   Mutation: {
     createOrder: async (_parent: any, args: any, context: any) => {
       const { order } = args;
-      order.user = context.user._id;
-      return await createOrder(order);
+      order.user = context.email;
+      return await createOrderCall(order);
     },
     updateUsername: async (_parent: any, args: any, context: any) => {
       const { update } = args;
-      return await updateUsername(context.user._id, update);
+      return await updateUsernameCall(context.email, update);
     },
     updateAddress: async (_parent: any, args: any, context: any) => {
       const { update } = args;
-      return await updateAddress(context.user._id, update);
+      return await updateAddressCall(context.email, update);
     }
   },
   JSON: GraphQLJSON,
