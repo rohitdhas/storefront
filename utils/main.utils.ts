@@ -100,6 +100,25 @@ export function addToCart(product: any) {
   return updatedList;
 }
 
+export function updateProductQuantity(productId: string, type: string) {
+  const cart = localStorage.getItem("cart");
+  let updatedList = [];
+
+  if (cart) {
+    updatedList = JSON.parse(cart);
+    const itemIdx = updatedList.findIndex((item: any) => item._id === productId);
+    if (itemIdx !== -1) {
+      const item = updatedList[itemIdx];
+      if ((type === 'remove' && item.quantity === 1) || (type === 'add' && item.quantity === 10)) return;
+      item.quantity = type === 'add' ? item.quantity + 1 : item.quantity - 1;
+      updatedList[itemIdx] = item;
+    }
+  }
+
+  localStorage.setItem("cart", JSON.stringify(updatedList));
+  return updatedList;
+}
+
 export function removeFromCart(productId: string) {
   const cart = localStorage.getItem("cart");
   let updatedList = [];
@@ -158,3 +177,10 @@ export const numFormatter = (num: number) =>
     style: "currency",
     currency: "INR",
   });
+
+export function getRandomId() {
+  var S4 = function () {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  };
+  return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
