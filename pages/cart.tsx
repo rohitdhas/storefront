@@ -184,7 +184,7 @@ const Cart: NextPage = () => {
                     visible={addressPopupVisible}
                     close={() => setAddressPopupVisible(false)}
                   />
-                  <h5 className="text-xl font-bold text-info mb-4">
+                  <h5 className="text-xl font-bold text-info !mb-4">
                     Choose Shipping Address 🚚
                   </h5>
                   <Button
@@ -203,7 +203,7 @@ const Cart: NextPage = () => {
                   <Button
                     label="Procced to checkout"
                     icon="pi pi-wallet"
-                    className="w-full mt-2 p-button-warning"
+                    className="w-full !mt-2 p-button-warning"
                     disabled={!selectedAddress}
                   />
                 </div>

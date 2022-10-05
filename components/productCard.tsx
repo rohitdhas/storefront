@@ -80,7 +80,7 @@ const ProductCard: React.FC<Props> = ({
             data-pr-position="right"
             className={`wishlist-icon pi pi-heart-fill ${
               wishlisted ? "text-error" : "text-slate-400"
-            } hover:text-error text-2xl`}
+            } hover:text-error !text-2xl`}
           />
         </div>
         <img

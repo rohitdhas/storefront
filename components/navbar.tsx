@@ -163,7 +163,7 @@ const ProfileDropdown = ({ session }: { session: any }) => {
       onClick={(e) => e.stopPropagation()}
       className="flex flex-col align items-center justify-center absolute top-24 z-[1000]"
     >
-      <Card className="p-shadow-5 bg-slate-800">
+      <Card className="p-shadow-5 !bg-slate-800">
         <div className="flex align items-center justify-center border-b border-b-slate-600 pb-4">
           <Image
             src={session.user?.image}

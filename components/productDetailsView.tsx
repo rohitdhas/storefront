@@ -112,7 +112,7 @@ const ProductDetailsView: React.FC<{
             onClick={() => addProductToCart(product)}
             label="Add to Cart"
             icon="pi pi-shopping-cart"
-            className="p-button-sm w-[50%] mr-4"
+            className="p-button-sm w-[50%] !mr-4"
           />
           <Button
             label="Wishlist"

@@ -336,7 +336,7 @@ const Filter: React.FC = () => {
         <Button
           onClick={applyFilters}
           label="Apply Filters"
-          className="p-button-sm mr-2 w-[60%]"
+          className="p-button-sm !mr-2 w-[60%]"
         />
         <Button
           onClick={resetFilters}
