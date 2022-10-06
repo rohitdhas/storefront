@@ -5,7 +5,7 @@ const CLIENT_URL = process.env.CLIENT_URL;
 
 export const apolloClient = new ApolloClient({
   uri: `${CLIENT_URL}/api/graphql/`,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache()
 });
 
 export const useFetch = (fetcher: any, params: any, initialFetch: boolean = true) => {

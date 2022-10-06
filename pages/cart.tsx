@@ -106,7 +106,7 @@ const Cart: NextPage = () => {
             </div>
             <Link href={"/products"}>
               <a>
-                <Button label="Explore Products" className="p-button-sm my-6" />
+                <Button label="Explore Products" className="p-button-sm !my-6" />
               </a>
             </Link>
           </div>
@@ -219,7 +219,7 @@ const Cart: NextPage = () => {
                   <Button
                     onClick={() => signIn("google")}
                     label="Login or Sign Up"
-                    className="p-button-sm my-4"
+                    className="p-button-sm !my-4"
                   />
                 </div>
               )}

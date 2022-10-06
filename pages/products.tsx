@@ -38,7 +38,7 @@ const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product>();
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
-  const { data, isLoading, fetchData } = useFetch(productsQuery, {});
+  const { data, isLoading, fetchData } = useFetch(productsQuery, {}, false);
   const router = useRouter();
   const dispatch = useDispatch();
   const toast = useRef<any>();
