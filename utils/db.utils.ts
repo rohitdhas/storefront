@@ -58,9 +58,11 @@ export const searchAutocomplete = async (input: string) => {
 // Mutations - POST, PUT, DELETE
 
 export const createOrderCall = async (order: any) => {
-  const { db }: ConnectionType = await connectToDatabase();
-  const { insertedId } = await db.collection('orders').insertOne(order);
-  return { message: "Order created successfully", isError: false, data: insertedId };
+  console.log(order);
+  return { data: true }
+  // const { db }: ConnectionType = await connectToDatabase();
+  // const { insertedId } = await db.collection('orders').insertOne(order);
+  // return { message: "Order created successfully", isError: false, data: insertedId };
 }
 
 export const updateUsernameCall = async (email: string, update: string) => {
