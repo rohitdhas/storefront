@@ -13,7 +13,11 @@ import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { SelectButton } from "primereact/selectbutton";
-import { updateAddressQuery, useFetch } from "../utils/gpl.util";
+import {
+  updateAddressQuery,
+  useFetch,
+  createCheckoutQuery,
+} from "../utils/gpl.util";
 import { InputText } from "primereact/inputtext";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
@@ -53,31 +57,30 @@ interface Address {
 }
 
 const Cart: NextPage = () => {
-  const { cart: products } = useSelector((state: RootState) => state.user);
-  const priceBreakdown = products.reduce(
-    (acc: any, cur: any) => {
-      const cartValue = acc.cartValue + cur.originalPrice * cur.quantity;
-      const discount =
-        acc.discount + (cur.originalPrice - cur.currentPrice) * cur.quantity;
-      const shipping =
-        acc.shipping + (cur.currentPrice * cur.quantity >= 500 ? 0 : 40);
-      const tax = acc.tax + 0.1 * (cur.currentPrice * cur.quantity);
-      const total = cartValue + shipping + tax - discount;
-
-      return {
-        cartValue,
-        discount,
-        shipping,
-        tax,
-        total,
-      };
-    },
-    { cartValue: 0, discount: 0, shipping: 0, tax: 0, total: 0 }
-  );
-  const { status, data: session }: any = useSession();
+  const { cart: products }: any = useSelector((state: RootState) => state.user);
   const [selectedAddress, setSelectedAddress] = useState<Address>();
+  const { status, data: session }: any = useSession();
   const [addressPopupVisible, setAddressPopupVisible] =
     useState<boolean>(false);
+  const [priceBreakdown, setPriceBreakDown] = useState({
+    cartValue: 0,
+    discount: 0,
+    shipping: 0,
+    tax: 0,
+    total: 0,
+  });
+  const {
+    data,
+    isLoading,
+    fetchData: createStripeChecout,
+  } = useFetch(createCheckoutQuery, null, false);
+
+  useEffect(() => {
+    const res = calculatePriceBreakdown(products);
+    setPriceBreakDown(res);
+  }, [products]);
+
+  function checkout() {}
 
   return (
     <div className="max-w-[1600px] mx-auto">
@@ -106,7 +109,10 @@ const Cart: NextPage = () => {
             </div>
             <Link href={"/products"}>
               <a>
-                <Button label="Explore Products" className="p-button-sm !my-6" />
+                <Button
+                  label="Explore Products"
+                  className="p-button-sm !my-6"
+                />
               </a>
             </Link>
           </div>
@@ -523,6 +529,30 @@ const AddressForm = ({
       </Dialog>
     </>
   );
+};
+
+const calculatePriceBreakdown = (products: Product[]) => {
+  const priceBreakdown = products.reduce(
+    (acc: any, cur: any) => {
+      const cartValue = acc.cartValue + cur.originalPrice * cur.quantity;
+      const discount =
+        acc.discount + (cur.originalPrice - cur.currentPrice) * cur.quantity;
+      const shipping =
+        acc.shipping + (cur.currentPrice * cur.quantity >= 500 ? 0 : 40);
+      const tax = acc.tax + 0.1 * (cur.currentPrice * cur.quantity);
+      const total = cartValue + shipping + tax - discount;
+
+      return {
+        cartValue,
+        discount,
+        shipping,
+        tax,
+        total,
+      };
+    },
+    { cartValue: 0, discount: 0, shipping: 0, tax: 0, total: 0 }
+  );
+  return priceBreakdown;
 };
 
 export default Cart;
