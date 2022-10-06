@@ -85,12 +85,14 @@ const typeDefs = gql`
 
   input CartItemInput {
     productId: String
+    productName: String
+    productImg: String
+    price: Int
     quantity: Int
   }
 
   input OrderInput {
     products: [CartItemInput!]
-    userId: String
   }
 
   input AddressInput {
@@ -118,8 +120,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createOrder(userId: ID!, order: OrderInput!): ResponseMessage
-    updateUsername(userId: ID!, update: String!): ResponseMessage
+    createOrder(order: OrderInput!): ResponseMessage
+    updateUsername(update: String!): ResponseMessage
     updateAddress(update: AddressUpdate): ResponseMessage
   }
 `;
