@@ -90,17 +90,19 @@ export const updateAddressQuery = async (inputData: { updateType: string, addres
   return { data }
 }
 
-export const createCheckoutQuery = async (cartItems: any) => {
+export const createCheckoutQuery = async (input: any) => {
+  const { cartItems, addressId } = input;
+
   const { data } = await apolloClient.mutate({
     mutation: gql`
-       mutation Mutation($order: OrderInput) {
-        updateAddress(order: $order) {
+       mutation Mutation($order: OrderInput!) {
+        createOrder(order: $order) {
           data
           isError
           message
         }
       }
-    `, variables: { order: { products: cartItems } }
+    `, variables: { order: { products: cartItems, addressId } }
   });
   return { data }
 }

@@ -85,14 +85,12 @@ const typeDefs = gql`
 
   input CartItemInput {
     productId: String
-    productName: String
-    productImg: String
-    price: Int
     quantity: Int
   }
 
   input OrderInput {
     products: [CartItemInput!]
+    addressId: String!
   }
 
   input AddressInput {

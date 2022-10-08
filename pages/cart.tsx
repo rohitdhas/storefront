@@ -69,18 +69,31 @@ const Cart: NextPage = () => {
     tax: 0,
     total: 0,
   });
-  const {
-    data,
-    isLoading,
-    fetchData: createStripeChecout,
-  } = useFetch(createCheckoutQuery, null, false);
+  const { isLoading, fetchData: createStripeCheckout } = useFetch(
+    createCheckoutQuery,
+    null,
+    false
+  );
 
   useEffect(() => {
     const res = calculatePriceBreakdown(products);
     setPriceBreakDown(res);
   }, [products]);
 
-  function checkout() {}
+  async function checkout() {
+    const productArr = products.map((item: Product) => {
+      return {
+        productId: item._id,
+        quantity: item.quantity,
+      };
+    });
+
+    const res = await createStripeCheckout({
+      cartItems: productArr,
+      addressId: selectedAddress?.id,
+    });
+    console.log(res);
+  }
 
   return (
     <div className="max-w-[1600px] mx-auto">
@@ -209,6 +222,8 @@ const Cart: NextPage = () => {
                   <Button
                     label="Procced to checkout"
                     icon="pi pi-wallet"
+                    // onClick={checkout}
+                    loading={isLoading}
                     className="w-full !mt-2 p-button-warning"
                     disabled={!selectedAddress}
                   />

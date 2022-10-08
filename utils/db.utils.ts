@@ -1,6 +1,7 @@
 import { connectToDatabase, ConnectionType } from '../lib/mongodb';
 import { buildFilterQuery } from './main.utils';
 import { ObjectId } from 'mongodb';
+import createStripeOrder from './stripe.util'
 
 // Query - GET
 export const getProducts = async (filters: any) => {
@@ -57,10 +58,30 @@ export const searchAutocomplete = async (input: string) => {
 
 // Mutations - POST, PUT, DELETE
 
-export const createOrderCall = async (order: any) => {
-  console.log(order);
-  return { data: true }
-  // const { db }: ConnectionType = await connectToDatabase();
+export const createOrderCall = async (order: { products: any, addressId: string, user: string }) => {
+  const { products } = order;
+  const { db }: ConnectionType = await connectToDatabase();
+  // create line items array for stripe checkout
+  const lineItems = [];
+  for await (let item of products) {
+    const product = await db.collection('products').findOne({ _id: new ObjectId(item.productId) });
+    lineItems.push({
+      price_data: {
+        currency: 'inr',
+        product_data: {
+          images: [product?.images[0]],
+          name: product?.title,
+        },
+        unit_amount: product?.currentPrice * 100,
+      },
+      quantity: item.quantity,
+    })
+  }
+  // get checkout id
+  const res = await createStripeOrder(lineItems);
+  console.log(res);
+  return { data: true };
+  // store order in db
   // const { insertedId } = await db.collection('orders').insertOne(order);
   // return { message: "Order created successfully", isError: false, data: insertedId };
 }
