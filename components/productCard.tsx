@@ -69,7 +69,7 @@ const ProductCard: React.FC<Props> = ({
 
   return (
     <>
-      <Card className="h-max border border-slate-100 px-2 w-[100%]">
+      <Card className="h-max hover:shadow-xl transition-all border border-slate-100 px-2 w-[100%]">
         <div>
           <Tooltip target=".wishlist-icon" />
           <motion.i
@@ -86,7 +86,7 @@ const ProductCard: React.FC<Props> = ({
         <img
           src={product.images[0]}
           alt="product_image"
-          className="h-[170px] w-[auto] my-4 mx-auto"
+          className="h-[150px] w-[auto] my-4 mx-auto"
         />
         <h5 className="font-bold text-slate-800">{product.title}</h5>
         <div className="my-1">
@@ -114,7 +114,7 @@ const ProductCard: React.FC<Props> = ({
               setSelectedProduct(product);
               quickViewToggle();
             }}
-            className="p-button-outlined p-button-sm w-[75%]"
+            className="p-button-outlined p-button-sm w-[70%] !mr-2"
           />
           <span>
             <Tooltip target=".add-to-cart-btn" />
