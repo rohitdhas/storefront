@@ -1,3 +1,20 @@
+interface Product {
+  _id: string;
+  title: string;
+  description: string;
+  images: string[];
+  currentPrice: number;
+  originalPrice: number;
+  rating: number;
+  stock: number;
+  category: string;
+  exclusive: boolean;
+  tags: string[];
+  specifications: Object[];
+  color: string;
+  quantity?: number;
+}
+
 interface Filters {
   id: string;
   colors: string[];
@@ -14,41 +31,41 @@ export function buildFilterQuery(filters: Filters) {
   if (!Object.keys(filters).length) return {};
 
   if (filters.id) {
-    query['_id'] = filters.id;
+    query["_id"] = filters.id;
     return query;
   }
 
   if (filters.colors) {
-    query['color'] = { $in: filters.colors };
+    query["color"] = { $in: filters.colors };
   }
 
   if (filters.brands) {
-    query['brand'] = { $in: filters.brands };
+    query["brand"] = { $in: filters.brands };
   }
 
   if (filters.categories) {
-    query['category'] = { $in: filters.categories };
+    query["category"] = { $in: filters.categories };
   }
 
   if (filters.rating) {
-    query['rating'] = Number(filters.rating);
+    query["rating"] = Number(filters.rating);
   }
 
   if (filters.priceRange) {
-    query['currentPrice'] = {
+    query["currentPrice"] = {
       $gte: Number(filters.priceRange[0]),
-      $lte: Number(filters.priceRange[1])
-    }
+      $lte: Number(filters.priceRange[1]),
+    };
   }
 
-  if ('inStock' in filters && filters.inStock === 'false') {
-    query['stock'] = { $eq: 0 };
+  if ("inStock" in filters && filters.inStock === "false") {
+    query["stock"] = { $eq: 0 };
   } else {
-    query['stock'] = { $gt: 0 };
+    query["stock"] = { $gt: 0 };
   }
 
-  if (filters.exclusive && filters.exclusive === 'true') {
-    query['exclusive'] = true;
+  if (filters.exclusive && filters.exclusive === "true") {
+    query["exclusive"] = true;
   }
 
   return query;
@@ -62,7 +79,7 @@ export function addToWishlist(product: any) {
     updatedList = JSON.parse(wishlist);
     updatedList.push(product);
   } else {
-    updatedList = [product]
+    updatedList = [product];
   }
 
   localStorage.setItem("wishlist", JSON.stringify(updatedList));
@@ -74,7 +91,9 @@ export function removeFromWishlist(productId: string) {
   let updatedList = [];
 
   if (wishlist) {
-    updatedList = JSON.parse(wishlist).filter((item: any) => item._id !== productId);
+    updatedList = JSON.parse(wishlist).filter(
+      (item: any) => item._id !== productId
+    );
   }
 
   localStorage.setItem("wishlist", JSON.stringify(updatedList));
@@ -87,13 +106,14 @@ export function addToCart(product: any) {
 
   if (cart) {
     updatedList = JSON.parse(cart);
-    const alreadyExist = updatedList.find((item: any) => item._id === product._id);
+    const alreadyExist = updatedList.find(
+      (item: any) => item._id === product._id
+    );
     if (!alreadyExist) {
       updatedList.push(product);
     }
-
   } else {
-    updatedList = [product]
+    updatedList = [product];
   }
 
   localStorage.setItem("cart", JSON.stringify(updatedList));
@@ -106,11 +126,17 @@ export function updateProductQuantity(productId: string, type: string) {
 
   if (cart) {
     updatedList = JSON.parse(cart);
-    const itemIdx = updatedList.findIndex((item: any) => item._id === productId);
+    const itemIdx = updatedList.findIndex(
+      (item: any) => item._id === productId
+    );
     if (itemIdx !== -1) {
       const item = updatedList[itemIdx];
-      if ((type === 'remove' && item.quantity === 1) || (type === 'add' && item.quantity === 10)) return;
-      item.quantity = type === 'add' ? item.quantity + 1 : item.quantity - 1;
+      if (
+        (type === "remove" && item.quantity === 1) ||
+        (type === "add" && item.quantity === 10)
+      )
+        return;
+      item.quantity = type === "add" ? item.quantity + 1 : item.quantity - 1;
       updatedList[itemIdx] = item;
     }
   }
@@ -124,7 +150,9 @@ export function removeFromCart(productId: string) {
   let updatedList = [];
 
   if (cart) {
-    updatedList = JSON.parse(cart).filter((item: any) => item._id !== productId);
+    updatedList = JSON.parse(cart).filter(
+      (item: any) => item._id !== productId
+    );
   }
 
   localStorage.setItem("cart", JSON.stringify(updatedList));
@@ -151,18 +179,17 @@ export const removeQueryParam = (param: string, router: any) => {
   const { pathname, query } = router;
   const params = new URLSearchParams(query);
   params.delete(param);
-  router.replace(
-    { pathname, query: params.toString() },
-    undefined
-  );
+  router.replace({ pathname, query: params.toString() }, undefined);
 };
 
-export const notify = (data: {
-  title: string,
-  message: string,
-  type: string
-}
-  , toastRef: any) => {
+export const notify = (
+  data: {
+    title: string;
+    message: string;
+    type: string;
+  },
+  toastRef: any
+) => {
   const { title, message, type } = data;
 
   toastRef.current.show({
@@ -182,5 +209,47 @@ export function getRandomId() {
   var S4 = function () {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   };
-  return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+  return (
+    S4() +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    S4() +
+    S4()
+  );
 }
+
+export const reloadNextAuthSession = () => {
+  const event = new Event("visibilitychange");
+  document.dispatchEvent(event);
+};
+
+export const calculatePriceBreakdown = (products: Product[]) => {
+  const priceBreakdown = products.reduce(
+    (acc: any, cur: any) => {
+      const cartValue = acc.cartValue + cur.originalPrice * cur.quantity;
+      const discount =
+        acc.discount + (cur.originalPrice - cur.currentPrice) * cur.quantity;
+      const shipping =
+        acc.shipping + (cur.currentPrice * cur.quantity >= 500 ? 0 : 40);
+      const tax = acc.tax + 0.1 * (cur.currentPrice * cur.quantity);
+      const total = cartValue + shipping + tax - discount;
+
+      return {
+        cartValue,
+        discount,
+        shipping,
+        tax,
+        total,
+      };
+    },
+    { cartValue: 0, discount: 0, shipping: 0, tax: 0, total: 0 }
+  );
+  return priceBreakdown;
+};
