@@ -4,6 +4,8 @@ import {
   updateProductQuantity,
   getRandomId,
   notify,
+  reloadNextAuthSession,
+  calculatePriceBreakdown,
 } from "../utils/main.utils";
 import { useSelector, useDispatch } from "react-redux";
 import { updateCart } from "../redux/userSlice";
@@ -62,6 +64,8 @@ const Cart: NextPage = () => {
   const { status, data: session }: any = useSession();
   const [addressPopupVisible, setAddressPopupVisible] =
     useState<boolean>(false);
+  const toast = useRef<any>();
+
   const [priceBreakdown, setPriceBreakDown] = useState({
     cartValue: 0,
     discount: 0,
@@ -69,6 +73,7 @@ const Cart: NextPage = () => {
     tax: 0,
     total: 0,
   });
+
   const { isLoading, fetchData: createStripeCheckout } = useFetch(
     createCheckoutQuery,
     null,
@@ -81,6 +86,19 @@ const Cart: NextPage = () => {
   }, [products]);
 
   async function checkout() {
+    if (!selectedAddress) return;
+    if (priceBreakdown.total >= 1000000) {
+      notify(
+        {
+          title: "There's an Issue!",
+          message: "The total amount must be no more than ₹999,999.99.",
+          type: "error",
+        },
+        toast
+      );
+      return;
+    }
+
     const productArr = products.map((item: Product) => {
       return {
         productId: item._id,
@@ -92,7 +110,20 @@ const Cart: NextPage = () => {
       cartItems: productArr,
       addressId: selectedAddress?.id,
     });
-    console.log(res);
+
+    if (!res.isError) {
+      const { data } = res.createOrder;
+      window.location = data.stripeURL;
+    } else {
+      notify(
+        {
+          title: "Opps!",
+          message: "Something went wrong!",
+          type: "error",
+        },
+        toast
+      );
+    }
   }
 
   return (
@@ -105,6 +136,7 @@ const Cart: NextPage = () => {
         />
         <link rel="shortcut icon" href="logo.svg" type="image/x-icon" />
       </Head>
+      <Toast ref={toast} />
       <main>
         {!products.length ? (
           <div className="w-max mx-auto text-center">
@@ -131,7 +163,7 @@ const Cart: NextPage = () => {
           </div>
         ) : (
           <div className="flex justify-evenly pt-6">
-            <div className="w-[30%]">
+            <div className="w-[35%]">
               <h5 className="text-xl font-bold text-info mb-4">
                 Cart Items ({products.length}) 🎈
               </h5>
@@ -222,9 +254,9 @@ const Cart: NextPage = () => {
                   <Button
                     label="Procced to checkout"
                     icon="pi pi-wallet"
-                    // onClick={checkout}
+                    onClick={checkout}
                     loading={isLoading}
-                    className="w-full !mt-2 p-button-warning"
+                    className="w-full !my-2 p-button-warning"
                     disabled={!selectedAddress}
                   />
                 </div>
@@ -436,6 +468,7 @@ const AddressForm = ({
         { title: "Success!", message: updateAddress.message, type: "success" },
         toast
       );
+      reloadNextAuthSession();
     } else {
       notify(
         { title: "Opps!", message: "Something went wrong!", type: "error" },
@@ -447,7 +480,7 @@ const AddressForm = ({
   };
   return (
     <>
-      <Toast ref={toast} />
+      <Toast position="bottom" ref={toast} />
       <Dialog
         header="Add new address"
         visible={visible}
@@ -544,30 +577,6 @@ const AddressForm = ({
       </Dialog>
     </>
   );
-};
-
-const calculatePriceBreakdown = (products: Product[]) => {
-  const priceBreakdown = products.reduce(
-    (acc: any, cur: any) => {
-      const cartValue = acc.cartValue + cur.originalPrice * cur.quantity;
-      const discount =
-        acc.discount + (cur.originalPrice - cur.currentPrice) * cur.quantity;
-      const shipping =
-        acc.shipping + (cur.currentPrice * cur.quantity >= 500 ? 0 : 40);
-      const tax = acc.tax + 0.1 * (cur.currentPrice * cur.quantity);
-      const total = cartValue + shipping + tax - discount;
-
-      return {
-        cartValue,
-        discount,
-        shipping,
-        tax,
-        total,
-      };
-    },
-    { cartValue: 0, discount: 0, shipping: 0, tax: 0, total: 0 }
-  );
-  return priceBreakdown;
 };
 
 export default Cart;

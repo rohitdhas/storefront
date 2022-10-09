@@ -210,9 +210,9 @@ const Home: NextPage = () => {
                 </div>
                 <h5 className="font-bold text-xl my-5">Free Shipping</h5>
                 <p className="mt-2 text-[0.9] text-info leading-[1.7]">
-                  Free Shipping over all IN order or
+                  Free Shipping over all IN orders or
                   <br />
-                  order above ₹500/-
+                  orders above ₹500/-
                 </p>
               </Card>
             </motion.div>
