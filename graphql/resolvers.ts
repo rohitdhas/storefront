@@ -1,12 +1,13 @@
 import {
-  getProducts, getOneProduct,
+  getProducts,
+  getOneProduct,
   getOrders,
   searchAutocomplete,
   createOrderCall,
   updateUsernameCall,
-  updateAddressCall
-} from "../utils/db.utils"
-import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json';
+  updateAddressCall,
+} from "../utils/db.utils";
+import GraphQLJSON, { GraphQLJSONObject } from "graphql-type-json";
 
 export const resolvers = {
   Query: {
@@ -18,15 +19,14 @@ export const resolvers = {
       const { id } = args;
       return await getOneProduct(id);
     },
-    orders: async (_parent: any, args: any) => {
-      const { userId } = args;
-      return await getOrders(userId);
+    orders: async (_parent: any, args: any, ctx: any) => {
+      return await getOrders(ctx.email);
     },
     autocomplete: async (_parent: any, args: any) => {
       const { input } = args;
       if (!input) return await getProducts({});
       return await searchAutocomplete(input);
-    }
+    },
   },
   Mutation: {
     createOrder: async (_parent: any, args: any, context: any) => {
@@ -41,8 +41,8 @@ export const resolvers = {
     updateAddress: async (_parent: any, args: any, context: any) => {
       const { update } = args;
       return await updateAddressCall(context.email, update);
-    }
+    },
   },
   JSON: GraphQLJSON,
   JSONObject: GraphQLJSONObject,
-}
+};
