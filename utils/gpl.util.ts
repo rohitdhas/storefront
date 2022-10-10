@@ -5,10 +5,14 @@ const CLIENT_URL = process.env.CLIENT_URL;
 
 export const apolloClient = new ApolloClient({
   uri: `${CLIENT_URL}/api/graphql/`,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
-export const useFetch = (fetcher: any, params: any, initialFetch: boolean = true) => {
+export const useFetch = (
+  fetcher: any,
+  params: any,
+  initialFetch: boolean = true
+) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<any>();
 
@@ -17,7 +21,7 @@ export const useFetch = (fetcher: any, params: any, initialFetch: boolean = true
       fetchData(params);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   async function fetchData(params: any) {
     setIsLoading(true);
@@ -29,7 +33,7 @@ export const useFetch = (fetcher: any, params: any, initialFetch: boolean = true
   }
 
   return { isLoading, data, fetchData };
-}
+};
 
 export const productsQuery = async (filters: any = {}) => {
   const { data } = await apolloClient.query({
@@ -54,10 +58,11 @@ export const productsQuery = async (filters: any = {}) => {
           color
         }
       }
-    `, variables: { filters }
+    `,
+    variables: { filters },
   });
-  return { data }
-}
+  return { data };
+};
 
 export const autocompleteQuery = async (input: string) => {
   if (!input) return { autocomplete: [] };
@@ -69,40 +74,73 @@ export const autocompleteQuery = async (input: string) => {
           title
         }
       }
-    `, variables: { input }
+    `,
+    variables: { input },
   });
-  return { data }
-}
+  return { data };
+};
 
-export const updateAddressQuery = async (inputData: { updateType: string, address: any }) => {
+export const getOrdersQuery = async () => {
+  const { data } = await apolloClient.query({
+    query: gql`
+      query GetOrders {
+        orders {
+          _id
+          products {
+            productId
+            quantity
+            title
+          }
+          user
+          paid
+          totalAmount
+          status
+          order_id
+          checkoutToken
+          address
+          deliveryDate
+          createdAt
+        }
+      }
+    `,
+  });
+  return { data };
+};
+
+export const updateAddressQuery = async (inputData: {
+  updateType: string;
+  address: any;
+}) => {
   const { updateType, address } = inputData;
   const { data } = await apolloClient.mutate({
     mutation: gql`
-       mutation Mutation($update: AddressUpdate) {
+      mutation Mutation($update: AddressUpdate) {
         updateAddress(update: $update) {
           data
           isError
           message
         }
       }
-    `, variables: { update: { updateType, address } }
+    `,
+    variables: { update: { updateType, address } },
   });
-  return { data }
-}
+  return { data };
+};
 
 export const createCheckoutQuery = async (input: any) => {
   const { cartItems, addressId } = input;
 
   const { data } = await apolloClient.mutate({
     mutation: gql`
-       mutation Mutation($order: OrderInput!) {
+      mutation Mutation($order: OrderInput!) {
         createOrder(order: $order) {
           data
           isError
           message
         }
       }
-    `, variables: { order: { products: cartItems, addressId } }
+    `,
+    variables: { order: { products: cartItems, addressId } },
   });
-  return { data }
-}
+  return { data };
+};
