@@ -1,3 +1,4 @@
+import dateFormat from "dateformat";
 interface Product {
   _id: string;
   title: string;
@@ -253,3 +254,8 @@ export const calculatePriceBreakdown = (products: Product[]) => {
   );
   return priceBreakdown;
 };
+
+export function formatDate(date: number) {
+  const dateToFormat = new Date(date);
+  return dateFormat(dateToFormat, "mmmm dS, yyyy, h:MM:ss TT");
+}
