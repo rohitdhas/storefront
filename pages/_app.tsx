@@ -7,10 +7,16 @@ import { AnimatePresence } from "framer-motion";
 import { Provider } from "react-redux";
 import store from "../redux/store";
 import "primeicons/primeicons.css";
+import { Session } from "next-auth";
 import "../styles/globals.css";
 import "../styles/misc.scss";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({
+  Component,
+  pageProps,
+}: AppProps<{
+  session: Session;
+}>) {
   return (
     <SessionProvider session={pageProps.session}>
       <AnimatePresence mode="wait">
