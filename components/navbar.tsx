@@ -154,6 +154,7 @@ const Navbar: React.FC = () => {
 };
 
 const ProfileDropdown = ({ session }: { session: any }) => {
+  const router = useRouter();
   return (
     <motion.div
       key={"profile-dropdown"}
@@ -184,7 +185,7 @@ const ProfileDropdown = ({ session }: { session: any }) => {
             icon="pi pi-shopping-bag"
             label="Your Orders"
             hoverBg="bg-primary"
-            callback={() => null}
+            callback={() => router.push({ pathname: "/orders" })}
           />
         </div>
         <div className="border-b border-b-slate-600 py-2">
