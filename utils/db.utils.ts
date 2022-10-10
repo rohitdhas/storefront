@@ -28,12 +28,9 @@ export const getOneProduct = async (id: string) => {
   return product;
 };
 
-export const getOrders = async (userId: string) => {
+export const getOrders = async (email: string) => {
   const { db }: ConnectionType = await connectToDatabase();
-  const orders = await db
-    .collection("orders")
-    .find({ user: new ObjectId(userId) })
-    .toArray();
+  const orders = await db.collection("orders").find({ user: email }).toArray();
   return orders;
 };
 
@@ -70,7 +67,7 @@ export const createOrderCall = async (order: {
   addressId: string;
   user: string;
 }) => {
-  const { products, user } = order;
+  const { products, user, addressId } = order;
   const { db }: ConnectionType = await connectToDatabase();
 
   const lineItems = [];
@@ -79,7 +76,9 @@ export const createOrderCall = async (order: {
       .collection("products")
       .findOne({ _id: new ObjectId(item.productId) });
 
-    const shipping = product.currentPrice >= 500 ? 0 : 40;
+    item.title = product?.title;
+
+    const shipping = product.currentPrice * item.quantity >= 500 ? 0 : 40;
     const tax = 0.1 * product.currentPrice;
     const totalAmount = shipping + tax + product.currentPrice;
 
@@ -95,17 +94,29 @@ export const createOrderCall = async (order: {
       quantity: item.quantity,
     });
   }
+
   try {
     const stripeRes = await createStripeOrder(lineItems);
+    let deliveryDate = new Date();
+    deliveryDate.setDate(deliveryDate.getDate() + 5);
+
+    const totalAmount = lineItems.reduce((acc, cur) => {
+      return acc + cur.price_data.unit_amount * cur.quantity;
+    }, 0);
+
+    const orderCount = await db.collection("orders").countDocuments();
 
     const orderDetails = {
-      products,
       user,
-      paid: stripeRes.payment_status === "paid",
+      products,
+      totalAmount: totalAmount / 100,
+      deliveryDate,
+      status: "Received",
+      address: addressId,
+      order_id: `#${orderCount}`,
       checkoutToken: stripeRes.id,
-      // address,
-      // totalAmount,
       createdAt: new Date(),
+      paid: false,
     };
 
     await db.collection("orders").insertOne(orderDetails);
