@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-micro';
+import { gql } from "apollo-server-micro";
 
 const typeDefs = gql`
   scalar JSON
@@ -13,7 +13,6 @@ const typeDefs = gql`
     country: String
     zipCode: String
     phone: String
-
   }
 
   type User {
@@ -49,14 +48,20 @@ const typeDefs = gql`
   type CartItem {
     productId: String
     quantity: Int
+    title: String
   }
 
   type Order {
-    id: String
+    _id: String
     products: [CartItem]
-    userId: String
+    user: String
     paid: Boolean
+    totalAmount: Int
+    status: String
+    order_id: String
     checkoutToken: String
+    address: String
+    deliveryDate: String
     createdAt: String
   }
 
@@ -113,7 +118,7 @@ const typeDefs = gql`
     products(filters: Filters): [Product]
     product(id: ID!): Product
     user(id: ID!): User!
-    orders(userId: ID!): [Order]
+    orders: [Order]
     autocomplete(input: String!): [Product]
   }
 
