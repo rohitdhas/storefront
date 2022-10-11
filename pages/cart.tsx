@@ -390,7 +390,7 @@ const addressTemplate = (address: Address) => {
   );
 };
 
-const AddressForm = ({
+export const AddressForm = ({
   visible,
   close,
 }: {
