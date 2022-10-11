@@ -1,15 +1,15 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 async function createStripeOrder(lineItems: any) {
   const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
+    payment_method_types: ["card"],
     line_items: lineItems,
-    mode: 'payment',
-    success_url: `${process.env.CLIENT_URL}/orders?success=true`,
+    mode: "payment",
+    success_url: `${process.env.CLIENT_URL}/orders?payment_intent=${process.env.PAYMENT_INTENT}&success=true`,
     cancel_url: `${process.env.CLIENT_URL}/cart`,
   });
 
   return session;
-};
+}
 
 export default createStripeOrder;
