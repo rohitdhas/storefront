@@ -28,7 +28,7 @@
     "react-dom": "18.2.0",
     "react-redux": "^8.0.2",
     "sass": "^1.54.9",
-    "stripe": "^10.12.0",
+    "stripe": "^10.13.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
