@@ -62,6 +62,7 @@ const typeDefs = gql`
     checkoutToken: String
     address: String
     deliveryDate: String
+    paymentReceipt: String
     createdAt: String
   }
 
