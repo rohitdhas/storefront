@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { updateCart } from "../redux/userSlice";
 import Link from "next/link";
 import Loader from "../components/loader";
+import { ORDER_STATUS } from "../constants/index";
 
 let addresses: any = [];
 
@@ -66,7 +67,6 @@ const Orders: NextPage = () => {
           {orders.length ? (
             <DataTable
               expandedRows={expandedRows}
-              onRowExpand={(props) => null}
               onRowToggle={(e) => setExpandedRows(e.data)}
               rowExpansionTemplate={rowExpansionTemplate}
               value={orders}
@@ -81,14 +81,8 @@ const Orders: NextPage = () => {
                 header="Order Status"
                 body={(rowData) => (
                   <Tag
-                    icon={`pi ${
-                      rowData.status === "Received"
-                        ? "pi-info-circle"
-                        : "pi-check"
-                    }`}
-                    severity={
-                      rowData.status === "Received" ? "info" : "success"
-                    }
+                    icon={`pi ${ORDER_STATUS[rowData.status].icon}`}
+                    severity={ORDER_STATUS[rowData.status].type}
                     value={rowData.status}
                   />
                 )}
@@ -100,6 +94,10 @@ const Orders: NextPage = () => {
               <Column
                 header="Delivery By"
                 body={(rowData) => formatDate(parseInt(rowData.deliveryDate))}
+              />
+              <Column
+                header="Paid"
+                body={(rowData) => (rowData.paid ? "✅" : "❌")}
               />
               <Column header="More Details" expander />
             </DataTable>
@@ -123,7 +121,11 @@ const Orders: NextPage = () => {
   );
 };
 
-const rowExpansionTemplate = (data: { address: string; products: any }) => {
+const rowExpansionTemplate = (data: {
+  address: string;
+  products: any;
+  paymentReceipt: string;
+}) => {
   const { address: addressId, products } = data;
 
   const shippingAddress = addresses.find(
@@ -132,27 +134,6 @@ const rowExpansionTemplate = (data: { address: string; products: any }) => {
 
   return (
     <div>
-      {shippingAddress ? (
-        <div>
-          <h4 className="font-bold text-slate-800 mb-2">Shpping Address 🚚</h4>
-          <div className="w-full text-left text-sm">
-            <span>
-              {shippingAddress.apartment}, {shippingAddress.street}
-            </span>
-            <br />
-            <span>{shippingAddress.city}</span>
-            <br />
-            <span>
-              {shippingAddress.state}, {shippingAddress.country}
-            </span>{" "}
-            (<span className="font-bold">{shippingAddress.zipCode}</span>)
-            <br />
-            <span>Phone - {shippingAddress.phone}</span>
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
       <div className="my-3">
         <h4 className="font-bold text-slate-800 mb-2">
           Cart Items ({products.length}) 🛒
@@ -177,6 +158,41 @@ const rowExpansionTemplate = (data: { address: string; products: any }) => {
           )}
         </ul>
       </div>
+      {shippingAddress ? (
+        <div className="my-3">
+          <h4 className="font-bold text-slate-800 mb-2">Shpping Address 🚚</h4>
+          <div className="w-full text-left text-sm">
+            <span>
+              {shippingAddress.apartment}, {shippingAddress.street}
+            </span>
+            <br />
+            <span>{shippingAddress.city}</span>
+            <br />
+            <span>
+              {shippingAddress.state}, {shippingAddress.country}
+            </span>{" "}
+            (<span className="font-bold">{shippingAddress.zipCode}</span>)
+            <br />
+            <span>Phone - {shippingAddress.phone}</span>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+      {data.paymentReceipt ? (
+        <div className="my-3">
+          <Link href={data.paymentReceipt}>
+            <a
+              className="text-secondary hover:text-blue-700 hover:underline"
+              target={"_blank"}
+            >
+              &gt; See Payment Receipt 📄
+            </a>
+          </Link>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
