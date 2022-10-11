@@ -1,5 +1,5 @@
 import { connectToDatabase, ConnectionType } from "../lib/mongodb";
-import { buildFilterQuery, calculatePriceBreakdown } from "./main.utils";
+import { buildFilterQuery } from "./main.utils";
 import { ObjectId } from "mongodb";
 import createStripeOrder from "./stripe.util";
 
@@ -111,10 +111,10 @@ export const createOrderCall = async (order: {
       products,
       totalAmount: totalAmount / 100,
       deliveryDate,
-      status: "Received",
+      status: "Created",
       address: addressId,
       order_id: `#${orderCount}`,
-      checkoutToken: stripeRes.id,
+      checkoutToken: stripeRes.payment_intent,
       createdAt: new Date(),
       paid: false,
     };
