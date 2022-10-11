@@ -193,7 +193,7 @@ const ProfileDropdown = ({ session }: { session: any }) => {
             icon="pi pi-user-edit"
             label="Account Settings"
             hoverBg="bg-primary"
-            callback={() => null}
+            callback={() => router.push({ pathname: "/profile" })}
           />
         </div>
         <div className="mt-2">
