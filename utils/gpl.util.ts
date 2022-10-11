@@ -99,6 +99,7 @@ export const getOrdersQuery = async () => {
           checkoutToken
           address
           deliveryDate
+          paymentReceipt
           createdAt
         }
       }
