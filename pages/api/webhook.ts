@@ -1,22 +1,28 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from "next";
+import { connectToDatabase, ConnectionType } from "../../lib/mongodb";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const event = req.body;
+  const { db }: ConnectionType = await connectToDatabase();
 
-  // Handle the event
-  switch (event.type) {
-    case 'payment_intent.succeeded':
-      const paymentIntent = event.data.object;
-      break;
-    case 'payment_method.attached':
-      const paymentMethod = event.data.object;
-
-      break;
-    // ... handle other event types
-    default:
-      console.log(`Unhandled event type ${event.type}`);
+  if (event.type === "charge.succeeded") {
+    const checkoutId = event.data.object.payment_intent;
+    await db
+      .collection("orders")
+      .updateOne(
+        { checkoutToken: checkoutId },
+        {
+          $set: {
+            paymentReceipt: event.data.object.receipt_url,
+            paid: event.data.object.paid,
+            status: "Received",
+          },
+        }
+      );
   }
 
-  // Return a response to acknowledge receipt of the event
-  res.status(200).json({ name: 'John Doe' })
+  res.status(200).json({ name: "John Doe" });
 }
