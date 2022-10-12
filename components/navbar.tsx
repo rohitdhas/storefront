@@ -114,6 +114,7 @@ const Navbar: React.FC = () => {
             </i>
           </span>
           <span
+            onClick={() => router.push({ pathname: "/wishlist" })}
             data-pr-tooltip="Wishlist"
             data-pr-position="bottom"
             className="heart-fill flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 mr-8 ml-4"
