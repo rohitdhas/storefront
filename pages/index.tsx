@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
+import { numFormatter } from "../utils/main.utils";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -168,14 +169,18 @@ const Home: NextPage = () => {
                   <br />
                   you to play or pause your music hassle-free.
                 </p>
-                <div className="font-bold text-xl mb-4">
-                  <span className="text-slate-900">₹1200/-</span>
-                  <span className="line-through text-info mx-2 text-sm">
-                    ₹1700/-
+                <div className="text-xl mb-4">
+                  <span className="text-slate-900 font-bold ">
+                    {numFormatter(1200)}
+                  </span>
+                  <span className="line-through text-info mx-2 text-sm font-bold ">
+                    {numFormatter(1700)}
                   </span>
                   <br />
-                  <span className="text-xs">
-                    Savings <span className="text-success">₹500/-</span> (7.00%)
+                  <span className="text-xs font-semibold">
+                    Savings{" "}
+                    <span className="text-success">{numFormatter(500)}</span>{" "}
+                    (7.00%)
                   </span>
                 </div>
                 <Button
@@ -235,8 +240,7 @@ const Home: NextPage = () => {
                 </div>
                 <h5 className="font-bold text-xl my-5">100% Secure Payments</h5>
                 <p className="mt-2 text-[0.9] text-info leading-[1.7]">
-                  Pay securely with your credit/debit cards, <br />
-                  with 100% security
+                  Pay securely with your credit/debit cards, with 100% security
                 </p>
               </Card>
             </motion.div>
