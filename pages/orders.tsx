@@ -93,7 +93,11 @@ const Orders: NextPage = () => {
               />
               <Column
                 header="Delivery By"
-                body={(rowData) => formatDate(parseInt(rowData.deliveryDate))}
+                body={(rowData) =>
+                  rowData.paid
+                    ? formatDate(parseInt(rowData.deliveryDate))
+                    : "-"
+                }
               />
               <Column
                 header="Paid"
