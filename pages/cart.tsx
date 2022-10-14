@@ -1,12 +1,12 @@
 import {
   numFormatter,
-  removeFromCart,
-  updateProductQuantity,
   getRandomId,
-  notify,
   reloadNextAuthSession,
   calculatePriceBreakdown,
 } from "../utils/main.utils";
+
+import { removeFromCart, updateProductQuantity } from "../utils/cart.utils";
+import { notify } from "../utils/notification.util";
 import { useSelector, useDispatch } from "react-redux";
 import { updateCart } from "../redux/userSlice";
 import type { RootState } from "../redux/store";
@@ -24,43 +24,16 @@ import { InputText } from "primereact/inputtext";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
 import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { NextPage } from "next";
 import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
-
-interface Product {
-  _id: string;
-  title: string;
-  description: string;
-  images: string[];
-  currentPrice: number;
-  originalPrice: number;
-  rating: number;
-  stock: number;
-  category: string;
-  exclusive: boolean;
-  tags: string[];
-  specifications: Object[];
-  color: string;
-  quantity?: number;
-}
-
-interface Address {
-  id: string;
-  apartment: string;
-  street: string;
-  city: string;
-  state: string;
-  country: string;
-  zipCode: string;
-  phone: string;
-}
+import { IProduct, IAddress } from "../interfaces/index";
 
 const Cart: NextPage = () => {
   const { cart: products }: any = useSelector((state: RootState) => state.user);
-  const [selectedAddress, setSelectedAddress] = useState<Address>();
+  const [selectedAddress, setSelectedAddress] = useState<IAddress>();
   const { status, data: session }: any = useSession();
   const [addressPopupVisible, setAddressPopupVisible] =
     useState<boolean>(false);
@@ -99,7 +72,7 @@ const Cart: NextPage = () => {
       return;
     }
 
-    const productArr = products.map((item: Product) => {
+    const productArr = products.map((item: IProduct) => {
       return {
         productId: item._id,
         quantity: item.quantity,
@@ -169,7 +142,7 @@ const Cart: NextPage = () => {
               </h5>
               <section>
                 <div className="grid grid-cols-1 gap-4">
-                  {products.map((product: any) => {
+                  {products.map((product: IProduct) => {
                     return <CartItem key={product._id} product={product} />;
                   })}
                 </div>
@@ -284,7 +257,7 @@ const Cart: NextPage = () => {
   );
 };
 
-const CartItem: React.FC<{ product: Product }> = ({ product }) => {
+const CartItem: React.FC<{ product: IProduct }> = React.memo(({ product }) => {
   const savings = product.originalPrice - product.currentPrice;
   const savingsPercentage = ((savings / product.originalPrice) * 100).toFixed(
     2
@@ -368,9 +341,9 @@ const CartItem: React.FC<{ product: Product }> = ({ product }) => {
       </motion.div>
     </motion.div>
   );
-};
+});
 
-const addressTemplate = (address: Address) => {
+const addressTemplate = (address: IAddress) => {
   return (
     <div className="w-full text-left p-2">
       <span>
