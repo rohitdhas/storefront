@@ -4,30 +4,15 @@ import { Divider } from "primereact/divider";
 import { Button } from "primereact/button";
 import { Carousel } from "primereact/carousel";
 import { numFormatter } from "../utils/main.utils";
+import { IProduct } from "../interfaces";
 import React from "react";
-
-interface Product {
-  _id: string;
-  title: string;
-  description: string;
-  images: string[];
-  currentPrice: number;
-  originalPrice: number;
-  rating: number;
-  stock: number;
-  category: string;
-  exclusive: boolean;
-  tags: string[];
-  specifications: Object[];
-  color: string;
-}
 
 const ProductDetailsView: React.FC<{
   isVisible: boolean;
   toggle: () => void;
-  product: Product | null | undefined;
-  wishlistProduct: (product: Product) => void;
-  addProductToCart: (product: Product) => void;
+  product: IProduct | null | undefined;
+  wishlistProduct: (product: IProduct) => void;
+  addProductToCart: (product: IProduct) => void;
 }> = ({ product, isVisible, toggle, addProductToCart, wishlistProduct }) => {
   if (!product) return <></>;
 
