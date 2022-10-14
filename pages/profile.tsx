@@ -7,7 +7,8 @@ import Head from "next/head";
 import { AddressForm } from "./cart";
 import { useFetch, updateAddressQuery } from "../utils/gpl.util";
 import { Button } from "primereact/button";
-import { reloadNextAuthSession, notify } from "../utils/main.utils";
+import { reloadNextAuthSession } from "../utils/main.utils";
+import { notify } from "../utils/notification.util";
 import { Toast } from "primereact/toast";
 
 export async function getServerSideProps(context: any) {
