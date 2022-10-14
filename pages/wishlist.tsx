@@ -85,7 +85,7 @@ const Wishlist: NextPage = () => {
                     <div>
                       {rowData.stock < 10 ? (
                         <p className="text-red-400 font-semibold">
-                          Only {rowData.stock} left in stock!
+                          Hurry, Only {rowData.stock} left in stock!
                         </p>
                       ) : (
                         <p className="font-semibold">In Stock ✅</p>
