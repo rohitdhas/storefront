@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ProgressSpinner } from "primereact/progressspinner";
 
-const Loader: React.FC<{ loading: boolean }> = ({ loading }) => {
+const Loader: React.FC<{ loading: boolean }> = React.memo(({ loading }) => {
   if (!loading) return <></>;
   return (
     <motion.div
@@ -20,6 +20,6 @@ const Loader: React.FC<{ loading: boolean }> = ({ loading }) => {
       <p className="ml-3 font-bold text-slate-800">Loading.. Hold tight</p>
     </motion.div>
   );
-};
+});
 
 export default Loader;
