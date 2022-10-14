@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { numFormatter } from "../utils/main.utils";
 import { Button } from "primereact/button";
 import { Carousel } from "primereact/carousel";
 import products from "../constants/product.json";
@@ -10,7 +11,6 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
-import { numFormatter } from "../utils/main.utils";
 
 const Home: NextPage = () => {
   const router = useRouter();
