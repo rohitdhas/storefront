@@ -10,7 +10,7 @@ import React, { useState, useEffect } from "react";
 import { AutoComplete } from "primereact/autocomplete";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../redux/store";
-import { getCart, getWishlist } from "../utils/main.utils";
+import { getCart, getWishlist } from "../utils/cart.utils";
 import { updateCart, updateWishlist } from "../redux/userSlice";
 import { autocompleteQuery, useFetch } from "../utils/gpl.util";
 import { motion } from "framer-motion";
