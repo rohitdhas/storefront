@@ -7,30 +7,15 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import { motion } from "framer-motion";
-
-interface Product {
-  _id: string;
-  title: string;
-  description: string;
-  images: string[];
-  currentPrice: number;
-  originalPrice: number;
-  rating: number;
-  stock: number;
-  category: string;
-  exclusive: boolean;
-  tags: string[];
-  specifications: Object[];
-  color: string;
-}
+import { IProduct } from "../interfaces/index";
 
 type Props = {
-  product: Product;
+  product: IProduct;
   quickViewToggle: () => void;
-  setSelectedProduct: (product: Product) => void;
-  unWishlistProduct: (product: Product) => void;
-  wishlistProduct: (product: Product) => void;
-  addProductToCart: (product: Product) => void;
+  setSelectedProduct: (product: IProduct) => void;
+  unWishlistProduct: (product: IProduct) => void;
+  wishlistProduct: (product: IProduct) => void;
+  addProductToCart: (product: IProduct) => void;
 };
 
 const ProductCard: React.FC<Props> = ({
