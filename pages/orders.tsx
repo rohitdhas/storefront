@@ -14,8 +14,9 @@ import { updateCart } from "../redux/userSlice";
 import Link from "next/link";
 import Loader from "../components/loader";
 import { ORDER_STATUS } from "../constants/index";
+import { IAddress } from "../interfaces/index";
 
-let addresses: any = [];
+let addresses: IAddress[] = [];
 
 const Orders: NextPage = () => {
   const [orders, setOrders] = useState([]);
@@ -59,8 +60,7 @@ const Orders: NextPage = () => {
         <div>
           <h3 className="text-2xl font-bold">My Orders</h3>
           <p className="text-sm text-info">
-            Here are all the orders you&apos;ve made! Make use of the search box
-            to find a particular order
+            Here are all the orders you&apos;ve made!
           </p>
         </div>
         <div className="!my-6">
