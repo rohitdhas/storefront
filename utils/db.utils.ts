@@ -1,7 +1,7 @@
 import { connectToDatabase, ConnectionType } from "../lib/mongodb";
-import { buildFilterQuery } from "./main.utils";
-import { ObjectId } from "mongodb";
+import { buildFilterQuery } from "./filter.util";
 import createStripeOrder from "./stripe.util";
+import { ObjectId } from "mongodb";
 
 // Query - GET
 export const getProducts = async (filters: any) => {
