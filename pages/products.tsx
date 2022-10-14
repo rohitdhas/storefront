@@ -3,9 +3,9 @@ import ProductDetailsView from "../components/productDetailsView";
 import {
   addToWishlist,
   addToCart,
-  notify,
   removeFromWishlist,
-} from "../utils/main.utils";
+} from "../utils/cart.utils";
+import { notify } from "../utils/notification.util";
 import React, { useEffect, useState, useRef } from "react";
 import ProductCard from "../components/productCard";
 import { productsQuery, useFetch } from "../utils/gpl.util";
@@ -17,26 +17,11 @@ import { useRouter } from "next/router";
 import Loader from "../components/loader";
 import Image from "next/image";
 import Head from "next/head";
-
-interface Product {
-  _id: string;
-  title: string;
-  description: string;
-  images: string[];
-  currentPrice: number;
-  originalPrice: number;
-  rating: number;
-  stock: number;
-  category: string;
-  exclusive: boolean;
-  tags: string[];
-  specifications: Object[];
-  color: string;
-}
+import { IProduct } from "../interfaces";
 
 const Products: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<Product>();
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<IProduct>();
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
   const { data, isLoading, fetchData } = useFetch(productsQuery, {}, false);
   const router = useRouter();
@@ -58,7 +43,7 @@ const Products: React.FC = () => {
     }
   }, [router.query]);
 
-  const wishlistProduct = (product: Product) => {
+  const wishlistProduct = (product: IProduct) => {
     const updatedList = addToWishlist(product);
     dispatch(updateWishlist({ updatedProductList: updatedList }));
     notify(
@@ -71,12 +56,12 @@ const Products: React.FC = () => {
     );
   };
 
-  const unWishlistProduct = (product: Product) => {
+  const unWishlistProduct = (product: IProduct) => {
     const updatedList = removeFromWishlist(product._id);
     dispatch(updateWishlist({ updatedProductList: updatedList }));
   };
 
-  const addProductToCart = (product: Product) => {
+  const addProductToCart = (product: IProduct) => {
     const updatedCart = addToCart({ ...product, quantity: 1 });
     dispatch(updateCart({ updatedCart }));
     notify(
@@ -125,14 +110,14 @@ const Products: React.FC = () => {
           <Filter />
           {products.length ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto md:flex-1 md:ml-6">
-              {products.map((product: Product) => {
+              {products.map((product: IProduct) => {
                 return (
                   <ProductCard
                     quickViewToggle={() => setSidebarVisible(true)}
                     wishlistProduct={wishlistProduct}
                     unWishlistProduct={unWishlistProduct}
                     addProductToCart={addProductToCart}
-                    setSelectedProduct={(product: Product) =>
+                    setSelectedProduct={(product: IProduct) =>
                       setSelectedProduct(product)
                     }
                     key={product._id}
