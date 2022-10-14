@@ -1,6 +1,6 @@
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { SelectButton } from "primereact/selectbutton";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 import { Rating } from "primereact/rating";
@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { useRouter } from "next/router";
 
-const Filter: React.FC = () => {
+const Filter: React.FC = React.memo(() => {
   const [brands, setBrands] = useState<string[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
@@ -346,6 +346,6 @@ const Filter: React.FC = () => {
       </Card>
     </div>
   );
-};
+});
 
 export default Filter;
