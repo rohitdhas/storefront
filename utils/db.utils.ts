@@ -6,7 +6,8 @@ import { ObjectId } from "mongodb";
 // Query - GET
 export const getProducts = async (filters: any) => {
   const query = buildFilterQuery(filters);
-  if (query._id) {
+
+  if (query._id && typeof query._id === "string") {
     if (ObjectId.isValid(query._id)) {
       query._id = new ObjectId(query._id);
     } else {

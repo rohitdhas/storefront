@@ -1,12 +1,14 @@
-export function addToWishlist(product: any) {
+import { CartItem } from "../interfaces";
+
+export function addToWishlist(productId: string) {
   const wishlist = localStorage.getItem("wishlist");
   let updatedList = [];
 
   if (wishlist) {
     updatedList = JSON.parse(wishlist);
-    updatedList.push(product);
+    updatedList.push(productId);
   } else {
-    updatedList = [product];
+    updatedList = [productId];
   }
 
   localStorage.setItem("wishlist", JSON.stringify(updatedList));
@@ -18,29 +20,43 @@ export function removeFromWishlist(productId: string) {
   let updatedList = [];
 
   if (wishlist) {
-    updatedList = JSON.parse(wishlist).filter(
-      (item: any) => item._id !== productId
-    );
+    updatedList = JSON.parse(wishlist).filter((id: any) => id !== productId);
   }
 
   localStorage.setItem("wishlist", JSON.stringify(updatedList));
   return updatedList;
 }
 
-export function addToCart(product: any) {
+export function addToCart(data: CartItem) {
+  const { productId } = data;
+
   const cart = localStorage.getItem("cart");
   let updatedList = [];
 
   if (cart) {
     updatedList = JSON.parse(cart);
     const alreadyExist = updatedList.find(
-      (item: any) => item._id === product._id
+      (cartItem: CartItem) => cartItem.productId === productId
     );
     if (!alreadyExist) {
-      updatedList.push(product);
+      updatedList.push(data);
     }
   } else {
-    updatedList = [product];
+    updatedList = [data];
+  }
+
+  localStorage.setItem("cart", JSON.stringify(updatedList));
+  return updatedList;
+}
+
+export function removeFromCart(productId: string) {
+  const cart = localStorage.getItem("cart");
+  let updatedList: CartItem[] = [];
+
+  if (cart) {
+    updatedList = JSON.parse(cart).filter(
+      (cartItem: CartItem) => cartItem.productId !== productId
+    );
   }
 
   localStorage.setItem("cart", JSON.stringify(updatedList));
@@ -49,12 +65,12 @@ export function addToCart(product: any) {
 
 export function updateProductQuantity(productId: string, type: string) {
   const cart = localStorage.getItem("cart");
-  let updatedList = [];
+  let updatedList: CartItem[] = [];
 
   if (cart) {
     updatedList = JSON.parse(cart);
     const itemIdx = updatedList.findIndex(
-      (item: any) => item._id === productId
+      (cartItem: CartItem) => cartItem.productId === productId
     );
     if (itemIdx !== -1) {
       const item = updatedList[itemIdx];
@@ -66,20 +82,6 @@ export function updateProductQuantity(productId: string, type: string) {
       item.quantity = type === "add" ? item.quantity + 1 : item.quantity - 1;
       updatedList[itemIdx] = item;
     }
-  }
-
-  localStorage.setItem("cart", JSON.stringify(updatedList));
-  return updatedList;
-}
-
-export function removeFromCart(productId: string) {
-  const cart = localStorage.getItem("cart");
-  let updatedList = [];
-
-  if (cart) {
-    updatedList = JSON.parse(cart).filter(
-      (item: any) => item._id !== productId
-    );
   }
 
   localStorage.setItem("cart", JSON.stringify(updatedList));

@@ -1,4 +1,5 @@
 import { IFilters } from "../interfaces";
+import { ObjectId } from "mongodb";
 
 export function buildFilterQuery(filters: IFilters) {
   const query: any = {};
@@ -6,6 +7,13 @@ export function buildFilterQuery(filters: IFilters) {
 
   if (filters.id) {
     query["_id"] = filters.id;
+    return query;
+  }
+
+  if (filters.productIds) {
+    query["_id"] = {
+      $in: filters.productIds.map((id: string) => new ObjectId(id)),
+    };
     return query;
   }
 
