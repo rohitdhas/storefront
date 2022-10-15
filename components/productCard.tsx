@@ -7,14 +7,14 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import { motion } from "framer-motion";
-import { IProduct } from "../interfaces/index";
+import { IProduct, CartItem } from "../interfaces/index";
 
 type Props = {
   product: IProduct;
   quickViewToggle: () => void;
   setSelectedProduct: (product: IProduct) => void;
-  unWishlistProduct: (product: IProduct) => void;
-  wishlistProduct: (product: IProduct) => void;
+  unWishlistProduct: (productId: IProduct) => void;
+  wishlistProduct: (productId: IProduct) => void;
   addProductToCart: (product: IProduct) => void;
 };
 
@@ -37,7 +37,7 @@ const ProductCard: React.FC<Props> = ({
   // Checking if product is already wishlisted on page load
   useEffect(() => {
     const productInCart = wishlist.find(
-      (item: any) => item._id === product._id
+      (productId: string) => productId === product._id
     );
     if (productInCart) setWishlisted(true);
   }, [product._id, wishlist]);
