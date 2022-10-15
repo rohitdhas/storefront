@@ -24,6 +24,7 @@ export interface IFilters {
   inStock: string;
   priceRange: string[];
   exclusive: string;
+  productIds: string[];
 }
 
 export interface IAddress {
@@ -35,4 +36,14 @@ export interface IAddress {
   country: string;
   zipCode: string;
   phone: string;
+}
+
+export interface CartItem {
+  productId: string;
+  quantity: number;
+}
+
+export interface IinitialStoreState {
+  cart: CartItem[];
+  wishlist: string[];
 }
