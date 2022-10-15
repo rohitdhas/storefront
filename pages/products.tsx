@@ -44,7 +44,7 @@ const Products: React.FC = () => {
   }, [router.query]);
 
   const wishlistProduct = (product: IProduct) => {
-    const updatedList = addToWishlist(product);
+    const updatedList = addToWishlist(product._id);
     dispatch(updateWishlist({ updatedProductList: updatedList }));
     notify(
       {
@@ -62,7 +62,7 @@ const Products: React.FC = () => {
   };
 
   const addProductToCart = (product: IProduct) => {
-    const updatedCart = addToCart({ ...product, quantity: 1 });
+    const updatedCart = addToCart({ productId: product._id, quantity: 1 });
     dispatch(updateCart({ updatedCart }));
     notify(
       {

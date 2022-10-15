@@ -16,8 +16,9 @@ import { Divider } from "primereact/divider";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { SelectButton } from "primereact/selectbutton";
 import {
-  updateAddressQuery,
   useFetch,
+  productsQuery,
+  updateAddressQuery,
   createCheckoutQuery,
 } from "../utils/gpl.util";
 import { InputText } from "primereact/inputtext";
@@ -29,14 +30,24 @@ import { NextPage } from "next";
 import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
-import { IProduct, IAddress } from "../interfaces/index";
+import { IProduct, IAddress, CartItem } from "../interfaces/index";
+import Loader from "../components/loader";
 
 const Cart: NextPage = () => {
-  const { cart: products }: any = useSelector((state: RootState) => state.user);
+  const { cart: cartItems }: any = useSelector(
+    (state: RootState) => state.user
+  );
   const [selectedAddress, setSelectedAddress] = useState<IAddress>();
   const { status, data: session }: any = useSession();
   const [addressPopupVisible, setAddressPopupVisible] =
     useState<boolean>(false);
+  const {
+    data: productsRes,
+    isLoading: productsLoading,
+    fetchData: fetchProducts,
+  } = useFetch(productsQuery, null, false);
+
+  const [products, setProducts] = useState<IProduct[]>([]);
   const toast = useRef<any>();
 
   const [priceBreakdown, setPriceBreakDown] = useState({
@@ -54,9 +65,19 @@ const Cart: NextPage = () => {
   );
 
   useEffect(() => {
-    const res = calculatePriceBreakdown(products);
-    setPriceBreakDown(res);
-  }, [products]);
+    fetchProducts({
+      productIds: cartItems.map((item: CartItem) => item.productId),
+    });
+  }, [cartItems]);
+
+  useEffect(() => {
+    if (productsRes) {
+      const { products } = productsRes;
+      const res = calculatePriceBreakdown(products);
+      setProducts(products);
+      setPriceBreakDown(res);
+    }
+  }, [productsRes]);
 
   async function checkout() {
     if (!selectedAddress) return;
@@ -64,7 +85,7 @@ const Cart: NextPage = () => {
       notify(
         {
           title: "There's an Issue!",
-          message: "The total amount must be no more than ₹999,999.99.",
+          message: "The total amount of cart must be no more than ₹999,999.99.",
           type: "error",
         },
         toast
@@ -110,6 +131,7 @@ const Cart: NextPage = () => {
         <link rel="shortcut icon" href="logo.svg" type="image/x-icon" />
       </Head>
       <Toast ref={toast} />
+      <Loader loading={productsLoading} />
       <main>
         {!products.length ? (
           <div className="w-max mx-auto text-center">
@@ -265,8 +287,8 @@ const CartItem: React.FC<{ product: IProduct }> = React.memo(({ product }) => {
   const dispatch = useDispatch();
 
   const updateQuantity = (type: string) => {
-    const updatedCart = updateProductQuantity(product._id, type);
-    dispatch(updateCart({ updatedCart }));
+    // const updatedCart = updateProductQuantity(product._id, type);
+    // dispatch(updateCart({ updatedCart: updatedCart! }));
   };
 
   return (
