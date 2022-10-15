@@ -87,6 +87,7 @@ const typeDefs = gql`
     inStock: String
     priceRange: [String]
     exclusive: String
+    productIds: [String]
   }
 
   input CartItemInput {
