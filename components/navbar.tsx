@@ -24,6 +24,7 @@ const Navbar: React.FC = () => {
   const { data: session, status } = useSession();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [loginBtnLoading, setLoginBtnLoading] = useState<boolean>(false);
   const { cart } = useSelector((state: RootState) => state.user);
   const { data, fetchData } = useFetch(autocompleteQuery, "", false);
   const router = useRouter();
@@ -144,7 +145,11 @@ const Navbar: React.FC = () => {
             <Button
               className="p-button-outlined"
               label="Sign In"
-              onClick={() => signIn("google")}
+              loading={loginBtnLoading}
+              onClick={() => {
+                setLoginBtnLoading(true);
+                signIn("google");
+              }}
             />
           )}
         </motion.div>
@@ -196,6 +201,18 @@ const ProfileDropdown = ({ session }: { session: any }) => {
             callback={() => router.push({ pathname: "/profile" })}
           />
         </div>
+        {session.user.type === "admin" ? (
+          <div className="border-b border-b-slate-600 py-2">
+            <DropdownBtn
+              icon="pi pi-cog"
+              label="Admin Panal"
+              hoverBg="bg-primary"
+              callback={() => router.push({ pathname: "/admin" })}
+            />
+          </div>
+        ) : (
+          <></>
+        )}
         <div className="mt-2">
           <DropdownBtn
             icon="pi pi-sign-out"
@@ -209,7 +226,7 @@ const ProfileDropdown = ({ session }: { session: any }) => {
   );
 };
 
-const DropdownBtn = ({
+export const DropdownBtn = ({
   icon,
   label,
   callback,
