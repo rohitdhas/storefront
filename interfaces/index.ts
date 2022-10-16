@@ -38,12 +38,7 @@ export interface IAddress {
   phone: string;
 }
 
-export interface CartItem {
-  productId: string;
-  quantity: number;
-}
-
 export interface IinitialStoreState {
-  cart: CartItem[];
+  cart: IProduct[];
   wishlist: string[];
 }
