@@ -5,6 +5,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useFetch, productsQuery } from "../utils/gpl.util";
 import { updateWishlist, updateCart } from "../redux/userSlice";
 import { addToCart, removeFromWishlist } from "../utils/cart.utils";
+import { FilterMatchMode, FilterOperator } from "primereact/api";
 import { notify } from "../utils/notification.util";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
@@ -16,6 +17,8 @@ import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
+import { InputText } from "primereact/inputtext";
+import { SelectButton } from "primereact/selectbutton";
 
 const Wishlist: NextPage = () => {
   const { wishlist: wishlistedIds }: { wishlist: string[] } = useSelector(
@@ -27,6 +30,8 @@ const Wishlist: NextPage = () => {
     fetchData,
   } = useFetch(productsQuery, { productIds: wishlistedIds });
   const [wishlist, setWishlist] = useState<IProduct[]>([]);
+  const [filters, setFilters] = useState<any>(null);
+  const [globalFilterValue, setGlobalFilterValue] = useState("");
   const dispatch = useDispatch();
   const toast: any = useRef();
 
@@ -52,6 +57,10 @@ const Wishlist: NextPage = () => {
   }, []);
 
   useEffect(() => {
+    initFilters();
+  }, []);
+
+  useEffect(() => {
     fetchData({ productIds: wishlistedIds });
   }, [wishlistedIds]);
 
@@ -60,6 +69,26 @@ const Wishlist: NextPage = () => {
       setWishlist(wishlistRes.products);
     }
   }, [wishlistRes]);
+
+  const onGlobalFilterChange = (e: any) => {
+    const value = e.target.value;
+    let _filters1 = { ...filters };
+    _filters1["global"].value = value;
+
+    setFilters(_filters1);
+    setGlobalFilterValue(value);
+  };
+
+  const initFilters = () => {
+    setFilters({
+      global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      title: {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+      },
+    });
+    setGlobalFilterValue("");
+  };
 
   return (
     <div className="mx-2 mt-4 max-w-[1600px] md:px-6 md:mx-auto">
@@ -75,17 +104,35 @@ const Wishlist: NextPage = () => {
       <Toast ref={toast} />
       <div>
         <h3 className="text-2xl font-bold">Your Wishlist 💖</h3>
+        <p className="text-sm text-info">
+          Make use of search box to search through your wishlist!
+        </p>
       </div>
+      <RenderFilterHeader
+        globalFilterValue={globalFilterValue}
+        onGlobalFilterChange={onGlobalFilterChange}
+        clearFilter={initFilters}
+      />
       <div className="my-4">
         {wishlist.length ? (
-          <DataTable value={wishlist} responsiveLayout="scroll">
+          <DataTable
+            rows={10}
+            paginator
+            value={wishlist}
+            dataKey="wishlist-table"
+            responsiveLayout="scroll"
+            filters={filters}
+            filterDisplay="menu"
+            globalFilterFields={["title"]}
+          >
             <Column
               align={"center"}
               header="Product"
+              filterField="title"
               body={(rowData: IProduct) => {
                 return (
                   <div>
-                    <Image src={rowData.images[0]} height={100} width={120} />
+                    <Image src={rowData.images[0]} height={50} width={60} />
                     <div>
                       <Link href={`/products?id=${rowData._id}`}>
                         <a className="font-bold text-slate-800 hover:text-blue-500">
@@ -161,7 +208,7 @@ const Wishlist: NextPage = () => {
                         icon="pi pi-shopping-cart"
                         tooltip="Add to cart"
                         tooltipOptions={{ position: "bottom" }}
-                        className="p-button-sm !mx-2"
+                        className="p-button-sm !mx-2 !my-1"
                         onClick={() => addProductToCart(rowData)}
                       />
                     )}
@@ -169,7 +216,7 @@ const Wishlist: NextPage = () => {
                       icon="pi pi-times"
                       tooltip="Remove from wishlist"
                       tooltipOptions={{ position: "bottom" }}
-                      className="p-button-sm p-button-danger"
+                      className="p-button-sm p-button-danger !my-1"
                       onClick={() => removeItemFromWishlist(rowData._id)}
                     />
                   </div>
@@ -194,6 +241,37 @@ const Wishlist: NextPage = () => {
           </div>
         )}
       </div>
+    </div>
+  );
+};
+
+const RenderFilterHeader = ({
+  globalFilterValue,
+  onGlobalFilterChange,
+  clearFilter,
+}: {
+  globalFilterValue: any;
+  onGlobalFilterChange: any;
+  clearFilter: () => void;
+}) => {
+  return (
+    <div className="flex justify-between !my-6">
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          value={globalFilterValue}
+          className="p-inputtext-sm"
+          onChange={(e) => onGlobalFilterChange(e)}
+          placeholder="Keyword Search"
+        />
+        <Button
+          type="button"
+          icon="pi pi-filter-slash"
+          className="p-button-outlined p-button-sm !ml-4"
+          onClick={clearFilter}
+          tooltip={"Clear Filters"}
+        />
+      </span>
     </div>
   );
 };

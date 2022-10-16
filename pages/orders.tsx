@@ -66,11 +66,13 @@ const Orders: NextPage = () => {
         <div className="!my-6">
           {orders.length ? (
             <DataTable
+              rows={10}
+              paginator
               expandedRows={expandedRows}
               onRowToggle={(e) => setExpandedRows(e.data)}
               rowExpansionTemplate={rowExpansionTemplate}
-              value={orders}
               responsiveLayout="scroll"
+              value={orders}
             >
               <Column field="order_id" header="Order ID" />
               <Column
