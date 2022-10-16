@@ -20,3 +20,5 @@ export const ORDER_STATUS: any = {
     icon: "pi-times",
   },
 };
+
+export const PAGE_LOADER_BLACKLIST: string[] = ["/products"];
