@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import { motion } from "framer-motion";
-import { IProduct, CartItem } from "../interfaces/index";
+import { IProduct } from "../interfaces/index";
 
 type Props = {
   product: IProduct;
@@ -84,13 +84,20 @@ const ProductCard: React.FC<Props> = ({
               {numFormatter(product.originalPrice)}
             </span>
           </p>
-          <p className="text-xs my-1">
-            Savings{" "}
-            <span className="text-success font-bold">
-              {numFormatter(savings)}
-            </span>{" "}
-            ({savingsPercentage}%)
-          </p>
+          {product.stock > 0 ? (
+            <p className="text-xs my-1">
+              Savings{" "}
+              <span className="text-success font-bold">
+                {numFormatter(savings)}
+              </span>{" "}
+              ({savingsPercentage}%)
+            </p>
+          ) : (
+            <div className="my-1 text-xs flex align items-center font-semibold text-red-400">
+              <i className="text-xs pi pi-exclamation-triangle !mr-2" />
+              <span>Out of Stock</span>
+            </div>
+          )}
         </div>
         <div className="mt-2 flex justify-between">
           <Button
@@ -99,18 +106,20 @@ const ProductCard: React.FC<Props> = ({
               setSelectedProduct(product);
               quickViewToggle();
             }}
-            className="p-button-outlined p-button-sm w-[70%] !mr-2"
+            className="p-button-outlined p-button-sm flex-1"
           />
-          <span>
-            <Tooltip target=".add-to-cart-btn" />
-            <Button
-              icon="pi pi-shopping-cart"
-              data-pr-tooltip="Add to cart"
-              data-pr-position="bottom"
-              onClick={() => addProductToCart(product)}
-              className="p-button-sm w-[20%] add-to-cart-btn"
-            />
-          </span>
+          {product.stock > 0 && (
+            <span>
+              <Tooltip target=".add-to-cart-btn" />
+              <Button
+                icon="pi pi-shopping-cart"
+                data-pr-tooltip="Add to cart"
+                data-pr-position="bottom"
+                onClick={() => addProductToCart(product)}
+                className="p-button-sm flex-1 add-to-cart-btn !ml-2"
+              />
+            </span>
+          )}
         </div>
       </Card>
     </>

@@ -5,7 +5,9 @@ import { Button } from "primereact/button";
 import { Carousel } from "primereact/carousel";
 import { numFormatter } from "../utils/main.utils";
 import { IProduct } from "../interfaces";
-import React from "react";
+import { notify } from "../utils/notification.util";
+import { Toast } from "primereact/toast";
+import React, { useRef } from "react";
 
 const ProductDetailsView: React.FC<{
   isVisible: boolean;
@@ -15,6 +17,7 @@ const ProductDetailsView: React.FC<{
   addProductToCart: (product: IProduct) => void;
 }> = ({ product, isVisible, toggle, addProductToCart, wishlistProduct }) => {
   if (!product) return <></>;
+  const toast: any = useRef();
 
   const savings = product?.originalPrice - product?.currentPrice;
   const savingsPercentage = ((savings / product?.originalPrice) * 100).toFixed(
@@ -22,6 +25,7 @@ const ProductDetailsView: React.FC<{
   );
   return (
     <div className="w-[100vw]">
+      <Toast ref={toast} />
       <Sidebar
         className="!w-full lg:!w-[40%] relative"
         visible={isVisible}
@@ -45,13 +49,20 @@ const ProductDetailsView: React.FC<{
               {numFormatter(product.originalPrice)}
             </span>
           </div>
-          <div className="mt-1">
-            You will save{" "}
-            <span className="text-success font-bold">
-              {numFormatter(savings)}
-            </span>{" "}
-            ({savingsPercentage}%)
-          </div>
+          {product.stock > 0 ? (
+            <div className="mt-1">
+              You will save{" "}
+              <span className="text-success font-bold">
+                {numFormatter(savings)}
+              </span>{" "}
+              ({savingsPercentage}%)
+            </div>
+          ) : (
+            <div className="mt-1 flex align items-center font-semibold text-red-400">
+              <i className="pi pi-info-circle !mr-2" />
+              <span>Product Out of Stock</span>
+            </div>
+          )}
         </div>
         <Divider />
         <div className="flex justify-evenly align items-center">
@@ -93,18 +104,39 @@ const ProductDetailsView: React.FC<{
           <p>{"⭐".repeat(Number(product.rating))}</p>
         </div>
         <div className="w-[100%] flex justify-between">
-          <Button
-            onClick={() => addProductToCart(product)}
-            label="Add to Cart"
-            icon="pi pi-shopping-cart"
-            className="p-button-sm w-[50%] !mr-4"
-          />
-          <Button
-            label="Wishlist"
-            icon="pi pi-heart-fill"
-            onClick={() => wishlistProduct(product)}
-            className="p-button-sm w-[50%] p-button-outlined p-button-danger"
-          />
+          {product.stock > 0 ? (
+            <>
+              <Button
+                onClick={() => addProductToCart(product)}
+                label="Add to Cart"
+                icon="pi pi-shopping-cart"
+                className="p-button-sm w-[50%] !mr-4"
+              />
+              <Button
+                label="Wishlist"
+                icon="pi pi-heart-fill"
+                onClick={() => wishlistProduct(product)}
+                className="p-button-sm w-[50%] p-button-outlined p-button-danger"
+              />
+            </>
+          ) : (
+            <Button
+              label="Notify Me"
+              icon="pi pi-bell"
+              onClick={() =>
+                notify(
+                  {
+                    title: "Added to notify list",
+                    message:
+                      "We'll notify you when this product is back in stock!",
+                    type: "info",
+                  },
+                  toast
+                )
+              }
+              className="p-button-sm w-full p-button-warning"
+            />
+          )}
         </div>
       </Sidebar>
     </div>
