@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { updateCart } from "../redux/userSlice";
 import Link from "next/link";
-import Loader from "../components/loader";
+import Loader from "../components/spinner";
 import { ORDER_STATUS } from "../constants/index";
 import { IAddress } from "../interfaces/index";
 

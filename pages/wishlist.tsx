@@ -10,7 +10,7 @@ import { notify } from "../utils/notification.util";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { RootState } from "../redux/store";
-import Loader from "../components/loader";
+import Loader from "../components/spinner";
 import { IProduct } from "../interfaces";
 import { Toast } from "primereact/toast";
 import { NextPage } from "next";

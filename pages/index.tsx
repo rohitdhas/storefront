@@ -156,7 +156,7 @@ const Home: NextPage = () => {
                   <Chip
                     label="Hot Deal"
                     icon="pi pi-star"
-                    className="!bg-warn !text-white !text-[0.6rem] ml-2 !font-bold"
+                    className="!bg-yellow-400 !text-white !text-[0.6rem] ml-2 !font-bold"
                   />
                 </h3>
                 <p className="text-info my-4 leading-[1.7]">

@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { Toast } from "primereact/toast";
 import Filter from "../components/filter";
 import { useRouter } from "next/router";
-import Loader from "../components/loader";
+import Loader from "../components/spinner";
 import Image from "next/image";
 import Head from "next/head";
 import { IProduct } from "../interfaces";

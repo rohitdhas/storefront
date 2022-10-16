@@ -1,6 +1,6 @@
-import { connectToDatabase, ConnectionType } from '../../../lib/mongodb';
+import { connectToDatabase, ConnectionType } from "../../../lib/mongodb";
 import GoogleProvider from "next-auth/providers/google";
-import NextAuth from 'next-auth';
+import NextAuth from "next-auth";
 
 export default NextAuth({
   session: <any>{
@@ -11,42 +11,42 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    })
+    }),
   ],
   pages: {
     signIn: "/",
-    error: '/',
+    error: "/",
   },
   callbacks: <any>{
     async signIn({ account, profile }: any) {
-      if (account.provider === 'google') {
+      if (account.provider === "google") {
         const { email, name, picture } = profile;
 
         const { db }: ConnectionType = await connectToDatabase();
-        const exists = await db
-          .collection('users')
-          .findOne({ email });
+        const exists = await db.collection("users").findOne({ email });
 
         if (!exists) {
-          await db.collection('users').insertOne({
+          await db.collection("users").insertOne({
             email,
             name,
             picture,
+            type: "user",
           });
         }
       }
       return true;
     },
-    async session({ session }: { session: { user: any, expires: string } }) {
+    async session({ session }: { session: { user: any; expires: string } }) {
       const user = session.user;
       const { db }: ConnectionType = await connectToDatabase();
       const userData: any = await db
-        .collection('users')
+        .collection("users")
         .findOne({ email: user.email });
 
       const res = { ...session };
       res.user.address = userData.addresses;
+      res.user.type = userData.type;
       return res;
-    }
-  }
+    },
+  },
 });
