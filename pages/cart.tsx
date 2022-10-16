@@ -35,6 +35,7 @@ import { IProduct, IAddress } from "../interfaces/index";
 const Cart: NextPage = () => {
   const { cart: products }: any = useSelector((state: RootState) => state.user);
   const [selectedAddress, setSelectedAddress] = useState<IAddress>();
+  const [loginBtnLoading, setLoginBtnLoading] = useState<boolean>(false);
   const { status, data: session }: any = useSession();
   const [addressPopupVisible, setAddressPopupVisible] =
     useState<boolean>(false);
@@ -244,8 +245,12 @@ const Cart: NextPage = () => {
                     You will need to choose/add an address.
                   </p>
                   <Button
-                    onClick={() => signIn("google")}
+                    onClick={() => {
+                      setLoginBtnLoading(true);
+                      signIn("google");
+                    }}
                     label="Login or Sign Up"
+                    loading={loginBtnLoading}
                     className="p-button-sm !my-4"
                   />
                 </div>
