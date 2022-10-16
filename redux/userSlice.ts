@@ -5,6 +5,7 @@ import { IinitialStoreState, IProduct } from "../interfaces";
 const initialState: IinitialStoreState = {
   cart: [],
   wishlist: [],
+  sidebarVisible: false,
 };
 
 const userSlice = createSlice({
@@ -22,8 +23,15 @@ const userSlice = createSlice({
       const { updatedProductList } = action.payload;
       state.wishlist = updatedProductList;
     },
+    setSidebarVisibility: (
+      state,
+      action: PayloadAction<{ visibility: boolean }>
+    ) => {
+      state.sidebarVisible = action.payload.visibility;
+    },
   },
 });
 
-export const { updateCart, updateWishlist } = userSlice.actions;
+export const { updateCart, updateWishlist, setSidebarVisibility } =
+  userSlice.actions;
 export default userSlice.reducer;
