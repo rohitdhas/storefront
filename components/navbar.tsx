@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const { cart } = useSelector((state: RootState) => state.user);
-  const { data, fetchData } = useFetch(autocompleteQuery, "");
+  const { data, fetchData } = useFetch(autocompleteQuery, "", false);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -41,14 +41,6 @@ const Navbar: React.FC = () => {
     if (!data || !data.autocomplete) return;
     setSearchResults(data.autocomplete);
   }, [data]);
-
-  useEffect(() => {
-    if (!input) return;
-    const timeout = setTimeout(() => {
-      fetchData(input);
-    }, 500);
-    return () => clearTimeout(timeout);
-  }, [input]);
 
   return (
     <nav className="px-6 py-4 shadow-md fixed top-0 left-0 right-0 bg-white z-[100]">
@@ -76,10 +68,19 @@ const Navbar: React.FC = () => {
             <AutoComplete
               className="w-[90%]"
               onChange={({ target }) => setInput(target.value)}
-              completeMethod={() => null}
+              completeMethod={({ query }) => {
+                if (!query) {
+                  setSearchResults([]);
+                  return;
+                }
+                fetchData(input);
+              }}
+              delay={350}
+              field={"title"}
               onSelect={({ value }) => {
                 const product: any = searchResults.find(
-                  (item: { _id: string; title: string }) => item.title === value
+                  (item: { _id: string; title: string }) =>
+                    item.title === value.title
                 );
                 router.push({
                   pathname: "/products",
@@ -88,9 +89,7 @@ const Navbar: React.FC = () => {
               }}
               dropdownIcon="pi pi-search font-bold"
               placeholder="Search Something..."
-              suggestions={searchResults.map(
-                (item: { _id: string; title: string }) => item.title
-              )}
+              suggestions={searchResults}
               value={input}
               dropdown
             />
