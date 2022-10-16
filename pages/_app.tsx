@@ -13,6 +13,7 @@ import "../styles/misc.scss";
 import React from "react";
 import Router from "next/router";
 import { PageLoader } from "../components/spinner";
+import { PAGE_LOADER_BLACKLIST } from "../constants/index";
 
 function MyApp({
   Component,
@@ -24,6 +25,7 @@ function MyApp({
 
   React.useEffect(() => {
     const start = () => {
+      if (PAGE_LOADER_BLACKLIST.includes(Router.pathname)) return;
       setLoading(true);
     };
     const end = () => {
