@@ -62,7 +62,7 @@ const Products: React.FC = () => {
   };
 
   const addProductToCart = (product: IProduct) => {
-    const updatedCart = addToCart({ productId: product._id, quantity: 1 });
+    const updatedCart = addToCart({ ...product, quantity: 1 });
     dispatch(updateCart({ updatedCart }));
     notify(
       {
