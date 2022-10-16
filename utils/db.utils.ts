@@ -73,9 +73,12 @@ export const createOrderCall = async (order: {
 
   const lineItems = [];
   for await (let item of products) {
-    const product: any = await db
+    const { value: product }: any = await db
       .collection("products")
-      .findOne({ _id: new ObjectId(item.productId) });
+      .findOneAndUpdate(
+        { _id: new ObjectId(item.productId) },
+        { $inc: { stock: -1 } }
+      );
 
     item.title = product?.title;
 
