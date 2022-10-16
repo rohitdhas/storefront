@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { IinitialStoreState, CartItem } from "../interfaces";
+import { IinitialStoreState, IProduct } from "../interfaces";
 
 const initialState: IinitialStoreState = {
   cart: [],
@@ -11,13 +11,13 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateCart: (state, action: PayloadAction<{ updatedCart: CartItem[] }>) => {
+    updateCart: (state, action: PayloadAction<{ updatedCart: IProduct[] }>) => {
       const { updatedCart } = action.payload;
       state.cart = updatedCart;
     },
     updateWishlist: (
       state,
-      action: PayloadAction<{ updatedProductList: string[] }>
+      action: PayloadAction<{ updatedProductList: any }>
     ) => {
       const { updatedProductList } = action.payload;
       state.wishlist = updatedProductList;
