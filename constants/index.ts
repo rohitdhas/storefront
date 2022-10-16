@@ -7,6 +7,10 @@ export const ORDER_STATUS: any = {
     type: "info",
     icon: "pi-info-circle",
   },
+  Shipped: {
+    type: "primary",
+    icon: "pi-box",
+  },
   Delivered: {
     type: "success",
     icon: "pi-check",
