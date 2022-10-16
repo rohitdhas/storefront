@@ -60,3 +60,15 @@ export function formatDate(date: number) {
   const dateToFormat = new Date(date);
   return dateFormat(dateToFormat, "mmmm dS, yyyy, h:MM:ss TT");
 }
+
+export function getGreetingMessage() {
+  const date = new Date();
+  const hours = date.getHours();
+  const status =
+    hours < 12
+      ? "Morning"
+      : hours <= 18 && hours >= 12
+      ? "Afternoon"
+      : "Evening";
+  return status;
+}
