@@ -1,4 +1,4 @@
-import { CartItem } from "../interfaces";
+import { IProduct } from "../interfaces";
 
 export function addToWishlist(productId: string) {
   const wishlist = localStorage.getItem("wishlist");
@@ -17,7 +17,7 @@ export function addToWishlist(productId: string) {
 
 export function removeFromWishlist(productId: string) {
   const wishlist = localStorage.getItem("wishlist");
-  let updatedList = [];
+  let updatedList: string[] = [];
 
   if (wishlist) {
     updatedList = JSON.parse(wishlist).filter((id: any) => id !== productId);
@@ -27,16 +27,14 @@ export function removeFromWishlist(productId: string) {
   return updatedList;
 }
 
-export function addToCart(data: CartItem) {
-  const { productId } = data;
-
+export function addToCart(data: IProduct) {
   const cart = localStorage.getItem("cart");
   let updatedList = [];
 
   if (cart) {
     updatedList = JSON.parse(cart);
     const alreadyExist = updatedList.find(
-      (cartItem: CartItem) => cartItem.productId === productId
+      (cartItem: IProduct) => cartItem._id === data._id
     );
     if (!alreadyExist) {
       updatedList.push(data);
@@ -51,11 +49,11 @@ export function addToCart(data: CartItem) {
 
 export function removeFromCart(productId: string) {
   const cart = localStorage.getItem("cart");
-  let updatedList: CartItem[] = [];
+  let updatedList: IProduct[] = [];
 
   if (cart) {
     updatedList = JSON.parse(cart).filter(
-      (cartItem: CartItem) => cartItem.productId !== productId
+      (cartItem: IProduct) => cartItem._id !== productId
     );
   }
 
@@ -65,12 +63,12 @@ export function removeFromCart(productId: string) {
 
 export function updateProductQuantity(productId: string, type: string) {
   const cart = localStorage.getItem("cart");
-  let updatedList: CartItem[] = [];
+  let updatedList: IProduct[] = [];
 
   if (cart) {
     updatedList = JSON.parse(cart);
     const itemIdx = updatedList.findIndex(
-      (cartItem: CartItem) => cartItem.productId === productId
+      (cartItem: IProduct) => cartItem._id === productId
     );
     if (itemIdx !== -1) {
       const item = updatedList[itemIdx];
@@ -79,7 +77,7 @@ export function updateProductQuantity(productId: string, type: string) {
         (type === "add" && item.quantity === 10)
       )
         return;
-      item.quantity = type === "add" ? item.quantity + 1 : item.quantity - 1;
+      item.quantity = type === "add" ? item.quantity! + 1 : item.quantity! - 1;
       updatedList[itemIdx] = item;
     }
   }
