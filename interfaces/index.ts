@@ -41,4 +41,5 @@ export interface IAddress {
 export interface IinitialStoreState {
   cart: IProduct[];
   wishlist: string[];
+  sidebarVisible: boolean;
 }
