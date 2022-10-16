@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./navbar";
 import { useRouter } from "next/router";
+import { CollapsedSidebar, AdminPanalSidebar } from "./sidebar";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,8 +10,14 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   const router = useRouter();
 
-  if (router.pathname === "/admin") {
-    return <main>{children}</main>;
+  if (router.pathname.includes("/admin")) {
+    return (
+      <>
+        <AdminPanalSidebar />
+        <CollapsedSidebar />
+        <main className="pl-[140px] pt-2">{children}</main>
+      </>
+    );
   }
 
   return (
