@@ -31,7 +31,7 @@ const AdminPanalSidebar: React.FC = () => {
       className="!bg-slate-800"
     >
       <div className="flex justify-evenly align items-center">
-        <Image src={"/logo.svg"} height={60} width={60} />
+        <Image src={"/logo.svg"} height={60} width={60} alt="logo" />
         <h3 className="text-white">
           <span className="text-slate-200">Good, {getGreetingMessage()}</span>{" "}
           <br />

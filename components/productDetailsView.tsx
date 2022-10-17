@@ -16,9 +16,9 @@ const ProductDetailsView: React.FC<{
   wishlistProduct: (product: IProduct) => void;
   addProductToCart: (product: IProduct) => void;
 }> = ({ product, isVisible, toggle, addProductToCart, wishlistProduct }) => {
-  if (!product) return <></>;
   const toast: any = useRef();
 
+  if (!product) return <></>;
   const savings = product?.originalPrice - product?.currentPrice;
   const savingsPercentage = ((savings / product?.originalPrice) * 100).toFixed(
     2

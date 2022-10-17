@@ -18,7 +18,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
 import { InputText } from "primereact/inputtext";
-import { SelectButton } from "primereact/selectbutton";
 
 const Wishlist: NextPage = () => {
   const { wishlist: wishlistedIds }: { wishlist: string[] } = useSelector(
@@ -132,7 +131,12 @@ const Wishlist: NextPage = () => {
               body={(rowData: IProduct) => {
                 return (
                   <div>
-                    <Image src={rowData.images[0]} height={50} width={60} />
+                    <Image
+                      alt="product_img"
+                      src={rowData.images[0]}
+                      height={50}
+                      width={60}
+                    />
                     <div>
                       <Link href={`/products?id=${rowData._id}`}>
                         <a className="font-bold text-slate-800 hover:text-blue-500">
