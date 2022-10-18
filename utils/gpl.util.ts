@@ -51,6 +51,7 @@ export const productsQuery = async (filters: any = {}) => {
           category
           exclusive
           tags
+          brand
           specifications {
             key
             value
