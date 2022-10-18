@@ -12,6 +12,7 @@ export interface IProduct {
   tags: string[];
   specifications: Object[];
   color: string;
+  brand: string;
   quantity?: number;
 }
 
