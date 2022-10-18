@@ -42,6 +42,7 @@ const typeDefs = gql`
     exclusive: Boolean
     tags: [String]
     specifications: [Specification]
+    brand: String
     color: String
   }
 
