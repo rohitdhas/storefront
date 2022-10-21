@@ -3,9 +3,12 @@ import {
   getOneProduct,
   getOrders,
   searchAutocomplete,
-  createOrderCall,
-  updateUsernameCall,
-  updateAddressCall,
+  createOrderMut,
+  updateUsernameMut,
+  updateAddressMut,
+  updateProductMut,
+  deleteProductMut,
+  addProductMut,
 } from "../utils/db.utils";
 import GraphQLJSON, { GraphQLJSONObject } from "graphql-type-json";
 
@@ -32,15 +35,27 @@ export const resolvers = {
     createOrder: async (_parent: any, args: any, context: any) => {
       const { order } = args;
       order.user = context.email;
-      return await createOrderCall(order);
+      return await createOrderMut(order);
     },
     updateUsername: async (_parent: any, args: any, context: any) => {
       const { update } = args;
-      return await updateUsernameCall(context.email, update);
+      return await updateUsernameMut(context.email, update);
     },
     updateAddress: async (_parent: any, args: any, context: any) => {
       const { update } = args;
-      return await updateAddressCall(context.email, update);
+      return await updateAddressMut(context.email, update);
+    },
+    createProduct: async (_parent: any, args: any, context: any) => {
+      const { productData } = args;
+      return await addProductMut(context.email, productData);
+    },
+    updateProduct: async (_parent: any, args: any, context: any) => {
+      const { update } = args;
+      return await updateProductMut(context.email, update);
+    },
+    deleteProduct: async (_parent: any, args: any, context: any) => {
+      const { productId } = args;
+      return await deleteProductMut(context.email, productId);
     },
   },
   JSON: GraphQLJSON,
