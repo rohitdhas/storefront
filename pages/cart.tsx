@@ -283,12 +283,14 @@ const CartItem: React.FC<{ product: IProduct }> = React.memo(({ product }) => {
       className="flex align items-center justify-between border border-gray-300 rounded-md w-full p-4"
     >
       <div className="flex align items-center">
-        <Image
-          src={product.images[0]}
-          alt="Product Image"
-          height={100}
-          width={120}
-        />
+        <div className="relative h-[90px] w-[120px]">
+          <Image
+            src={`${process.env.BUCKET_URL}/${product.images[0]}`}
+            alt="product_image"
+            layout={"fill"}
+            objectFit={"contain"}
+          />
+        </div>
         <div className="ml-4">
           <h6 className="font-bold flex justify-between align items-center">
             <span>{product.title}</span>

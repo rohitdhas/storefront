@@ -28,6 +28,7 @@ function MyApp({
       if (PAGE_LOADER_BLACKLIST.includes(Router.pathname)) return;
       setLoading(true);
     };
+
     const end = () => {
       setLoading(false);
     };

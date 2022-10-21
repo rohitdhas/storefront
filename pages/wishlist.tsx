@@ -131,12 +131,14 @@ const Wishlist: NextPage = () => {
               body={(rowData: IProduct) => {
                 return (
                   <div>
-                    <Image
-                      alt="product_img"
-                      src={rowData.images[0]}
-                      height={50}
-                      width={60}
-                    />
+                    <div className="relative h-[60px] w-[75px] mx-auto">
+                      <Image
+                        alt="product_img"
+                        src={`${process.env.BUCKET_URL}/${rowData.images[0]}`}
+                        layout={"fill"}
+                        objectFit={"contain"}
+                      />
+                    </div>
                     <div>
                       <Link href={`/products?id=${rowData._id}`}>
                         <a className="font-bold text-slate-800 hover:text-blue-500">
