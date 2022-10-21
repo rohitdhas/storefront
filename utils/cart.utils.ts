@@ -47,7 +47,8 @@ export function addToCart(data: IProduct) {
   return updatedList;
 }
 
-export function removeFromCart(productId: string) {
+export function removeFromCart(productId: string | undefined) {
+  if (!productId) return;
   const cart = localStorage.getItem("cart");
   let updatedList: IProduct[] = [];
 
@@ -61,7 +62,11 @@ export function removeFromCart(productId: string) {
   return updatedList;
 }
 
-export function updateProductQuantity(productId: string, type: string) {
+export function updateProductQuantity(
+  productId: string | undefined,
+  type: string
+) {
+  if (!productId) return;
   const cart = localStorage.getItem("cart");
   let updatedList: IProduct[] = [];
 

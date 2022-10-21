@@ -340,7 +340,7 @@ const CartItem: React.FC<{ product: IProduct }> = React.memo(({ product }) => {
       >
         <Button
           onClick={() => {
-            const update = removeFromCart(product._id);
+            const update: any = removeFromCart(product._id);
             dispatch(updateCart({ updatedCart: update }));
           }}
           icon="pi pi-trash"
