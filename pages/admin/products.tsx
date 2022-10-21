@@ -1,24 +1,54 @@
-import { useFetch, productsQuery } from "../../utils/gpl.util";
+import {
+  useFetch,
+  productsQuery,
+  deleteProductQuery,
+} from "../../utils/gpl.util";
 import { numFormatter } from "../../utils/main.utils";
 import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { IProduct } from "../../interfaces";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
+import { ConfirmDialog } from "primereact/confirmdialog";
 import EditProduct from "../../components/EditProduct";
+import AddProduct from "../../components/AddProduct";
 import Head from "next/head";
 
 export default function Products() {
   const { data, isLoading } = useFetch(productsQuery, {});
+  const { fetchData: deleteProduct } = useFetch(
+    deleteProductQuery,
+    null,
+    false
+  );
   const [products, setProducts] = useState<IProduct[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<IProduct>();
+  const [toDeleteProductId, setToDeleteProductId] = useState<string>();
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
+  const [deleteProductDialogVisible, setDeleteProductDialogVisible] =
+    useState<boolean>(false);
+
+  const [addProductPopupVisible, setAddProductPopupVisible] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (data) {
       setProducts(data.products);
     }
   }, [data]);
+
+  function updateProductList(product: IProduct | undefined) {
+    if (!product) return;
+    const update = products.filter((item) => item._id !== product._id);
+    update.unshift(product);
+    setProducts(update);
+  }
+
+  function pushToProductList(product: IProduct) {
+    const update = [...products];
+    update.push(product);
+    setProducts(update);
+  }
 
   return (
     <div>
@@ -30,6 +60,21 @@ export default function Products() {
         />
         <link rel="shortcut icon" href="/logo.svg" type="image/x-icon" />
       </Head>
+      <ConfirmDialog
+        visible={deleteProductDialogVisible}
+        onHide={() => setDeleteProductDialogVisible(false)}
+        message="Are you sure you want to delete this product?"
+        header="Confirmation"
+        icon="pi pi-exclamation-triangle"
+        accept={() => {
+          deleteProduct(toDeleteProductId);
+          const update = products.filter(
+            (item) => item._id !== toDeleteProductId
+          );
+          setProducts(update);
+        }}
+        reject={() => setDeleteProductDialogVisible(false)}
+      />
       <main className="mt-3">
         <div>
           <div className="flex align items-center">
@@ -40,9 +85,21 @@ export default function Products() {
             Showing all products listed on StoreFront!
           </p>
         </div>
+        <div>
+          <Button
+            label="Add Product"
+            onClick={() => setAddProductPopupVisible(true)}
+          />
+        </div>
+        <AddProduct
+          visible={addProductPopupVisible}
+          pushToProductList={pushToProductList}
+          onHide={() => setAddProductPopupVisible(false)}
+        />
         <EditProduct
           product={selectedProduct}
           visible={sidebarVisible}
+          updateProductList={updateProductList}
           onHide={() => setSidebarVisible(false)}
         />
         <div className="mt-6">
@@ -93,7 +150,10 @@ export default function Products() {
                       tooltip="Delete"
                       tooltipOptions={{ position: "bottom" }}
                       className="p-button-sm p-button-danger !my-1"
-                      // onClick={() => removeItemFromWishlist(rowData._id)}
+                      onClick={() => {
+                        setToDeleteProductId(rowData._id);
+                        setDeleteProductDialogVisible(true);
+                      }}
                     />
                   </div>
                 );
