@@ -2,6 +2,7 @@ import { connectToDatabase, ConnectionType } from "../lib/mongodb";
 import { buildFilterQuery } from "./filter.util";
 import createStripeOrder from "./stripe.util";
 import { ObjectId } from "mongodb";
+import { IProduct, IUser } from "../interfaces";
 
 // Query - GET
 export const getProducts = async (filters: any) => {
@@ -63,7 +64,7 @@ export const searchAutocomplete = async (input: string) => {
 
 // Mutations - POST, PUT, DELETE
 
-export const createOrderCall = async (order: {
+export const createOrderMut = async (order: {
   products: any;
   addressId: string;
   user: string;
@@ -130,7 +131,7 @@ export const createOrderCall = async (order: {
   }
 };
 
-export const updateUsernameCall = async (email: string, update: string) => {
+export const updateUsernameMut = async (email: string, update: string) => {
   const { db }: ConnectionType = await connectToDatabase();
   const res = await db
     .collection("users")
@@ -142,7 +143,7 @@ export const updateUsernameCall = async (email: string, update: string) => {
   };
 };
 
-export const updateAddressCall = async (email: string, update: any) => {
+export const updateAddressMut = async (email: string, update: any) => {
   const { db }: ConnectionType = await connectToDatabase();
   const { updateType, address } = update;
   let res;
@@ -174,4 +175,74 @@ export const updateAddressCall = async (email: string, update: any) => {
     isError: false,
     data: res,
   };
+};
+
+export const updateProductMut = async (
+  userEmail: string,
+  productUpdate: IProduct
+) => {
+  const { db }: ConnectionType = await connectToDatabase();
+
+  const user: any = await db.collection("users").findOne({ email: userEmail });
+  if (user.type !== "admin") {
+    return {
+      isError: false,
+      message: "You don't have rights to update a product!",
+    };
+  }
+
+  const update: any = { ...productUpdate };
+  delete update._id;
+
+  try {
+    await db
+      .collection("products")
+      .updateOne({ _id: new ObjectId(productUpdate._id) }, { $set: update });
+    return { isError: false, message: "Product Updated!" };
+  } catch (err) {
+    console.log(err);
+    return { isError: true, message: "Something went wrong!" };
+  }
+};
+
+export const addProductMut = async (userEmail: string, productData: any) => {
+  const { db }: ConnectionType = await connectToDatabase();
+
+  const user: any = await db.collection("users").findOne({ email: userEmail });
+  if (user.type !== "admin") {
+    return {
+      isError: false,
+      message: "You don't have rights to update a product!",
+    };
+  }
+
+  try {
+    const res = await db.collection("products").insertOne(productData);
+    return {
+      isError: false,
+      message: "Product Created!",
+      data: res.insertedId,
+    };
+  } catch (err) {
+    console.log(err);
+    return { isError: true, message: "Something went wrong!" };
+  }
+};
+
+export const deleteProductMut = async (
+  userEmail: string,
+  productId: string
+) => {
+  const { db }: ConnectionType = await connectToDatabase();
+
+  const user: any = await db.collection("users").findOne({ email: userEmail });
+  if (user.type !== "admin") {
+    return {
+      isError: false,
+      message: "You don't have rights to delete a product!",
+    };
+  }
+
+  await db.collection("products").deleteOne({ _id: new ObjectId(productId) });
+  return { isError: false, message: "Product deleted!" };
 };
