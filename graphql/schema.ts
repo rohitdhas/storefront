@@ -25,6 +25,7 @@ const typeDefs = gql`
   }
 
   type Specification {
+    id: String
     key: String
     value: String
   }
@@ -44,6 +45,7 @@ const typeDefs = gql`
     specifications: [Specification]
     brand: String
     color: String
+    tagline: String
   }
 
   type CartItem {
@@ -91,6 +93,47 @@ const typeDefs = gql`
     productIds: [String]
   }
 
+  input SpecificationInput {
+    id: String
+    key: String
+    value: String
+  }
+
+  input ProductInput {
+    _id: String!
+    title: String
+    description: String
+    images: [String]
+    currentPrice: Int
+    originalPrice: Int
+    rating: Int
+    stock: Int
+    category: String
+    exclusive: Boolean
+    tags: [String]
+    specifications: [SpecificationInput]
+    brand: String
+    color: String
+    tagline: String
+  }
+
+  input AddProductInput {
+    title: String
+    description: String
+    images: [String]
+    currentPrice: Int
+    originalPrice: Int
+    rating: Int
+    stock: Int
+    category: String
+    exclusive: Boolean
+    tags: [String]
+    specifications: [SpecificationInput]
+    brand: String
+    color: String
+    tagline: String
+  }
+
   input CartItemInput {
     productId: String
     quantity: Int
@@ -127,8 +170,11 @@ const typeDefs = gql`
 
   type Mutation {
     createOrder(order: OrderInput!): ResponseMessage
+    createProduct(productData: AddProductInput!): ResponseMessage
     updateUsername(update: String!): ResponseMessage
     updateAddress(update: AddressUpdate): ResponseMessage
+    updateProduct(update: ProductInput!): ResponseMessage
+    deleteProduct(productId: String!): ResponseMessage
   }
 `;
 
