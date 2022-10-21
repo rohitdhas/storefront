@@ -148,7 +148,7 @@ const ImageTemplate = (imgUrl: string) => {
     <div className="mx-auto">
       <img
         className="mx-auto h-[250px] w-auto mb-10"
-        src={imgUrl}
+        src={`${process.env.BUCKET_URL}/${imgUrl}`}
         alt="Product Image"
       />
     </div>

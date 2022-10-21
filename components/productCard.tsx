@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import { motion } from "framer-motion";
 import { IProduct } from "../interfaces/index";
+import Image from "next/image";
 
 type Props = {
   product: IProduct;
@@ -68,11 +69,14 @@ const ProductCard: React.FC<Props> = ({
             } hover:text-error !text-2xl`}
           />
         </div>
-        <img
-          src={product.images[0]}
-          alt="product_image"
-          className="h-[150px] w-[auto] my-4 mx-auto"
-        />
+        <div className="relative h-[150px] w-[auto] mx-auto my-4">
+          <Image
+            src={`${process.env.BUCKET_URL}/${product.images[0]}`}
+            alt="product_image"
+            layout={"fill"}
+            objectFit={"contain"}
+          />
+        </div>
         <h5 className="font-bold text-slate-800">{product.title}</h5>
         <div className="my-1">
           <p className="text-xs">Price</p>
