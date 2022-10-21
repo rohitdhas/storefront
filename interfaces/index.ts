@@ -1,5 +1,5 @@
 export interface IProduct {
-  _id: string;
+  _id?: string;
   title: string;
   description: string;
   images: string[];
@@ -10,9 +10,10 @@ export interface IProduct {
   category: string;
   exclusive: boolean;
   tags: string[];
-  specifications: Object[];
+  specifications: any[];
   color: string;
   brand: string;
+  tagline?: string;
   quantity?: number;
 }
 
@@ -43,4 +44,12 @@ export interface IinitialStoreState {
   cart: IProduct[];
   wishlist: string[];
   sidebarVisible: boolean;
+}
+
+export interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+  picture: string;
+  address: IAddress[];
 }
