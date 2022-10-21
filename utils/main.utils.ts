@@ -1,11 +1,13 @@
 import dateFormat from "dateformat";
 import { IProduct } from "../interfaces";
 
-export const numFormatter = (num: number) =>
-  num.toLocaleString("en-US", {
+export const numFormatter = (num: number) => {
+  if (!num) return 0;
+  return num.toLocaleString("en-US", {
     style: "currency",
     currency: "INR",
   });
+};
 
 export function getRandomId() {
   var S4 = function () {

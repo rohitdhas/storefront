@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { useState, useEffect } from "react";
+import { IProduct } from "../interfaces";
 
 const CLIENT_URL = process.env.CLIENT_URL;
 
@@ -53,9 +54,11 @@ export const productsQuery = async (filters: any = {}) => {
           tags
           brand
           specifications {
+            id
             key
             value
           }
+          tagline
           color
         }
       }
@@ -125,6 +128,52 @@ export const updateAddressQuery = async (inputData: {
       }
     `,
     variables: { update: { updateType, address } },
+  });
+  return { data };
+};
+
+export const createProductQuery = async (productData: IProduct) => {
+  const { data } = await apolloClient.mutate({
+    mutation: gql`
+      mutation Mutation($productData: AddProductInput!) {
+        createProduct(productData: $productData) {
+          data
+          message
+          isError
+        }
+      }
+    `,
+    variables: { productData },
+  });
+  return { data };
+};
+
+export const updateProductQuery = async (productUpdate: IProduct) => {
+  const { data } = await apolloClient.mutate({
+    mutation: gql`
+      mutation Mutation($update: ProductInput!) {
+        updateProduct(update: $update) {
+          message
+          isError
+        }
+      }
+    `,
+    variables: { update: productUpdate },
+  });
+  return { data };
+};
+
+export const deleteProductQuery = async (productId: string) => {
+  const { data } = await apolloClient.mutate({
+    mutation: gql`
+      mutation DeleteProduct($productId: String!) {
+        deleteProduct(productId: $productId) {
+          message
+          isError
+        }
+      }
+    `,
+    variables: { productId },
   });
   return { data };
 };
