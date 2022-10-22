@@ -397,7 +397,6 @@ const EditProduct: React.FC<Props> = ({
                         severity="danger"
                         value={"X"}
                       />
-
                       <div className="relative h-[70px] w-[90px] mx-auto my-4">
                         <Image
                           src={`${process.env.BUCKET_URL}/${img}`}
