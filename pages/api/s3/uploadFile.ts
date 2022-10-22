@@ -10,7 +10,7 @@ const s3 = new S3({
   secretAccessKey: process.env.AWS_SECRET_KEY,
 });
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
@@ -106,3 +106,5 @@ export const config = {
     bodyParser: false,
   },
 };
+
+export default handler;
