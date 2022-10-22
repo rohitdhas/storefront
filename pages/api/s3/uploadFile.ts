@@ -6,8 +6,8 @@ import { ObjectId } from "mongodb";
 import fs from "fs";
 
 const s3 = new S3({
-  accessKeyId: process.env.AWS_ACCESS_ID,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
+  accessKeyId: process.env.AWS_BUCKET_ACCESS_ID,
+  secretAccessKey: process.env.AWS_BUCKET_SECRET_KEY,
 });
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const imageKey = `${productId}_${filesData.originalFilename}`;
 
       const fileParams: any = {
-        Bucket: process.env.BUCKET_NAME,
+        Bucket: process.env.AWS_BUCKET_NAME,
         Key: imageKey,
         Expires: 600,
         Body: fs.createReadStream(filesData.filepath),
@@ -64,7 +64,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const imageKey = `${productId}_${file.originalFilename}`;
 
         const fileParams: any = {
-          Bucket: process.env.BUCKET_NAME,
+          Bucket: process.env.AWS_BUCKET_NAME,
           Key: imageKey,
           Expires: 600,
           Body: fs.createReadStream(file.filepath),
