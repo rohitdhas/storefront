@@ -3,7 +3,8 @@ import {
   productsQuery,
   deleteProductQuery,
 } from "../../utils/gpl.util";
-import { numFormatter } from "../../utils/main.utils";
+import { numFormatter, truncateString } from "../../utils/main.utils";
+import { FilterMatchMode, FilterOperator } from "primereact/api";
 import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { IProduct } from "../../interfaces";
@@ -12,6 +13,7 @@ import { Column } from "primereact/column";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import EditProduct from "../../components/EditProduct";
 import AddProduct from "../../components/AddProduct";
+import { InputText } from "primereact/inputtext";
 import Head from "next/head";
 
 export default function Products() {
@@ -25,11 +27,17 @@ export default function Products() {
   const [selectedProduct, setSelectedProduct] = useState<IProduct>();
   const [toDeleteProductId, setToDeleteProductId] = useState<string>();
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false);
+  const [filters, setFilters] = useState<any>(null);
+  const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [deleteProductDialogVisible, setDeleteProductDialogVisible] =
     useState<boolean>(false);
 
   const [addProductPopupVisible, setAddProductPopupVisible] =
     useState<boolean>(false);
+
+  useEffect(() => {
+    initFilters();
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -49,6 +57,26 @@ export default function Products() {
     update.push(product);
     setProducts(update);
   }
+
+  const onGlobalFilterChange = (e: any) => {
+    const value = e.target.value;
+    let _filters1 = { ...filters };
+    _filters1["global"].value = value;
+
+    setFilters(_filters1);
+    setGlobalFilterValue(value);
+  };
+
+  const initFilters = () => {
+    setFilters({
+      global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      title: {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+      },
+    });
+    setGlobalFilterValue("");
+  };
 
   return (
     <div>
@@ -86,9 +114,11 @@ export default function Products() {
           </p>
         </div>
         <div>
-          <Button
-            label="Add Product"
-            onClick={() => setAddProductPopupVisible(true)}
+          <RenderFilterHeader
+            clearFilter={initFilters}
+            setAddProductPopupVisible={setAddProductPopupVisible}
+            globalFilterValue={globalFilterValue}
+            onGlobalFilterChange={onGlobalFilterChange}
           />
         </div>
         <AddProduct
@@ -104,14 +134,22 @@ export default function Products() {
         />
         <div className="mt-6">
           <DataTable
+            paginator
+            rows={10}
             loading={isLoading}
             loadingIcon={"pi pi-spinner"}
             value={products}
-            paginator
-            rows={10}
+            filters={filters}
             responsiveLayout="scroll"
+            filterDisplay="menu"
+            globalFilterFields={["title"]}
           >
-            <Column field="title" header="Name" />
+            <Column
+              filterField="title"
+              field="title"
+              header="Name"
+              body={(rowData: IProduct) => truncateString(rowData.title, 25)}
+            />
             <Column
               field="currentPrice"
               header="Price"
@@ -165,3 +203,42 @@ export default function Products() {
     </div>
   );
 }
+
+const RenderFilterHeader = ({
+  globalFilterValue,
+  onGlobalFilterChange,
+  clearFilter,
+  setAddProductPopupVisible,
+}: {
+  globalFilterValue: any;
+  onGlobalFilterChange: any;
+  clearFilter: () => void;
+  setAddProductPopupVisible: any;
+}) => {
+  return (
+    <div className="flex justify-between !my-6">
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          value={globalFilterValue}
+          className="p-inputtext-sm"
+          onChange={(e) => onGlobalFilterChange(e)}
+          placeholder="Keyword Search"
+        />
+        <Button
+          type="button"
+          icon="pi pi-filter-slash"
+          className="p-button-outlined p-button-sm !ml-4"
+          onClick={clearFilter}
+          tooltip={"Clear Filters"}
+        />
+      </span>
+      <Button
+        label="Add Product"
+        className="!mr-6 p-button-sm"
+        icon={"pi pi-plus"}
+        onClick={() => setAddProductPopupVisible(true)}
+      />
+    </div>
+  );
+};

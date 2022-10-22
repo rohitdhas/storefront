@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { numFormatter } from "../utils/main.utils";
+import { numFormatter, truncateString } from "../utils/main.utils";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
@@ -77,7 +77,9 @@ const ProductCard: React.FC<Props> = ({
             objectFit={"contain"}
           />
         </div>
-        <h5 className="font-bold text-slate-800">{product.title}</h5>
+        <h5 className="font-bold text-slate-800">
+          {truncateString(product.title, 20)}
+        </h5>
         <div className="my-1">
           <p className="text-xs">Price</p>
           <p>

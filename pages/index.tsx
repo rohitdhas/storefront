@@ -1,19 +1,36 @@
 /* eslint-disable @next/next/no-img-element */
+import { ProgressSpinner } from "primereact/progressspinner";
+import { useFetch, productsQuery } from "../utils/gpl.util";
+import { updateCart } from "../redux/userSlice";
+import { addToCart } from "../utils/cart.utils";
 import { numFormatter } from "../utils/main.utils";
-import { Button } from "primereact/button";
 import { Carousel } from "primereact/carousel";
-import products from "../constants/product.json";
-import type { NextPage } from "next";
+import { useDispatch } from "react-redux";
+import { IProduct } from "../interfaces";
 import { Chip } from "primereact/chip";
+import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
 
 const Home: NextPage = () => {
   const router = useRouter();
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const { data: productsRes, isLoading } = useFetch(productsQuery, {
+    exclusive: "true",
+  });
+
+  useEffect(() => {
+    if (productsRes) {
+      setProducts(productsRes.products);
+    }
+  }, [productsRes]);
+
   return (
     <div>
       <Head>
@@ -26,13 +43,13 @@ const Home: NextPage = () => {
       </Head>
       <main>
         {/* Carousel Section */}
-        <div className="mx-6 bg-gray-50 rounded-md">
+        <div className="mx-6 bg-white rounded-md border-2 border-primaryLight">
           <Carousel
-            autoplayInterval={4000}
+            autoplayInterval={isLoading ? 0 : 4000}
             className=" !-z-10"
-            value={products}
+            value={isLoading ? [{}] : products}
             circular={true}
-            itemTemplate={itemTemplate}
+            itemTemplate={isLoading ? CaraousalDataLoading : itemTemplate}
           ></Carousel>
         </div>
       </main>
@@ -315,7 +332,16 @@ const Home: NextPage = () => {
   );
 };
 
-const itemTemplate = (product: any) => {
+const itemTemplate = (product: IProduct) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const addProductToCart = () => {
+    const updatedCart = addToCart({ ...product, quantity: 1 });
+    dispatch(updateCart({ updatedCart }));
+    router.push({ pathname: "/cart" });
+  };
+
   return (
     <div className="product-item flex flex-col-reverse lg:flex-row justify-center lg:justify-evenly align items-center md:px-6">
       <div className="product-detail">
@@ -328,7 +354,7 @@ const itemTemplate = (product: any) => {
           />
         </h5>
         <div
-          dangerouslySetInnerHTML={{ __html: product.description }}
+          dangerouslySetInnerHTML={{ __html: product.tagline! }}
           className="description text-[1rem] md:text-[2.7rem] leading-[1.2] font-bold mt-2 text-slate-700"
         />
         <p className="text-xs text-info my-6">
@@ -340,13 +366,18 @@ const itemTemplate = (product: any) => {
           className="px-4 py-2 w-full md:py-3 md:w-auto"
           icon={"pi pi-arrow-right"}
           label="Buy Now"
+          onClick={addProductToCart}
         />
       </div>
-      <img
-        className="product-img w-[200px] h-[220px] md:w-[400px] md:h-[420px]"
-        src={product.image}
-        alt={product.name}
-      />
+
+      <div className="relative h-[200px] w-[220px] md:w-[400px] md:h-[420px] my-4">
+        <Image
+          src={`${process.env.BUCKET_URL}/${product.images[0]}`}
+          alt="product_image"
+          layout={"fill"}
+          objectFit={"contain"}
+        />
+      </div>
     </div>
   );
 };
@@ -370,5 +401,17 @@ const SectionTitle = ({
     </>
   );
 };
+
+function CaraousalDataLoading() {
+  return (
+    <div className="flex justify-center align items-center h-[300px]">
+      <ProgressSpinner
+        style={{ width: "70px", height: "70px" }}
+        strokeWidth="4"
+        animationDuration="1s"
+      />
+    </div>
+  );
+}
 
 export default Home;
