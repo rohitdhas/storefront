@@ -49,7 +49,7 @@ const Home: NextPage = () => {
             className=" !-z-10"
             value={isLoading ? [{}] : products}
             circular={true}
-            itemTemplate={isLoading ? CaraousalDataLoading : itemTemplate}
+            itemTemplate={isLoading ? CaraousalDataLoading : ItemTemplate}
           ></Carousel>
         </div>
       </main>
@@ -332,7 +332,7 @@ const Home: NextPage = () => {
   );
 };
 
-const itemTemplate = (product: IProduct) => {
+const ItemTemplate = (product: IProduct) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
