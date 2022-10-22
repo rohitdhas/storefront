@@ -5,6 +5,7 @@ import { ProgressBar } from "primereact/progressbar";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Tag } from "primereact/tag";
+import Image from "next/image";
 
 type Props = {
   visible: boolean;
@@ -92,12 +93,14 @@ export const ImageUpload: React.FC<Props> = ({
     return (
       <div className="flex align items-center flex-wrap">
         <div className="flex align items-center" style={{ width: "40%" }}>
-          <img
-            alt={file.name}
-            role="presentation"
-            src={file.objectURL}
-            width={100}
-          />
+          <div className="relative h-[75px] w-[100px]">
+            <Image
+              src={file.objectURL}
+              alt={file.name}
+              layout={"fill"}
+              objectFit={"contain"}
+            />
+          </div>
           <span className="flex flex-col text-left ml-3">
             {file.name}
             <small>{new Date().toLocaleDateString()}</small>
