@@ -6,7 +6,6 @@ import { Dropdown } from "primereact/dropdown";
 import { Divider } from "primereact/divider";
 import { Button } from "primereact/button";
 import { Chips } from "primereact/chips";
-import { IProduct } from "../interfaces";
 import { Toast } from "primereact/toast";
 import { notify } from "../utils/notification.util";
 import { createProductQuery, useFetch } from "../utils/gpl.util";
@@ -25,7 +24,7 @@ const AddProduct: React.FC<Props> = ({
   const [edited, setEdited] = useState<boolean>(false);
   const toastRef: any = React.useRef();
   const { fetchData, isLoading } = useFetch(createProductQuery, null, false);
-  const [productData, setProductData] = useState<IProduct>({
+  const [productData, setProductData] = useState<any>({
     title: "",
     description: "",
     images: [],
