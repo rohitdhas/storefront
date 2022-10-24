@@ -35,3 +35,13 @@
     margin: 8px 0;
   }
 }
+
+.p-sidebar-content {
+  -ms-overflow-style: none !important; /* Internet Explorer 10+ */
+  scrollbar-width: none !important; /* Firefox */
+}
+.p-sidebar-content::-webkit-scrollbar {
+  width: 0 !important; /* Remove scrollbar space */
+  background: transparent !important;
+  display: none !important; /* Safari and Chrome */
+}

@@ -2,7 +2,14 @@ import dateFormat from "dateformat";
 import { IProduct } from "../interfaces";
 
 export const numFormatter = (num: number) => {
-  if (!num) return 0;
+  if (!num) {
+    const fallback = 0;
+    return fallback.toLocaleString("en-US", {
+      style: "currency",
+      currency: "INR",
+    });
+  }
+
   return num.toLocaleString("en-US", {
     style: "currency",
     currency: "INR",

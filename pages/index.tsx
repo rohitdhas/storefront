@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { ProgressSpinner } from "primereact/progressspinner";
 import { useFetch, productsQuery } from "../utils/gpl.util";
+import { Skeleton } from "primereact/skeleton";
 import { updateCart } from "../redux/userSlice";
 import { addToCart } from "../utils/cart.utils";
 import { numFormatter } from "../utils/main.utils";
@@ -12,24 +12,51 @@ import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { HOT_DEAL_PRODUCT } from "../constants";
 import type { NextPage } from "next";
+import { Toast } from "primereact/toast";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
+import { notify } from "../utils/notification.util";
 
 const Home: NextPage = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const toastRef: any = useRef();
   const [products, setProducts] = useState<IProduct[]>([]);
   const { data: productsRes, isLoading } = useFetch(productsQuery, {
     exclusive: "true",
   });
+
+  const savings =
+    HOT_DEAL_PRODUCT.originalPrice - HOT_DEAL_PRODUCT.currentPrice;
+  const savingsPercentage = (
+    (savings / HOT_DEAL_PRODUCT.originalPrice) *
+    100
+  ).toFixed(2);
 
   useEffect(() => {
     if (productsRes) {
       setProducts(productsRes.products);
     }
   }, [productsRes]);
+
+  const addHotDealToCart = () => {
+    const product: any = { ...HOT_DEAL_PRODUCT };
+    const updatedCart = addToCart({ ...product, quantity: 1 });
+    dispatch(updateCart({ updatedCart }));
+
+    notify(
+      {
+        title: "Added to Cart",
+        message: `${product.title} - Added to your cart!`,
+        type: "success",
+      },
+      toastRef
+    );
+  };
 
   return (
     <div>
@@ -41,17 +68,24 @@ const Home: NextPage = () => {
         />
         <link rel="shortcut icon" href="logo.svg" type="image/x-icon" />
       </Head>
+      <Toast ref={toastRef} />
       <main>
         {/* Carousel Section */}
-        <div className="mx-6 bg-white rounded-md border-2 border-primaryLight">
-          <Carousel
-            autoplayInterval={isLoading ? 0 : 4000}
-            className=" !-z-10"
-            value={isLoading ? [{}] : products}
-            circular={true}
-            itemTemplate={isLoading ? CaraousalDataLoading : ItemTemplate}
-          ></Carousel>
-        </div>
+        <>
+          {isLoading ? (
+            <Skeleton className="!w-[90%] !h-[200px] md:!h-[400px] mx-auto"></Skeleton>
+          ) : (
+            <div className="mx-6 bg-white rounded-md border-2 shadow-lg border-slate-400">
+              <Carousel
+                autoplayInterval={4000}
+                className=" !-z-10"
+                value={products}
+                circular={true}
+                itemTemplate={ItemTemplate}
+              ></Carousel>
+            </div>
+          )}
+        </>
       </main>
       {/* Categories Section */}
       <section>
@@ -69,16 +103,18 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="!bg-purple-50 !shadow-lg">
-                <Image
-                  className="product-img"
-                  src={
-                    "https://pngimg.com/uploads/iphone_13/iphone_13_PNG31.png"
-                  }
-                  alt={"category-image"}
-                  height={250}
-                  width={240}
-                />
+              <Card className="border-2 border-[#BEB5EC] !shadow-lg">
+                <div className="relative h-[220px] w-[240px] mx-auto my-4">
+                  <Image
+                    className="product-img"
+                    src={
+                      "https://storefront-products.s3.amazonaws.com/6352d589669ecd8e3b3d2dea_iphone-12-mjnm3hn-a-apple-original-imag2k2v6ehvnzfd.webp"
+                    }
+                    alt={"category-image"}
+                    layout={"fill"}
+                    objectFit={"contain"}
+                  />
+                </div>
                 <h5 className="text-center font-bold">Mobiles &amp; Tablets</h5>
               </Card>
             </motion.div>
@@ -93,16 +129,18 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="!bg-pink-50 !shadow-lg">
-                <Image
-                  className="product-img"
-                  src={
-                    "https://cdn.shopify.com/s/files/1/0057/8938/4802/files/pi-1.png?v=1624786714"
-                  }
-                  alt={"category-image"}
-                  height={250}
-                  width={240}
-                />
+              <Card className="!shadow-lg border-2 border-slate-300">
+                <div className="relative h-[220px] w-[240px] mx-auto my-4">
+                  <Image
+                    className="product-img"
+                    src={
+                      "https://storefront-products.s3.amazonaws.com/63542168a31eadce20e7ecc4_71f5Eu5lJSL._SX679_.jpg"
+                    }
+                    alt={"category-image"}
+                    layout={"fill"}
+                    objectFit={"contain"}
+                  />
+                </div>
                 <h5 className="text-center font-bold">
                   Computers &amp; Laptops
                 </h5>
@@ -119,16 +157,18 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="!bg-yellow-50 !shadow-lg">
-                <Image
-                  className="product-img"
-                  src={
-                    "https://content.jdmagicbox.com/quickquotes/images_main/noise-colorfit-pro-2-smart-watch-teal-green-178087473-47614.png"
-                  }
-                  alt={"category-image"}
-                  height={250}
-                  width={240}
-                />
+              <Card className="border-2 border-[#ff8fb3] !shadow-lg">
+                <div className="relative h-[220px] w-[240px] mx-auto my-4">
+                  <Image
+                    className="product-img"
+                    src={
+                      "https://storefront-products.s3.amazonaws.com/6354dce7ed9068b19d40aeaa_mtf02hn-a-apple-original-imaf9ec8nh6sscfh.webp"
+                    }
+                    alt={"category-image"}
+                    layout={"fill"}
+                    objectFit={"contain"}
+                  />
+                </div>
                 <h5 className="text-center font-bold">Accessories</h5>
               </Card>
             </motion.div>
@@ -143,16 +183,18 @@ const Home: NextPage = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Card className="!bg-green-50 !shadow-lg">
-                <Image
-                  className="product-img"
-                  src={
-                    "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/rockerz-650-red_600x.png?v=1624968476"
-                  }
-                  alt={"category-image"}
-                  height={250}
-                  width={240}
-                />
+              <Card className="border-2 border-[#B6DB14] !shadow-lg">
+                <div className="relative h-[220px] w-[240px] mx-auto my-4">
+                  <Image
+                    className="product-img"
+                    src={
+                      "https://storefront-products.s3.amazonaws.com/6354de2bed9068b19d40aeab_43fd2a00-43-y1s-oneplus-original-imagbgc44gerfphz.webp"
+                    }
+                    alt={"category-image"}
+                    layout={"fill"}
+                    objectFit={"contain"}
+                  />
+                </div>
                 <h5 className="text-center font-bold">
                   TV&apos;s &amp; Monitors
                 </h5>
@@ -165,11 +207,11 @@ const Home: NextPage = () => {
       <section>
         <div className="mt-12 mb-6 mx-6">
           <SectionTitle firstWord="Deal" rest="of the day" />
-          <Card className="w-[95%] md:w-[70%] mx-auto !shadow-none !bg-slate-50">
+          <Card className="w-[95%] md:w-[70%] mx-auto !shadow-none border-2 border-[#A7A7A7]">
             <div className="flex flex-col-reverse justify-center align items-center lg:flex-row lg:justify-evenly p-4">
               <div>
                 <h3 className="text-2xl font-bold mb-5 text-slate-800">
-                  Boat Rockerz 650 Sports
+                  {HOT_DEAL_PRODUCT.title}
                   <Chip
                     label="Hot Deal"
                     icon="pi pi-star"
@@ -177,44 +219,43 @@ const Home: NextPage = () => {
                   />
                 </h3>
                 <p className="text-info my-4 leading-[1.7]">
-                  Catch the faintest beat clearly with the fresh new Rockerz 650
-                  <br />
-                  wireless headphones. Indulge in a ceaseless, pure audio bliss
-                  <br />
-                  with its unbelievable 60HRS of playback.The Smart Twist
-                  enables
-                  <br />
-                  you to play or pause your music hassle-free.
+                  {HOT_DEAL_PRODUCT.description}
                 </p>
                 <div className="text-xl mb-4">
                   <span className="text-slate-900 font-bold ">
-                    {numFormatter(1200)}
+                    {numFormatter(HOT_DEAL_PRODUCT.currentPrice)}
                   </span>
                   <span className="line-through text-info mx-2 text-sm font-bold ">
-                    {numFormatter(1700)}
+                    {numFormatter(HOT_DEAL_PRODUCT.originalPrice)}
                   </span>
                   <br />
                   <span className="text-xs font-semibold">
                     Savings{" "}
-                    <span className="text-success">{numFormatter(500)}</span>{" "}
-                    (7.00%)
+                    <span className="text-success">
+                      {numFormatter(savings)}
+                    </span>{" "}
+                    ({savingsPercentage}%)
                   </span>
                 </div>
                 <Button
                   className="p-button-outlined"
                   label="Add to cart"
+                  onClick={addHotDealToCart}
                   icon="pi pi-shopping-cart"
                 />
               </div>
               <motion.div>
-                <Image
-                  src={
-                    "https://cdn.shopify.com/s/files/1/0057/8938/4802/products/rockerz-650-red_600x.png?v=1624968476"
-                  }
-                  height={300}
-                  width={340}
-                  alt="product-img"
-                />
+                <div className="relative h-[300px] w-[340px] mx-auto my-4">
+                  <Image
+                    className="product-img"
+                    src={
+                      "https://storefront-products.s3.amazonaws.com/6354e3720ee5b58784826509_-original-imaga4m8sz5ymcf7.webp"
+                    }
+                    alt={"category-image"}
+                    layout={"fill"}
+                    objectFit={"contain"}
+                  />
+                </div>
               </motion.div>
             </div>
           </Card>
@@ -226,7 +267,7 @@ const Home: NextPage = () => {
           <SectionTitle firstWord="What" rest="We Offer" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 m-auto justify-end">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:ml-auto !shadow-none !bg-primaryLight text-slate-900">
+              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:ml-auto !shadow-none !bg-primaryLight text-slate-900 border-2 border-primary">
                 <div>
                   <i className="pi pi-box !text-3xl !font-bold text-primary" />
                 </div>
@@ -239,7 +280,7 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:mr-auto !shadow-none !bg-primaryLight text-slate-900">
+              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:mr-auto !shadow-none !bg-primaryLight text-slate-900 border-2 border-primary">
                 <div>
                   <i className="pi pi-send !text-3xl !font-bold text-primary" />
                 </div>
@@ -251,7 +292,7 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:ml-auto !shadow-none !bg-primaryLight text-slate-900">
+              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:ml-auto !shadow-none !bg-primaryLight text-slate-900 border-2 border-primary">
                 <div>
                   <i className="pi pi-wallet !text-3xl !font-bold text-primary" />
                 </div>
@@ -262,7 +303,7 @@ const Home: NextPage = () => {
               </Card>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:mr-auto !shadow-none !bg-primaryLight text-slate-900">
+              <Card className="w-[85%] md:w-[60%] p-4 mx-auto md:mx-0 md:mr-auto !shadow-none !bg-primaryLight text-slate-900 border-2 border-primary">
                 <div>
                   <i className="pi pi-info-circle !text-3xl !font-bold text-primary" />
                 </div>
@@ -401,17 +442,5 @@ const SectionTitle = ({
     </>
   );
 };
-
-function CaraousalDataLoading() {
-  return (
-    <div className="flex justify-center align items-center h-[300px]">
-      <ProgressSpinner
-        style={{ width: "70px", height: "70px" }}
-        strokeWidth="4"
-        animationDuration="1s"
-      />
-    </div>
-  );
-}
 
 export default Home;
