@@ -112,6 +112,7 @@ const EditProduct: React.FC<Props> = ({
     update["images"] = imgArr;
 
     setProductData(update);
+    setEdited(true);
   }
 
   async function updateProductData() {
