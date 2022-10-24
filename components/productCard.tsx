@@ -69,7 +69,7 @@ const ProductCard: React.FC<Props> = ({
             } hover:text-error !text-2xl`}
           />
         </div>
-        <div className="relative h-[150px] w-[auto] mx-auto my-4">
+        <div className="relative h-[200px] w-[250px] md:h-[150px] md:w-[auto] mx-auto my-4">
           <Image
             src={`${process.env.BUCKET_URL}/${product.images[0]}`}
             alt="product_image"

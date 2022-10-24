@@ -44,7 +44,7 @@ const Profile: NextPage = () => {
         />
         <link rel="shortcut icon" href="logo.svg" type="image/x-icon" />
       </Head>
-      <main className="md:mx-auto md:w-[50%]">
+      <main className="mx-4 md:mx-auto md:w-[50%]">
         <h3 className="text-2xl font-bold text-slate-800 !my-6 text-center">
           Account Settings ⚙️
         </h3>

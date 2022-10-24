@@ -57,7 +57,7 @@ const Orders: NextPage = () => {
       </Head>
       <Loader loading={isLoading} />
       <main>
-        <div>
+        <div className="ml-4 md:ml-0">
           <h3 className="text-2xl font-bold">My Orders</h3>
           <p className="text-sm text-info">
             Here are all the orders you&apos;ve made!

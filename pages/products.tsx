@@ -75,7 +75,7 @@ const Products: React.FC = () => {
   };
 
   return (
-    <div className="mx-2 mt-4 max-w-[1600px] md:px-6 md:mx-auto">
+    <div className="mx-6 mt-4 max-w-[1600px] md:px-6 md:mx-auto">
       <Head>
         <title>Products</title>
         <meta

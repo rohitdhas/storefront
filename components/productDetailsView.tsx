@@ -8,6 +8,7 @@ import { IProduct } from "../interfaces";
 import { notify } from "../utils/notification.util";
 import { Toast } from "primereact/toast";
 import React, { useRef } from "react";
+import Image from "next/image";
 
 const ProductDetailsView: React.FC<{
   isVisible: boolean;
@@ -146,11 +147,14 @@ const ProductDetailsView: React.FC<{
 const ImageTemplate = (imgUrl: string) => {
   return (
     <div className="mx-auto">
-      <img
-        className="mx-auto h-[250px] w-auto mb-10"
-        src={`${process.env.BUCKET_URL}/${imgUrl}`}
-        alt="Product Image"
-      />
+      <div className="relative h-[150px] md:h-[250px] w-[auto] mx-auto my-4">
+        <Image
+          src={`${process.env.BUCKET_URL}/${imgUrl}`}
+          alt="product_image"
+          layout={"fill"}
+          objectFit={"contain"}
+        />
+      </div>
     </div>
   );
 };

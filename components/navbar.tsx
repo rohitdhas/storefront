@@ -117,7 +117,7 @@ const Navbar: React.FC = () => {
             onClick={() => router.push({ pathname: "/wishlist" })}
             data-pr-tooltip="Wishlist"
             data-pr-position="bottom"
-            className="heart-fill flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 mr-8 ml-4"
+            className="heart-fill hidden md:flex align items-center justify-center hover:bg-gray-200 rounded-full transition-all px-2 py-1 mr-8 ml-4"
           >
             <i className="pi pi-heart-fill !text-2xl text-info" />
           </span>
@@ -143,7 +143,7 @@ const Navbar: React.FC = () => {
             </>
           ) : (
             <Button
-              className="p-button-outlined"
+              className="p-button-outlined p-button-sm md:p-button-md text-sm md:text-md"
               label="Sign In"
               loading={loginBtnLoading}
               onClick={() => {

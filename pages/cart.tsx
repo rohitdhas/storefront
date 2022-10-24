@@ -17,7 +17,6 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 import { SelectButton } from "primereact/selectbutton";
 import {
   useFetch,
-  productsQuery,
   updateAddressQuery,
   createCheckoutQuery,
 } from "../utils/gpl.util";
@@ -115,12 +114,14 @@ const Cart: NextPage = () => {
       <main>
         {!products.length ? (
           <div className="w-max mx-auto text-center">
-            <Image
-              src="/empty_cart.svg"
-              alt="empty cart"
-              height={400}
-              width={400}
-            />
+            <div className="relative h-[200px] w-[250px] md:h-[400px] md:w-[400px] mx-auto my-4">
+              <Image
+                src="/empty_cart.svg"
+                alt="product_image"
+                layout={"fill"}
+                objectFit={"contain"}
+              />
+            </div>
             <div className="mt-6">
               <h5 className="font-bold text-slate-800">Your Cart is Empty!</h5>
               <p className="text-sm text-gray-500">
@@ -137,8 +138,8 @@ const Cart: NextPage = () => {
             </Link>
           </div>
         ) : (
-          <div className="flex justify-evenly pt-6">
-            <div className="w-[35%]">
+          <div className="flex justify-evenly flex-col align items-center md:items-start md:flex-row pt-6">
+            <div className="w-[95%] md:w-[35%]">
               <h5 className="text-xl font-bold text-info mb-4">
                 Cart Items ({products.length}) 🎈
               </h5>
@@ -203,7 +204,7 @@ const Cart: NextPage = () => {
                 </Accordion>
               </div>
             </div>
-            <div className="w-[32%]">
+            <div className="w-[95%] md:w-[32%] mt-4 md:mt-0">
               {status === "authenticated" ? (
                 <div className="sticky top-20">
                   <AddressForm
@@ -344,7 +345,7 @@ const CartItem: React.FC<{ product: IProduct }> = React.memo(({ product }) => {
             dispatch(updateCart({ updatedCart: update }));
           }}
           icon="pi pi-trash"
-          className="p-button-sm p-button-danger text-xs !h-full !w-full !rounded-sm"
+          className="p-button-sm p-button-danger text-xs md:!h-full !w-full !rounded-sm"
         />
       </motion.div>
     </motion.div>
