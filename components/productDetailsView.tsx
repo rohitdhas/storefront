@@ -24,10 +24,10 @@ const ProductDetailsView: React.FC<{
     2
   );
   return (
-    <div className="w-[100vw]">
+    <div className="w-[100vw] no-scrollbar" id="product-details">
       <Toast ref={toast} />
       <Sidebar
-        className="!w-full lg:!w-[40%] relative"
+        className="!w-full lg:!w-[40%] relative no-scrollbar"
         visible={isVisible}
         position="right"
         onHide={toggle}
