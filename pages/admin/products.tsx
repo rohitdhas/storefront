@@ -14,7 +14,25 @@ import { ConfirmDialog } from "primereact/confirmdialog";
 import EditProduct from "../../components/EditProduct";
 import AddProduct from "../../components/AddProduct";
 import { InputText } from "primereact/inputtext";
+import { getSession } from "next-auth/react";
 import Head from "next/head";
+
+export async function getServerSideProps(context: any) {
+  const session: any = await getSession(context);
+
+  if (!session || session.user.type !== "admin") {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+}
 
 export default function Products() {
   const { data, isLoading } = useFetch(productsQuery, {});
